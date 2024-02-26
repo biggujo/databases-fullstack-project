@@ -1,0 +1,21 @@
+version: "3.8"
+name: "databases-fullstack"
+services:
+  frontend:
+    build: "frontend"
+    restart: unless-stopped
+    ports:
+      - "6201:5173"
+    volumes:
+      - "./frontend:/app"
+      - "/app/node_modules"
+    tty: true
+    stdin_open: true
+#  db:
+#    image: "mysql:8.3.0"
+#    restart: unless-stopped
+#    ports:
+#      - "6200:3306"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+
