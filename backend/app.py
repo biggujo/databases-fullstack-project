@@ -1,9 +1,25 @@
 from flask import Flask, abort
 from flask_cors import CORS
 from datetime import datetime
+from sqlalchemy import create_engine
+from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://user:password@localhost/mydatabase'
+db = SQLAlchemy(app)
+class Table(db.Model):
+    __tablename__ = 'example'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(128))
+
+@app.route('/data')
+def get_data():
+    all_data = Table.query.all()
+    return jsonify([{'id': item.id, 'name': item.name} for item in all_data])
+
 
 @app.route("/")
 def run():
