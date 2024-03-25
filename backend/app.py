@@ -12,6 +12,7 @@ engine = create_engine('mysql+pymysql://root:root@db')
 
 with engine.connect() as connection:
     connection.execute(text('CREATE DATABASE IF NOT EXISTS mydatabase'))
+    connection.commit
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db:3306/mydatabase'
 db = SQLAlchemy(app)
