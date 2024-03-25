@@ -25,7 +25,7 @@ class MyTable(db.Model):
 @app.route('/table', methods=['GET'])
 def get_table():
     table_data = MyTable.query.all()
-    return jsonify([row.to_json() for row in table_data])
+    return jsonify(data=[row.to_json() for row in table_data])
 
 @app.route("/")
 def run():
