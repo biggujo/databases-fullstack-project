@@ -11,6 +11,10 @@ export default function Layout() {
             to={'/'}>Homepage</Link>
       <Link color={'teal'}
             as={ReactRouterLink}
+            to={'/tasks'}
+      >Tasks</Link>
+      <Link color={'teal'}
+            as={ReactRouterLink}
             to={'/about'}
       >About</Link>
       <Divider />
