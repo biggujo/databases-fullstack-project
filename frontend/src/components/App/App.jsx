@@ -5,15 +5,17 @@ import SignInForm from '../../pages/SignInForm.jsx';
 import TasksPage from '../../pages/TasksPage.jsx'; // Импортируйте компонент SignInForm
 
 function App() {
-  return (<Routes>
+  return (
+    <Routes>
       <Route path={'/'} element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path={'about'} element={<AboutPage />} />
-        <Route path={'tasks'} element={<TasksPage />} />
+  	<Route index element={<HomePage />} />
+  	<Route path={'about'} element={<AboutPage />} />
+  	<Route path={'tasks'} element={<TasksPage />} />
+  	<Route path={'signin'} element={<SignInForm />} /> 
       </Route>
-      <Route path={'/signin'} element={
-        <SignInForm />} /> {/* Добавьте маршрут для вашей новой страницы */}
-    </Routes>);
+     
+    </Routes>
+  );
 }
 
 export default App;
