@@ -2,7 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { AboutPage, HomePage } from '../../pages/index.js';
 import Layout from '../Layout/index.js';
 import SignInForm from '../../pages/SignInForm.jsx';
-import TasksPage from '../../pages/TasksPage.jsx'; // Импортируйте компонент SignInForm
+import SignUpForm from "../../pages/SignUpForm.jsx";
+import TasksPage from '../../pages/TasksPage.jsx';
 
 function App() {
   return (<Routes>
@@ -12,7 +13,6 @@ function App() {
       <Route path={'tasks'} element={<TasksPage />} />
       <Route path={'signin'} element={<SignInForm />} />
     </Route>
-
   </Routes>);
 }
 
