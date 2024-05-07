@@ -1,5 +1,6 @@
 from models.user_model import User
 from helpers.main import db
+from schemas.user_schemas import validate_user_schema
 from flask import request, session, jsonify
 
 
@@ -7,11 +8,12 @@ def index():
     return jsonify(json_list=User.query.all())
 
 
+@validate_user_schema
 def create():
     body = request.json
 
-    username = body['username']
-    password = body['password']
+    username = body.get('username')
+    password = body.get('password')
 
     user = User.query.filter_by(username=username).first()
 
@@ -27,6 +29,7 @@ def create():
     return new_user.serialize, 201
 
 
+@validate_user_schema
 def login():
     body = request.json
 

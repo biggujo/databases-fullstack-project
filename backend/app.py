@@ -2,8 +2,11 @@ from flask_cors import CORS
 from routes import user_route
 from helpers.main import app, db
 from database.config import init_db_connection
+from decorators.error_handlers import create_error_handlers
 
+# Decorators
 CORS(app)
+create_error_handlers(app)
 
 init_db_connection()
 
