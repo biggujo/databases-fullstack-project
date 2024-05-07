@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     ports:
       - "6000:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
   backend:
