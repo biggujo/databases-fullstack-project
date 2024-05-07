@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
 from flask_cors import CORS
 from datetime import datetime
 from flask import Flask, jsonify, render_template, redirect, url_for, request
@@ -8,10 +8,13 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db:3306/mydatabase'
-db = SQLAlchemy(app)
 
+CORS(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@db:3306/mydatabase'
+app.secret_key = "8H0rVLxb0vR93RP04AnFFLHD"
+
+db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -21,10 +24,12 @@ with engine.connect() as connection:
     connection.execute(text('CREATE DATABASE IF NOT EXISTS mydatabase'))
     connection.commit
 
+
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True)
-    password_hash = db.Column(db.String(64))
+    password_hash = db.Column(db.String(256))
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -32,52 +37,71 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def to_json(self):
-       return {
+        return {
             'id': self.id,
-            'username': self.username 
+            'username': self.username
         }
-    
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.route('/login', methods=['GET', 'POST'])
+
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(password):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-    return jsonify({'response': False})
+    body = request.json
 
-@app.route('/logout')
-@login_required
+    username = body['username']
+    password = body['password']
+
+    user = User.query.filter_by(username=username).first()
+
+    auth_error = {
+        "message": "Invalid login or password",
+    }, 400
+
+    if user is None:
+        return auth_error
+
+    if not user.check_password(password):
+        return auth_error
+
+    session['logged_in'] = True
+    return user.to_json(), 201
+
+
+@app.route('/logout', methods=['DELETE'])
 def logout():
-    logout_user()
-    return redirect(url_for('index'))
+    if 'logged_in' not in session:
+        return {
+            "message": "Already logged out"
+        }, 400
 
-#@app.route('/dashboard')
-#@login_required
-#def dashboard():
-#    return render_template('frontend\pages\login.html')
+    session.pop('logged_in')
+    return {}, 204
 
-@app.route('/register', methods=['GET', 'POST'])
+
+@app.route('/register', methods=['POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user:
-            return jsonify({'message' : 'User already exists'}), 400
-        else:
-            new_user = User(username=username)
-            new_user.set_password(password) 
-            db.session.add(new_user)
-            db.session.commit()
-            return redirect(url_for('frontend\pages\login.html'))
-    return jsonify({'response': False})
+    body = request.json
+
+    username = body['username']
+    password = body['password']
+
+    user = User.query.filter_by(username=username).first()
+
+    if user is not None:
+        return {'message': 'User already exists'}, 400
+
+    new_user = User(username=username)
+    new_user.set_password(password)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return new_user.to_json()
+
 
 @app.route("/")
 def run():
@@ -85,6 +109,7 @@ def run():
         "msg": "Hello, World!",
         "time": datetime.now().timestamp()
     }
+
 
 if __name__ == "__main__":
     with app.app_context():
