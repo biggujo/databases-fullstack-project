@@ -10,15 +10,6 @@ import PrivateRoute from '../PrivateRoute/index.js';
 import ProtectedRoute from '../ProtectedRoute/index.js';
 
 function App() {
-  useEffect(() => {
-    (async () => {
-      console.log(await API.auth.login({
-        username: '111111',
-        password: '111111',
-      }));
-    })();
-  }, []);
-
   return (<Routes>
     <Route path={'/'} element={<Layout />}>
       <Route index element={<HomePage />} />

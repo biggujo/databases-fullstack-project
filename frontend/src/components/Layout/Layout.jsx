@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Divider, Text, Link, Flex, Image, Button, Box,
 } from '@chakra-ui/react';
-import { Link as ReactRouterLink, Outlet } from 'react-router-dom';
+import { Link as ReactRouterLink, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectAuthIsLoggedIn, selectAuthUser,
@@ -12,6 +12,7 @@ import UserOperations from '../../redux/auth/operations.js';
 
 function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { username } = useSelector(selectAuthUser);
   const isLoggedIn = useSelector(selectAuthIsLoggedIn);
 
@@ -45,7 +46,7 @@ function Header() {
           <Text fontSize="2xl" fontWeight="bold" marginRight="10px">Databases
             Project</Text>
         </Flex>
-        <nav>
+        <Flex as={'nav'} align="center" gap={2}>
           <Link
             as={ReactRouterLink}
             to="/tasks"
@@ -83,7 +84,7 @@ function Header() {
             About
           </Link>
           {isLoggedIn && <>
-            <Flex>
+            <Flex alignItems={'center'} gap={2}>
               <p>Hello, {username}</p>
               <Button
                 marginRight="10px"
@@ -94,7 +95,10 @@ function Header() {
                   transform: 'scale(1.05)',
                 }}
                 transition="transform 0.3s ease-in-out"
-                onClick={() => dispatch(UserOperations.logout())}
+                onClick={async () => {
+                  await dispatch(UserOperations.logout()).unwrap();
+                  navigate('/');
+                }}
               >
                 Log out
               </Button>
@@ -129,7 +133,7 @@ function Header() {
               Sign In
             </Button>
           </>}
-        </nav>
+        </Flex>
       </Flex>
       <Divider />
     </Box>

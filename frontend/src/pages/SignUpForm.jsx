@@ -37,8 +37,8 @@ export default function SignUpForm() {
       return errors;
     },
     onSubmit: async (values) => {
-      dispatch(UserOperations.register(values));
-      // navigate('/tasks');
+      await dispatch(UserOperations.register(values)).unwrap();
+      navigate('/tasks');
     },
   });
 

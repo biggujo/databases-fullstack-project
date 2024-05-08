@@ -5,9 +5,11 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import UserOperations from '../redux/auth/operations.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignInForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -27,8 +29,9 @@ export default function SignInForm() {
       }
       return errors;
     },
-    onSubmit: (values) => {
-      dispatch(UserOperations.login(values));
+    onSubmit: async (values) => {
+      await dispatch(UserOperations.login(values)).unwrap();
+      navigate('/tasks');
     },
   });
 
