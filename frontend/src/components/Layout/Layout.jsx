@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import {
-  Container, Divider, Text, Link, Flex, Image, Button, Box,
+  Divider, Text, Link, Flex, Image, Button, Box,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink, Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectAuthIsLoggedIn, selectAuthUser,
+} from '../../redux/auth/selectors.js';
+import { Toaster } from 'react-hot-toast';
+import UserOperations from '../../redux/auth/operations.js';
 
 function Header() {
+  const dispatch = useDispatch();
+  const { username } = useSelector(selectAuthUser);
+  const isLoggedIn = useSelector(selectAuthIsLoggedIn);
+
   const [isHomeHovered, setIsHomeHovered] = useState(false);
-  const [isSignUpHovered, setIsSignUpHovered] = useState(false);
-  const [isSignInHovered, setIsSignInHovered] = useState(false);
   const [isTasksHovered, setIsTasksHovered] = useState(false);
   const [isAboutHovered, setIsAboutHovered] = useState(false);
 
   return (<header style={{
     width: '100%',
-    backgroundColor: '#f0f0f0',
     padding: '10px 0',
     backgroundColor: '#f5f0ff',
   }}>
@@ -75,33 +82,53 @@ function Header() {
           >
             About
           </Link>
-          <Button
-            as={ReactRouterLink}
-            to="/signup"
-            marginRight="10px"
-            backgroundColor={'purple.500'}
-            color={'white'}
-            _hover={{
-              textDecoration: 'none',
-              transform: 'scale(1.05)',
-            }}
-            transition="transform 0.3s ease-in-out"
-          >
-            Sign Up
-          </Button>
-          <Button
-            as={ReactRouterLink}
-            to="/signin"
-            backgroundColor={'purple.500'}
-            color={'white'}
-            _hover={{
-              textDecoration: 'none',
-              transform: 'scale(1.05)',
-            }}
-            transition="transform 0.3s ease-in-out"
-          >
-            Sign In
-          </Button>
+          {isLoggedIn && <>
+            <Flex>
+              <p>Hello, {username}</p>
+              <Button
+                marginRight="10px"
+                backgroundColor={'purple.500'}
+                color={'white'}
+                _hover={{
+                  textDecoration: 'none',
+                  transform: 'scale(1.05)',
+                }}
+                transition="transform 0.3s ease-in-out"
+                onClick={() => dispatch(UserOperations.logout())}
+              >
+                Log out
+              </Button>
+            </Flex>
+          </>}
+          {!isLoggedIn && <>
+            <Button
+              as={ReactRouterLink}
+              to="/signup"
+              marginRight="10px"
+              backgroundColor={'purple.500'}
+              color={'white'}
+              _hover={{
+                textDecoration: 'none',
+                transform: 'scale(1.05)',
+              }}
+              transition="transform 0.3s ease-in-out"
+            >
+              Sign Up
+            </Button>
+            <Button
+              as={ReactRouterLink}
+              to="/signin"
+              backgroundColor={'purple.500'}
+              color={'white'}
+              _hover={{
+                textDecoration: 'none',
+                transform: 'scale(1.05)',
+              }}
+              transition="transform 0.3s ease-in-out"
+            >
+              Sign In
+            </Button>
+          </>}
         </nav>
       </Flex>
       <Divider />
@@ -110,7 +137,9 @@ function Header() {
 }
 
 export default function Layout() {
-  return (<>
+  return (<Box bg={'gray.50'} style={{
+    minHeight: '100vh',
+  }}>
     <Header />
     <Box style={{
       marginInline: 'auto',
@@ -124,5 +153,6 @@ export default function Layout() {
         <Text>Footer</Text>
       </footer>
     </Box>
-  </>);
+    <Toaster position={'top-right'} />
+  </Box>);
 }

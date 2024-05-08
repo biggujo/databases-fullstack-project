@@ -20,4 +20,4 @@ def validate_user_schema(func):
             raise e
 
     wrapper.__name__ = func.__name__
-    return wrapper
+    return func

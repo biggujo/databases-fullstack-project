@@ -26,6 +26,8 @@ def create():
     db.session.add(new_user)
     db.session.commit()
 
+    session['is_logged_in'] = True
+    session['id'] = new_user.id
     return new_user.serialize, 201
 
 
@@ -33,8 +35,8 @@ def create():
 def login():
     body = request.json
 
-    username = body['username']
-    password = body['password']
+    username = body.get('username')
+    password = body.get('password')
 
     user = User.query.filter_by(username=username).first()
 
@@ -48,15 +50,17 @@ def login():
     if not user.check_password(password):
         return auth_error
 
-    session['logged_in'] = True
-    return user.serialize
+    session['is_logged_in'] = True
+    session['id'] = user.id
+    return user.serialize, 200
 
 
 def logout():
-    if 'logged_in' not in session:
+    if 'is_logged_in' not in session:
         return {
             "message": "Already logged out"
         }, 400
 
-    session.pop('logged_in')
+    session.pop('is_logged_in')
+    session.pop('id')
     return {}, 204
