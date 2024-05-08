@@ -1,6 +1,6 @@
 import os
 
-SECRET_KEY = os.urandom(32)
+SECRET_KEY = "lKPNMtmxzvNdeOpBOaECbkiR"
 
 SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@db:3306/mydatabase'
 

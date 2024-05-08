@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import UserOperations from '../auth/operations.js';
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -19,6 +20,10 @@ const tasksSlice = createSlice({
         isCompleted: !task.isCompleted,
       } : task);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+    .addCase(UserOperations.logout.fulfilled, (state) => []);
   },
 });
 

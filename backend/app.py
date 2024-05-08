@@ -1,17 +1,28 @@
+from flask import session
 from flask_cors import CORS
 from routes import user_route
 from helpers.main import app, db
 from database.config import init_db_connection
 from decorators.error_handlers import create_error_handlers
+from decorators.authorize_user import authorize_user
 
 # Decorators
-CORS(app)
-create_error_handlers(app)
+CORS(app, supports_credentials=True)
 
 init_db_connection()
+create_error_handlers(app)
 
 # Routers
 app.register_blueprint(user_route.blueprint, url_prefix='/api/users')
+
+
+@app.route('/')
+@authorize_user
+def test():
+    return {
+        "current_user": (session.get("id"))
+    }
+
 
 if __name__ == "__main__":
     with app.app_context():
