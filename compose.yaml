@@ -1,3 +1,4 @@
+
 version: "3.8"
 name: "databases-fullstack"
 services:
@@ -17,6 +18,8 @@ services:
       - "6001:6001"
     volumes:
       - "./backend:/app"
+    depends_on:
+      - db
   frontend:
     build: "frontend"
     restart: unless-stopped
@@ -25,3 +28,5 @@ services:
     volumes:
       - "./frontend:/app"
       - "/app/node_modules"
+    depends_on:
+      - backend
