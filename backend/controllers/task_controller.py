@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from models.task_model import Task
 from helpers.main import db
 from schemas.task_schemas import validate_task
@@ -8,6 +10,8 @@ from decorators.authorize_user import authorize_user
 
 def index():
     user_id = session.get("id")
+    if user_id is None:
+        return 401
     return jsonify(json_list=[i.serialize for i in Task.query.filter_by(user_id=user_id).all()])
 
 
@@ -36,9 +40,13 @@ def update(id):
     if task is None:
         return {'message': 'Task not found'}, 404
 
-    task.name = body.get('name')
-    task.description = body.get('description')
-    task.isDone = body.get('isDone')
+    if 'name' in body:
+        task.name = body.get('name')
+    if 'description' in body:
+        task.description = body.get('description')
+    if 'isDone' in body:
+        task.isDone = body.get('isDone')
+    task.updated_at = datetime.now(tz=None)
     db.session.commit()
 
     return task.serialize, 200
