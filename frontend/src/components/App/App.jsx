@@ -4,6 +4,8 @@ import Layout from '../Layout/index.js';
 import SignInForm from '../../pages/SignInForm.jsx';
 import SignUpForm from '../../pages/SignUpForm.jsx';
 import TasksPage from '../../pages/TasksPage.jsx';
+import Groups from '../../pages/Groups.jsx';
+import MyGroups from '../../pages/MyGroups.jsx'
 import { useEffect } from 'react';
 import API from '../../utils/api.js';
 import PrivateRoute from '../PrivateRoute/index.js';
@@ -19,6 +21,10 @@ function App() {
       <Route path={'signin'} element={<ProtectedRoute component={<SignInForm />}
                                                       redirectTo={'/'} />} />
       <Route path={'signup'} element={<ProtectedRoute component={<SignUpForm />}
+                                                      redirectTo={'/'} />} />
+      <Route path={'groups'} element={<ProtectedRoute component={<Groups />}
+                                                      redirectTo={'/'} />} />
+      <Route path={'my-groups'} element={<ProtectedRoute component={<MyGroups />}
                                                       redirectTo={'/'} />} />
     </Route>
   </Routes>);
