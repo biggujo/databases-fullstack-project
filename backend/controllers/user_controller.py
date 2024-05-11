@@ -1,4 +1,4 @@
-from models.user_model import User
+from    models.user_model import User
 from helpers.main import db
 from schemas.user_schemas import validate_user_schema
 from flask import request, session, jsonify
