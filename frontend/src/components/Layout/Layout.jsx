@@ -23,6 +23,7 @@ function Header() {
   return (<header style={{
     width: '100%',
     padding: '10px 0',
+    marginBottom: '2rem',
     backgroundColor: '#f5f0ff',
   }}>
     <Box style={{

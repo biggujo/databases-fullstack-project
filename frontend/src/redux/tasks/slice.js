@@ -1,36 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 import UserOperations from '../auth/operations.js';
+import { TasksOperations } from './operations.js';
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState: [],
-  reducers: {
-    addTask: (state, action) => {
-      return [
-        ...state,
-        action.payload,
-      ];
-    },
-    deleteTaskById: (state, action) => {
-      return state.filter(({ id }) => action.payload !== id);
-    },
-    toggleCompletedById: (state, action) => {
-      return state.map((task) => action.payload === task.id ? {
-        ...task,
-        isCompleted: !task.isCompleted,
-      } : task);
-    },
-  },
   extraReducers: (builder) => {
     builder
-    .addCase(UserOperations.logout.fulfilled, (state) => []);
+    .addCase(
+      TasksOperations.fetchAllTasks.fulfilled,
+      (state, action) => action.payload,
+    )
+    .addCase(TasksOperations.toggleCompletedById.fulfilled, (state, action) => {
+      const indexToToggle = state.findIndex(({ id }) => id === action.payload.id);
+
+      if (indexToToggle === -1) {
+        return indexToToggle;
+      }
+
+      const updatedState = [...state];
+      updatedState[indexToToggle] = action.payload;
+
+      return updatedState;
+    })
+    .addCase(UserOperations.logout.fulfilled, () => []);
   },
 });
-
-export const {
-  addTask,
-  deleteTaskById,
-  toggleCompletedById,
-} = tasksSlice.actions;
 
 export const tasksReducer = tasksSlice.reducer;

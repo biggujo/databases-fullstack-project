@@ -1,28 +1,26 @@
 import React from 'react';
 import {
-  Box, Button, Checkbox, Flex, IconButton, Text,
+  Checkbox, Flex, IconButton, Text,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import {
-  deleteTaskById, toggleCompletedById,
-} from '../../redux/tasks/slice.js';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { TasksOperations } from '../../redux/tasks/operations.js';
 
 export default function TaskItem({
   id,
-  text,
-  isCompleted,
+  name,
+  isDone,
 }) {
   const dispatch = useDispatch();
 
-  return (<Flex gap={2} justify={'space-between'}>
-    <Flex>
+  return (<Flex gap={4} padding={2} justify={'space-between'}>
+    <Flex gap={4}>
       <Checkbox colorScheme={'teal'}
-                checked={isCompleted}
-                onChange={() => dispatch(toggleCompletedById(id))}>
+                isChecked={isDone}
+                onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
-      <Text
-        textDecoration={isCompleted ? 'line-through' : 'none'}>{text}</Text>
+      <Text fontSize={'xl'}
+            textDecoration={isDone ? 'line-through' : 'none'}>{name}</Text>
     </Flex>
     <IconButton aria-label={'Delete the task'}
                 size={'xs'}
@@ -32,7 +30,7 @@ export default function TaskItem({
                 _hover={{
                   borderColor: 'red',
                 }}
-                onClick={() => dispatch(deleteTaskById(id))}
+      // onClick={() => dispatch(deleteTaskById(id))}
     />
   </Flex>);
 }
