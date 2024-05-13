@@ -6,6 +6,7 @@ import App from './components/App';
 import store, { persistor } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import './styles/main.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode>
   <BrowserRouter>

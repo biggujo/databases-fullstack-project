@@ -7,6 +7,12 @@ const tasksSlice = createSlice({
   initialState: [],
   extraReducers: (builder) => {
     builder
+    .addCase(TasksOperations.addTask.fulfilled,
+      (state, action) => [
+        ...state,
+        action.payload,
+      ],
+    )
     .addCase(
       TasksOperations.fetchAllTasks.fulfilled,
       (state, action) => action.payload,

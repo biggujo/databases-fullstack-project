@@ -24,7 +24,19 @@ const toggleCompletedById = createAsyncThunk('tasks/toggleCompleted',
   },
 );
 
+const addTask = createAsyncThunk('tasks/addTask',
+  async (data, { rejectWithValue }) => {
+    try {
+      return await API.tasks.addTask(data);
+    } catch (e) {
+      toast.error(e.response.data.message);
+      return rejectWithValue(e);
+    }
+  },
+);
+
 export const TasksOperations = {
   fetchAllTasks,
   toggleCompletedById,
+  addTask,
 };

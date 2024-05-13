@@ -9,7 +9,7 @@ const login = async ({
   username,
   password,
 }) => {
-  const response = await axios.post('/users/login', {
+  const response = await axios.post('/users/login/', {
     username,
     password,
   });
@@ -21,7 +21,7 @@ const register = async ({
   username,
   password,
 }) => {
-  const response = await axios.post('/users/create', {
+  const response = await axios.post('/users/create/', {
     username,
     password,
   });
@@ -29,10 +29,10 @@ const register = async ({
   return response.data;
 };
 
-const logout = async () => await axios.delete('/users/logout');
+const logout = async () => await axios.delete('/users/logout/');
 
 const fetchAllTasks = async () => {
-  const response = await axios.get('/tasks');
+  const response = await axios.get('/tasks/');
 
   const data = response.data.json_list;
 
@@ -41,11 +41,18 @@ const fetchAllTasks = async () => {
 
 const toggleCompletedById = async (id) => {
   // Not good way to do two tasks, but the backend doesn't have a method to toggle completion
-  const actualTask = await axios.get(`/tasks/${id}`);
+  const actualTask = await axios.get(`/tasks/${id}/`);
 
-  const response = await axios.put(`/tasks/${id}`, {
+  const response = await axios.put(`/tasks/${id}/`, {
     isDone: !actualTask.data.isDone,
   });
+
+  return response.data;
+};
+
+// data = { name, description, isDone, deadline }
+const addTask = async (data) => {
+  const response = await axios.post('/tasks/', data);
 
   return response.data;
 };
@@ -59,6 +66,7 @@ const API = {
   tasks: {
     fetchAllTasks,
     toggleCompletedById,
+    addTask,
   },
 };
 
