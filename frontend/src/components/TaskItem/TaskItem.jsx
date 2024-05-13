@@ -25,11 +25,11 @@ export default function TaskItem({
       </Checkbox>
       <Text fontSize={'xl'}
             textDecoration={isDone ? 'line-through' : 'none'}>
-        <div>
+        <span>
           {name} (Desc.: {description}).
           Deadline: {`${deadlineDate.toLocaleDateString('uk-UA')} at ${deadlineDate.toLocaleTimeString(
           'uk-UA')}`}
-        </div>
+        </span>
       </Text>
     </Flex>
     <IconButton aria-label={'Delete the task'}

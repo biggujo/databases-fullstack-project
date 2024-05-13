@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { TasksOperations } from '../src/redux/tasks/operations.js';
+import { format } from 'date-fns';
 
 const useTaskAddForm = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const useTaskAddForm = () => {
   const handleSubmit = (values, formikHelpers) => {
     const taskToBeCreated = {
       ...values,
-      deadline: '2024-05-15 12:00',
+      deadline: format(new Date(), 'yyyy-MM-dd HH:mm'),
       isDone: false,
     };
 
