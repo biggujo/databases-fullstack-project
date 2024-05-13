@@ -35,8 +35,24 @@ const addTask = createAsyncThunk('tasks/addTask',
   },
 );
 
+const deleteById = createAsyncThunk('tasks/deleteById',
+  async (id, { rejectWithValue }) => {
+    try {
+      await API.tasks.deleteById(id);
+
+      return {
+        id,
+      };
+    } catch (e) {
+      toast.error(e.response.data.message);
+      return rejectWithValue(e);
+    }
+  },
+);
+
 export const TasksOperations = {
   fetchAllTasks,
   toggleCompletedById,
   addTask,
+  deleteById,
 };

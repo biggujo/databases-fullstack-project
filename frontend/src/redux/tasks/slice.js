@@ -7,16 +7,14 @@ const tasksSlice = createSlice({
   initialState: [],
   extraReducers: (builder) => {
     builder
-    .addCase(TasksOperations.addTask.fulfilled,
-      (state, action) => [
-        ...state,
-        action.payload,
-      ],
-    )
     .addCase(
       TasksOperations.fetchAllTasks.fulfilled,
       (state, action) => action.payload,
     )
+    .addCase(TasksOperations.addTask.fulfilled, (state, action) => [
+      ...state,
+      action.payload,
+    ])
     .addCase(TasksOperations.toggleCompletedById.fulfilled, (state, action) => {
       const indexToToggle = state.findIndex(({ id }) => id === action.payload.id);
 
@@ -26,6 +24,18 @@ const tasksSlice = createSlice({
 
       const updatedState = [...state];
       updatedState[indexToToggle] = action.payload;
+
+      return updatedState;
+    })
+    .addCase(TasksOperations.deleteById.fulfilled, (state, action) => {
+      const indexToDelete = state.findIndex(({ id }) => id === action.payload.id);
+
+      if (indexToDelete === -1) {
+        return null;
+      }
+
+      const updatedState = [...state];
+      updatedState.splice(indexToDelete, 1);
 
       return updatedState;
     })

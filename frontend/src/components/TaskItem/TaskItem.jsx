@@ -9,9 +9,13 @@ import { TasksOperations } from '../../redux/tasks/operations.js';
 export default function TaskItem({
   id,
   name,
+  description,
   isDone,
+  deadline,
 }) {
   const dispatch = useDispatch();
+
+  const deadlineDate = new Date(deadline);
 
   return (<Flex gap={4} padding={2} justify={'space-between'}>
     <Flex gap={4}>
@@ -20,7 +24,13 @@ export default function TaskItem({
                 onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
       <Text fontSize={'xl'}
-            textDecoration={isDone ? 'line-through' : 'none'}>{name}</Text>
+            textDecoration={isDone ? 'line-through' : 'none'}>
+        <div>
+          {name} (Desc.: {description}).
+          Deadline: {`${deadlineDate.toLocaleDateString('uk-UA')} at ${deadlineDate.toLocaleTimeString(
+          'uk-UA')}`}
+        </div>
+      </Text>
     </Flex>
     <IconButton aria-label={'Delete the task'}
                 size={'xs'}
@@ -30,7 +40,7 @@ export default function TaskItem({
                 _hover={{
                   borderColor: 'red',
                 }}
-      // onClick={() => dispatch(deleteTaskById(id))}
+                onClick={() => dispatch(TasksOperations.deleteById(id))}
     />
   </Flex>);
 }
