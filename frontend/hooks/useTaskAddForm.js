@@ -29,8 +29,8 @@ const useTaskAddForm = () => {
     .unwrap()
     .then(() => formikHelpers.resetForm({
       values: {
-        name: '',
-        description: '',
+        ...initialValues,
+        deadline: values.deadline,
       },
     }));
   };
