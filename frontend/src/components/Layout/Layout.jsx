@@ -143,8 +143,7 @@ function Header() {
 }
 
 export default function Layout() {
-  return (
-    <Box
+  return (<Box
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -155,6 +154,7 @@ export default function Layout() {
       <Box
         style={{
           marginInline: 'auto',
+          paddingBottom: '96px',
           width: '960px',
           flex: '1',
         }}
@@ -163,32 +163,40 @@ export default function Layout() {
           <Outlet />
         </main>
       </Box>
-	<footer style={{ marginTop: '30px', paddingLeft: '45px', paddingRight: '45px', paddingBottom: '30px', paddingTop: '30px', backgroundColor: '#f5f0ff', border: '1px solid #e2d9ff', borderRadius: '5px' }}>
-  	<Divider />
-  	<Flex
-    	justify="flex-start"
-    	align="flex-start"
-    	flexDirection="column"
-  	>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/">Home Page</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/groups">All Groups</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/about">About</Link>
-    	</Text>
-    	<Text marginTop="30px">(c) Databases Project</Text>
-  	</Flex>
-	</footer>
+      <footer style={{
+        marginTop: '30px',
+        paddingLeft: '45px',
+        paddingRight: '45px',
+        paddingBottom: '30px',
+        paddingTop: '30px',
+        backgroundColor: '#f5f0ff',
+        border: '1px solid #e2d9ff',
+        borderRadius: '5px',
+      }}>
+        <Divider />
+        <Flex
+          justify="flex-start"
+          align="flex-start"
+          flexDirection="column"
+        >
+          <Text>
+            <Link as={ReactRouterLink} to="/">Home Page</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/groups">All Groups</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/about">About</Link>
+          </Text>
+          <Text marginTop="30px">(c) Databases Project</Text>
+        </Flex>
+      </footer>
       <Toaster position={'top-right'} />
-    </Box>
-  );
+    </Box>);
 }
