@@ -5,6 +5,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { TasksOperations } from '../../redux/tasks/operations.js';
+import { format } from 'date-fns';
 
 export default function TaskItem({
   id,
@@ -16,6 +17,9 @@ export default function TaskItem({
   const dispatch = useDispatch();
 
   const deadlineDate = new Date(deadline);
+  const cutDescription = description.length > 16 ? `${description.slice(0,
+    16,
+  )}...` : description;
 
   return (<Flex gap={4} padding={2} justify={'space-between'} maxWidth={'100%'}>
     <Flex gap={4} flexGrow={1} width={'100%'} cursor={'pointer'}>
@@ -24,12 +28,19 @@ export default function TaskItem({
                 onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
       <Flex fontSize={'xl'}
-            textDecoration={isDone ? 'line-through' : 'none'}
+            color={isDone && 'gray'}
+            position={'relative'}
+            className={isDone && 'completed'}
             justifyContent={'space-between'} width={'100%'}
             onClick={() => dispatch(TasksOperations.toggleCompletedById(id))}>
-        <Text>{name} (Desc.: {description})</Text>
-        <Text>Due {`${deadlineDate.toLocaleDateString('uk-UA')} at ${deadlineDate.toLocaleTimeString(
-          'uk-UA')}`}</Text>
+        <Flex gap={2}>
+          <Text>{name}</Text>
+          {cutDescription && <Text color={'gray'}>({cutDescription})</Text>}
+        </Flex>
+        <Text>Due {`${format(deadlineDate, 'dd.MM.yyyy')} at ${format(
+          deadlineDate,
+          'HH:mm',
+        )}`}</Text>
       </Flex>
     </Flex>
     <IconButton aria-label={'Edit the task'}
