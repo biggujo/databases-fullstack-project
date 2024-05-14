@@ -143,22 +143,52 @@ function Header() {
 }
 
 export default function Layout() {
-  return (<Box bg={'gray.50'} style={{
-    minHeight: '100vh',
-  }}>
-    <Header />
-    <Box style={{
-      marginInline: 'auto',
-      width: '960px',
-    }}>
-      <main>
-        <Outlet />
-      </main>
-      <footer>
-        <Divider />
-        <Text>Footer</Text>
-      </footer>
+  return (
+    <Box
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Header />
+      <Box
+        style={{
+          marginInline: 'auto',
+          width: '960px',
+          flex: '1',
+        }}
+      >
+        <main>
+          <Outlet />
+        </main>
+      </Box>
+	<footer style={{ marginTop: '30px', paddingLeft: '45px', paddingRight: '45px', paddingBottom: '30px', paddingTop: '30px', backgroundColor: '#f5f0ff', border: '1px solid #e2d9ff', borderRadius: '5px' }}>
+  	<Divider />
+  	<Flex
+    	justify="flex-start"
+    	align="flex-start"
+    	flexDirection="column"
+  	>
+    	<Text>
+      	<Link as={ReactRouterLink} to="/">Home Page</Link>
+    	</Text>
+    	<Text>
+      	<Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
+    	</Text>
+    	<Text>
+      	<Link as={ReactRouterLink} to="/groups">All Groups</Link>
+    	</Text>
+    	<Text>
+      	<Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
+    	</Text>
+    	<Text>
+      	<Link as={ReactRouterLink} to="/about">About</Link>
+    	</Text>
+    	<Text marginTop="30px">(c) Databases Project</Text>
+  	</Flex>
+	</footer>
+      <Toaster position={'top-right'} />
     </Box>
-    <Toaster position={'top-right'} />
-  </Box>);
+  );
 }
