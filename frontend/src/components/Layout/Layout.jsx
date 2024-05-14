@@ -28,7 +28,7 @@ function Header() {
   }}>
     <Box style={{
       marginInline: 'auto',
-      width: '720px',
+      width: '960px',
     }}>
       <Flex justify="space-between" align="center">
         <Flex align="center">
@@ -148,7 +148,7 @@ export default function Layout() {
     <Header />
     <Box style={{
       marginInline: 'auto',
-      width: '720px',
+      width: '960px',
     }}>
       <main>
         <Outlet />

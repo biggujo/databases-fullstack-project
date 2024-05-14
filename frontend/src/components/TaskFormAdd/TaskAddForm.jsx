@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useTaskAddForm from '../../../hooks/index.js';
 import { FormikProvider } from 'formik';
 import {
-  Button, Flex, FormControl, FormHelperText, FormLabel, Input, Text, Textarea,
+  Button, Flex, FormControl, FormLabel, Input, Text, Textarea,
 } from '@chakra-ui/react';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import DatePicker from '../DatePicker/';
+import { format } from 'date-fns';
+import DateFormatters from '../../utils/date-format.js';
 
 export default function TaskAddForm() {
   const formik = useTaskAddForm();
-  const [startDate, setStartDate] = useState(new Date());
 
   return (<FormikProvider value={formik}>
     <Flex as={'form'}
@@ -33,6 +34,7 @@ export default function TaskAddForm() {
           type="text"
           size={'lg'}
           placeholder="Buy groceries"
+          autoComplete={'off'}
           isRequired
           value={formik.values.name}
           onChange={formik.handleChange}
@@ -67,16 +69,12 @@ export default function TaskAddForm() {
         </FormLabel>
         <DatePicker
           name={'deadline'}
-          selected={startDate}
           {...formik.getFieldProps('deadline')}
           timeInputLabel="Time:"
-          dateFormat="yyyy-MM-dd hh:mm"
+          dateFormat={DateFormatters.DATE_FORMAT}
           showTimeInput
           wrapperClassName="date-picker"
-          autocomplete={'off'}
-          onKeyDown={(event) => {
-            event.preventDefault();
-          }}
+          autoComplete="off"
         />
         {formik.errors.deadline && formik.touched.deadline ? (
           <Text color={'red'}>{formik.errors.deadline}</Text>) : null}

@@ -3,7 +3,7 @@ import {
   Checkbox, Flex, IconButton, Text,
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { TasksOperations } from '../../redux/tasks/operations.js';
 
 export default function TaskItem({
@@ -17,28 +17,35 @@ export default function TaskItem({
 
   const deadlineDate = new Date(deadline);
 
-  return (<Flex gap={4} padding={2} justify={'space-between'}>
-    <Flex gap={4}>
+  return (<Flex gap={4} padding={2} justify={'space-between'} maxWidth={'100%'}>
+    <Flex gap={4} flexGrow={1} width={'100%'} cursor={'pointer'}>
       <Checkbox colorScheme={'teal'}
                 isChecked={isDone}
                 onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
-      <Text fontSize={'xl'}
-            textDecoration={isDone ? 'line-through' : 'none'}>
-        <span>
-          {name} (Desc.: {description}).
-          Deadline: {`${deadlineDate.toLocaleDateString('uk-UA')} at ${deadlineDate.toLocaleTimeString(
-          'uk-UA')}`}
-        </span>
-      </Text>
+      <Flex fontSize={'xl'}
+            textDecoration={isDone ? 'line-through' : 'none'}
+            justifyContent={'space-between'} width={'100%'}
+            onClick={() => dispatch(TasksOperations.toggleCompletedById(id))}>
+        <Text>{name} (Desc.: {description})</Text>
+        <Text>Due {`${deadlineDate.toLocaleDateString('uk-UA')} at ${deadlineDate.toLocaleTimeString(
+          'uk-UA')}`}</Text>
+      </Flex>
     </Flex>
-    <IconButton aria-label={'Delete the task'}
-                size={'xs'}
-                border="2px solid gray"
-                icon={<DeleteIcon color={'gray'} />}
-                colorScheme={'white'}
+    <IconButton aria-label={'Edit the task'}
+                size={'sm'}
+                border="1px solid lightgray"
+                icon={<EditIcon color={'orange'} />}
                 _hover={{
-                  borderColor: 'red',
+                  borderColor: 'orange',
+                }}
+    />
+    <IconButton aria-label={'Delete the task'}
+                size={'sm'}
+                border="1px solid lightgray"
+                icon={<DeleteIcon color={'lightcoral'} />}
+                _hover={{
+                  borderColor: 'lightcoral',
                 }}
                 onClick={() => dispatch(TasksOperations.deleteById(id))}
     />

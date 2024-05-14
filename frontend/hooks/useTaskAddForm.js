@@ -2,7 +2,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { TasksOperations } from '../src/redux/tasks/operations.js';
-import { format } from 'date-fns';
+import { format, subHours } from 'date-fns';
+import DateFormatters from '../src/utils/date-format.js';
 
 const useTaskAddForm = () => {
   const dispatch = useDispatch();
@@ -10,19 +11,28 @@ const useTaskAddForm = () => {
   const initialValues = {
     name: '',
     description: '',
-    deadline: '',
+    deadline: DateFormatters.formatWithDefault(new Date()),
   };
 
   const handleSubmit = (values, formikHelpers) => {
+    const formattedDeadline = DateFormatters.formatWithDefault(subHours(values.deadline,
+      3,
+    ));
+
     const taskToBeCreated = {
       ...values,
-      deadline: format(new Date(), 'yyyy-MM-dd HH:mm'),
+      deadline: formattedDeadline,
       isDone: false,
     };
 
     dispatch(TasksOperations.addTask(taskToBeCreated))
     .unwrap()
-    .then(() => formikHelpers.resetForm());
+    .then(() => formikHelpers.resetForm({
+      values: {
+        name: '',
+        description: '',
+      },
+    }));
   };
 
   const validationSchema = Yup.object({
