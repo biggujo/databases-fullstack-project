@@ -20,73 +20,113 @@ function Header() {
   const [isTasksHovered, setIsTasksHovered] = useState(false);
   const [isAboutHovered, setIsAboutHovered] = useState(false);
 
-  return (<header style={{
-    width: '100%',
-    padding: '10px 0',
-    backgroundColor: '#f5f0ff',
-  }}>
-    <Box style={{
-      marginInline: 'auto',
-      width: '720px',
+  return (
+    <header style={{
+      width: '100%',
+      padding: '10px 0',
+      backgroundColor: '#f5f0ff',
     }}>
-      <Flex justify="space-between" align="center">
-        <Flex align="center">
-          <Link
-            as={ReactRouterLink}
-            to="/"
-            _hover={{ textDecoration: 'none' }}
-            onMouseEnter={() => setIsHomeHovered(true)}
-            onMouseLeave={() => setIsHomeHovered(false)}
-            transition="transform 0.3s ease-in-out"
-            style={{ transform: isHomeHovered ? 'scale(1.1)' : 'scale(1)' }}
-          >
-            <Image src="img\home-icon.svg" alt="Home Icon"
-                   marginRight="10px" />
-          </Link>
-          <Text fontSize="2xl" fontWeight="bold" marginRight="10px">Databases
-            Project</Text>
-        </Flex>
-        <Flex as={'nav'} align="center" gap={2}>
-          <Link
-            as={ReactRouterLink}
-            to="/tasks"
-            marginRight="10px"
-            _hover={{
-              textDecoration: 'none',
-              backgroundColor: isTasksHovered ? 'purple.200' : 'blue.500',
-              color: '#fff',
-            }}
-            fontSize="sm"
-            onMouseEnter={() => setIsTasksHovered(true)}
-            onMouseLeave={() => setIsTasksHovered(false)}
-            transition="background-color 0.3s ease-in-out"
-            borderRadius="md"
-            padding="0.5rem 1rem"
-          >
-            Tasks
-          </Link>
-          <Link
-            as={ReactRouterLink}
-            to="/about"
-            marginRight="10px"
-            _hover={{
-              textDecoration: 'none',
-              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
-              color: '#fff',
-            }}
-            fontSize="sm"
-            onMouseEnter={() => setIsAboutHovered(true)}
-            onMouseLeave={() => setIsAboutHovered(false)}
-            transition="background-color 0.3s ease-in-out"
-            borderRadius="md"
-            padding="0.5rem 1rem"
-          >
-            About
-          </Link>
-          {isLoggedIn && <>
-            <Flex alignItems={'center'} gap={2}>
-              <p>Hello, {username}</p>
+      <Box style={{
+        marginInline: 'auto',
+        width: '780px',
+      }}>
+        <Flex justify="space-between" align="center">
+          <Flex align="center">
+            <Link
+              as={ReactRouterLink}
+              to="/"
+              _hover={{ textDecoration: 'none' }}
+              onMouseEnter={() => setIsHomeHovered(true)}
+              onMouseLeave={() => setIsHomeHovered(false)}
+              transition="transform 0.3s ease-in-out"
+              style={{ transform: isHomeHovered ? 'scale(1.1)' : 'scale(1)' }}
+            >
+              <Image src="img\home-icon.svg" alt="Home Icon" marginRight="10px" />
+            </Link>
+            <Text fontSize="2xl" fontWeight="bold" marginRight="10px">Databases Project</Text>
+          </Flex>
+          <Flex as={'nav'} align="center" gap={2}>
+            <Link
+              as={ReactRouterLink}
+              to="/tasks"
+              marginRight="10px"
+              _hover={{
+                textDecoration: 'none',
+                backgroundColor: isTasksHovered ? 'purple.200' : 'blue.500',
+                color: '#fff',
+              }}
+              fontSize="sm"
+              onMouseEnter={() => setIsTasksHovered(true)}
+              onMouseLeave={() => setIsTasksHovered(false)}
+              transition="background-color 0.3s ease-in-out"
+              borderRadius="md"
+              padding="0.5rem 1rem"
+            >
+              Tasks
+            </Link>
+            <Link
+              as={ReactRouterLink}
+              to="/groups"
+              marginRight="10px"
+              _hover={{
+                textDecoration: 'none',
+                backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
+                color: '#fff',
+              }}
+              fontSize="sm"
+              onMouseEnter={() => setIsAboutHovered(true)}
+              onMouseLeave={() => setIsAboutHovered(false)}
+              transition="background-color 0.3s ease-in-out"
+              borderRadius="md"
+              padding="0.5rem 1rem"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              All Groups
+            </Link>
+            <Link
+              as={ReactRouterLink}
+              to="/my-groups"
+              marginRight="10px"
+              _hover={{
+                textDecoration: 'none',
+                backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
+                color: '#fff',
+              }}
+              fontSize="sm"
+              onMouseEnter={() => setIsAboutHovered(true)}
+              onMouseLeave={() => setIsAboutHovered(false)}
+              transition="background-color 0.3s ease-in-out"
+              borderRadius="md"
+              padding="0.5rem 1rem"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              My Groups
+            </Link>
+            {isLoggedIn && <>
+              <Flex alignItems={'center'} gap={2}>
+                <p>Hello, {username}</p>
+                <Button
+                  marginRight="10px"
+                  backgroundColor={'purple.500'}
+                  color={'white'}
+                  _hover={{
+                    textDecoration: 'none',
+                    transform: 'scale(1.05)',
+                  }}
+                  transition="transform 0.3s ease-in-out"
+                  onClick={async () => {
+                    await dispatch(UserOperations.logout()).unwrap();
+                    navigate('/');
+                  }}
+                >
+                  Log out
+                </Button>
+              </Flex>
+            </>}
+            {!isLoggedIn && <>
               <Button
+                as={ReactRouterLink}
+                to="/signup"
                 marginRight="10px"
                 backgroundColor={'purple.500'}
                 color={'white'}
@@ -95,49 +135,28 @@ function Header() {
                   transform: 'scale(1.05)',
                 }}
                 transition="transform 0.3s ease-in-out"
-                onClick={async () => {
-                  await dispatch(UserOperations.logout()).unwrap();
-                  navigate('/');
-                }}
               >
-                Log out
+                Sign Up
               </Button>
-            </Flex>
-          </>}
-          {!isLoggedIn && <>
-            <Button
-              as={ReactRouterLink}
-              to="/signup"
-              marginRight="10px"
-              backgroundColor={'purple.500'}
-              color={'white'}
-              _hover={{
-                textDecoration: 'none',
-                transform: 'scale(1.05)',
-              }}
-              transition="transform 0.3s ease-in-out"
-            >
-              Sign Up
-            </Button>
-            <Button
-              as={ReactRouterLink}
-              to="/signin"
-              backgroundColor={'purple.500'}
-              color={'white'}
-              _hover={{
-                textDecoration: 'none',
-                transform: 'scale(1.05)',
-              }}
-              transition="transform 0.3s ease-in-out"
-            >
-              Sign In
-            </Button>
-          </>}
+              <Button
+                as={ReactRouterLink}
+                to="/signin"
+                backgroundColor={'purple.500'}
+                color={'white'}
+                _hover={{
+                  textDecoration: 'none',
+                  transform: 'scale(1.05)',
+                }}
+                transition="transform 0.3s ease-in-out"
+              >
+                Sign In
+              </Button>
+            </>}
+          </Flex>
         </Flex>
-      </Flex>
-      <Divider />
-    </Box>
-  </header>);
+        <Divider />
+      </Box>
+    </header>);
 }
 
 export default function Layout() {
@@ -161,31 +180,28 @@ export default function Layout() {
           <Outlet />
         </main>
       </Box>
-	<footer style={{ marginTop: '30px', paddingLeft: '45px', paddingRight: '45px', paddingBottom: '30px', paddingTop: '30px', backgroundColor: '#f5f0ff', border: '1px solid #e2d9ff', borderRadius: '5px' }}>      
-  	<Divider />
-  	<Flex
-    	justify="flex-start"
-    	align="flex-start"
-    	flexDirection="column"
-  	>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/">Home Page</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/groups">All Groups</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
-    	</Text>
-    	<Text>
-      	<Link as={ReactRouterLink} to="/about">About</Link>
-    	</Text>
-    	<Text marginTop="30px">(c) Databases Project</Text>
-  	</Flex>
-	</footer>
+      <footer style={{ marginTop: '30px', paddingLeft: '45px', paddingRight: '45px', paddingBottom: '30px', paddingTop: '30px', backgroundColor: '#f5f0ff', border: '1px solid #e2d9ff', borderRadius: '5px' }}>
+        <Divider />
+        <Flex
+          justify="flex-start"
+          align="flex-start"
+          flexDirection="column"
+        >
+          <Text>
+            <Link as={ReactRouterLink} to="/">Home Page</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/groups">All Groups</Link>
+          </Text>
+          <Text>
+            <Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
+          </Text>
+          <Text marginTop="30px">(c) Databases Project</Text>
+        </Flex>
+      </footer>
       <Toaster position={'top-right'} />
     </Box>
   );
