@@ -57,6 +57,12 @@ const addTask = async (data) => {
   return response.data;
 };
 
+const updateById = async (id, data) => {
+  const response = await axios.put(`/tasks/${id}`, data);
+
+  return response.data;
+};
+
 const deleteById = async (id) => {
   const response = await axios.delete(`/tasks/${id}`);
 
@@ -73,6 +79,7 @@ const API = {
     fetchAllTasks,
     toggleCompletedById,
     addTask,
+    updateById,
     deleteById,
   },
 };

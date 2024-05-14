@@ -137,6 +137,7 @@ function Header() {
         </Flex>
       </Flex>
       <Divider />
+      <Toaster position={'top-right'} />
     </Box>
   </header>);
 }

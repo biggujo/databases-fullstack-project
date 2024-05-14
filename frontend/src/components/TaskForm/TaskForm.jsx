@@ -1,5 +1,4 @@
 import React from 'react';
-import useTaskAddForm from '../../../hooks/index.js';
 import { FormikProvider } from 'formik';
 import {
   Button, Flex, FormControl, FormLabel, Input, Text, Textarea,
@@ -8,12 +7,9 @@ import {
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import DatePicker from '../DatePicker/';
-import { format } from 'date-fns';
 import DateFormatters from '../../utils/date-format.js';
 
-export default function TaskAddForm() {
-  const formik = useTaskAddForm();
-
+export default function TaskForm({ formik }) {
   return (<FormikProvider value={formik}>
     <Flex as={'form'}
           gap={4}
