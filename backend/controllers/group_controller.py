@@ -110,21 +110,23 @@ def remove_user(id, userid):
 
 
 def tasks_index(id):
-    user_id = session.get("id")
-    if user_id is None:
-        return 401
-    return jsonify(json_list=[i.serialize for i in Task.query.filter_by(user_id=user_id, group_id=id).all()])
+    # user_id = session.get("id")
+    # if user_id is None:
+    #    return {'message': 'Unauthorized'}, 401
+    return jsonify(json_list=[i.serialize for i in Task.query.filter_by(group_id=id).all()])
 
 
 @validate_task
 def tasks_create(id):
     body = request.json
     user_id = session.get("id")
+    if user_id is None:
+        return {'message': 'Unauthorized'}, 401
 
     name = body.get('name')
     description = body.get('description')
 
-    deadline = body.get('deadline')
+    deadline = body.get('deadline', None)
     new_task = Task(name=name, description=description, user_id=user_id, group_id=id, deadline=deadline)
 
     db.session.add(new_task)

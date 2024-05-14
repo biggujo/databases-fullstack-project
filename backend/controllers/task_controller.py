@@ -11,7 +11,7 @@ from decorators.authorize_user import authorize_user
 def index():
     user_id = session.get("id")
     if user_id is None:
-        return 401
+        return {'message': 'Unauthorized'}, 401
     return jsonify(json_list=[i.serialize for i in Task.query.filter_by(user_id=user_id).all()])
 
 
@@ -25,7 +25,6 @@ def create():
 
     deadline = body.get('deadline')
     new_task = Task(name=name, description=description, user_id=user_id, group_id=None, deadline=deadline)
-
 
     db.session.add(new_task)
     db.session.commit()

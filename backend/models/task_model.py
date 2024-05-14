@@ -13,7 +13,7 @@ class Task(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None), onupdate=datetime.now(tz=None))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     isDone = db.Column(db.Boolean, nullable=False, default=False)
-    deadline = db.Column(db.DateTime, nullable=False, default=datetime)
+    deadline = db.Column(db.DateTime, nullable=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=True)
     group = db.relationship('Group', backref=db.backref('group_tasks', lazy='dynamic'))
 
@@ -29,5 +29,4 @@ class Task(db.Model):
             'isDone': self.isDone,
             'deadline': self.deadline
             # 'group_id': self.group_id
-            'isDone': self.isDone
         }

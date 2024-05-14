@@ -27,6 +27,6 @@ class Group(db.Model):
             'name': self.name,
             'users': [user.serialize for user in self.users] if self.users else [],
             # 'tasks': [task.serialize for task in self.tasks.all()] if self.tasks else [],
-            # 'created_at': self.created_at,
-            # 'updated_at': self.updated_at
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
