@@ -15,11 +15,23 @@ const tasksSlice = createSlice({
       ...state,
       action.payload,
     ])
+    .addCase(TasksOperations.updateById.fulfilled, (state, action) => {
+      const indexToUpdate = state.findIndex(({ id }) => id === action.payload.id);
+
+      if (indexToUpdate === -1) {
+        return state;
+      }
+
+      const updatedState = [...state];
+      updatedState[indexToUpdate] = action.payload;
+
+      return updatedState;
+    })
     .addCase(TasksOperations.toggleCompletedById.fulfilled, (state, action) => {
       const indexToToggle = state.findIndex(({ id }) => id === action.payload.id);
 
       if (indexToToggle === -1) {
-        return indexToToggle;
+        return state;
       }
 
       const updatedState = [...state];
@@ -31,7 +43,7 @@ const tasksSlice = createSlice({
       const indexToDelete = state.findIndex(({ id }) => id === action.payload.id);
 
       if (indexToDelete === -1) {
-        return null;
+        return state;
       }
 
       const updatedState = [...state];

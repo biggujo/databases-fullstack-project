@@ -9,7 +9,7 @@ const login = async ({
   username,
   password,
 }) => {
-  const response = await axios.post('/users/login/', {
+  const response = await axios.post('/users/login', {
     username,
     password,
   });
@@ -21,7 +21,7 @@ const register = async ({
   username,
   password,
 }) => {
-  const response = await axios.post('/users/create/', {
+  const response = await axios.post('/users/create', {
     username,
     password,
   });

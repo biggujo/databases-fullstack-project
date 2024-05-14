@@ -11,7 +11,9 @@ from decorators.authorize_user import authorize_user
 def index():
     user_id = session.get("id")
     if user_id is None:
-        return 401
+        return {
+            "message": "Unauthorized"
+        }, 401
     return jsonify(json_list=[i.serialize for i in Task.query.filter_by(user_id=user_id).all()])
 
 
@@ -37,7 +39,7 @@ def update(id):
     body = request.json
     user_id = session.get("id")
 
-    task = Task.query.filter_by(id=id, user_id=user_id).first()
+    task = Task.query.filter_by(id=id, user_id=int(user_id)).first()
     if task is None:
         return {'message': 'Task not found'}, 404
 
@@ -59,7 +61,7 @@ def update(id):
 def delete(id):
     user_id = session.get("id")
 
-    task = Task.query.filter_by(id=id, user_id=user_id).first()
+    task = Task.query.filter_by(id=id, user_id=int(user_id)).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -70,10 +72,11 @@ def delete(id):
     return {}, 204
 
 
+@authorize_user
 def get(id):
     user_id = session.get("id")
 
-    task = Task.query.filter_by(id=id, user_id=user_id).first()
+    task = Task.query.filter_by(id=id, user_id=int(user_id)).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404

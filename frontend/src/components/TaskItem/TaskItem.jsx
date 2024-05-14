@@ -34,8 +34,9 @@ export default function TaskItem({
   }, [latestUpdate]);
 
   const deadlineDate = new Date(deadline);
-  const cutDescription = description.length > 48 ? `${description.slice(0,
-    48,
+  const cutName = name.length > 13 ? `${name.slice(0, 13)}...` : name;
+  const cutDescription = description.length > 36 ? `${description.slice(0,
+    36,
   )}...` : description;
 
   const isExpiredInProgress = !isDone && isAfter(new Date(), deadlineDate);
@@ -60,18 +61,21 @@ export default function TaskItem({
       cursor={'pointer'}>
       <Checkbox
         height={'fit-content'}
-        pt={2}
+        px={2}
+        py={2}
         colorScheme={'teal'}
         isChecked={isDone}
         onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
-      <Flex fontSize={'xl'}
-            color={isDone && 'gray'}
-            position={'relative'}
-            className={isDone && 'completed'}
-            alignContent={isEdit && 'stretch'}
-            flexDirection={isEdit && 'column'}
-            justifyContent={'space-between'} width={'100%'}>
+      <Flex
+        onClick={!isEdit ? toggle : null}
+        fontSize={'xl'}
+        color={isDone && 'gray'}
+        position={'relative'}
+        className={isDone && 'completed'}
+        alignContent={isEdit && 'stretch'}
+        flexDirection={isEdit && 'column'}
+        justifyContent={'space-between'} width={'100%'}>
         {isEdit && <TaskFormUpdate initialValues={{
           id,
           name,
@@ -79,15 +83,13 @@ export default function TaskItem({
           deadline: DateFormatters.formatWithDefault(deadline),
         }} />}
         {!isEdit && <>
-          <Flex onClick={toggle}
-                gap={2}
+          <Flex gap={2}
                 direction={isOpen && 'column'}>
-            <Text fontWeight={'bold'}>{name}</Text>
-            <Box textAlign={'justify'}
-                 maxWidth={'500px'}>
+            <Text fontWeight={'bold'}>{isOpen ? name : cutName}</Text>
+            <Box maxWidth={'500px'}>
             <span>
               {isOpen && <>
-                <Text>{description}</Text>
+                <Text textAlign={'justify'}>{description}</Text>
               </>}
               {!isOpen && <Text color={'gray'}>({cutDescription})</Text>}
             </span>

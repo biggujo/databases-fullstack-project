@@ -44,13 +44,11 @@ const updateById = createAsyncThunk('tasks/updateById', async ({
   data,
 }, { rejectWithValue }) => {
   try {
-    await API.tasks.updateById(id, data);
+    const updatedTask = await API.tasks.updateById(id, data);
 
     toast.success('The task has been updated');
 
-    return {
-      id,
-    };
+    return updatedTask;
   } catch (e) {
     toast.error(e.response.data.message);
     return rejectWithValue(e);
