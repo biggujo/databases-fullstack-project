@@ -26,6 +26,7 @@ def create():
     deadline = body.get('deadline')
     new_task = Task(name=name, description=description, user_id=user_id, group_id=None, deadline=deadline)
 
+
     db.session.add(new_task)
     db.session.commit()
 
@@ -49,6 +50,7 @@ def update(id):
         task.isDone = body.get('isDone')
     if 'deadline' in body:
         task.deadline = body.get('deadline')
+
     task.updated_at = datetime.now(tz=None)
     db.session.commit()
 

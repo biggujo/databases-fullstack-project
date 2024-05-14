@@ -17,6 +17,7 @@ class Task(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'), nullable=True)
     group = db.relationship('Group', backref=db.backref('group_tasks', lazy='dynamic'))
 
+
     @property
     def serialize(self):
         return {
@@ -28,4 +29,5 @@ class Task(db.Model):
             'isDone': self.isDone,
             'deadline': self.deadline
             # 'group_id': self.group_id
+            'isDone': self.isDone
         }
