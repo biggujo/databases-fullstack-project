@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { AboutPage, HomePage } from '../../pages/index.js';
+import { HomePage } from '../../pages/index.js';
 import Layout from '../Layout/index.js';
 import SignInForm from '../../pages/SignInForm.jsx';
 import SignUpForm from '../../pages/SignUpForm.jsx';
@@ -15,7 +15,6 @@ function App() {
   return (<Routes>
     <Route path={'/'} element={<Layout />}>
       <Route index element={<HomePage />} />
-      <Route path={'about'} element={<AboutPage />} />
       <Route path={'tasks'} element={<PrivateRoute component={<TasksPage />}
                                                    redirectTo={'/signin'} />} />
       <Route path={'signin'} element={<ProtectedRoute component={<SignInForm />}
