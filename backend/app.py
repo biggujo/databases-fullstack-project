@@ -16,8 +16,9 @@ create_error_handlers(app)
 # Routers
 app.register_blueprint(user_route.blueprint, url_prefix='/api/users')
 app.register_blueprint(task_route.blueprint, url_prefix='/api/tasks')
-app.register_blueprint(group_route.blueprint, url_prefix='/api/groups')
 
+
+# app.register_blueprint(group_route.blueprint, url_prefix='/api/groups')
 
 
 @app.route('/')
