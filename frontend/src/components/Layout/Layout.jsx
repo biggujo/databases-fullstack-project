@@ -41,8 +41,7 @@ function Header() {
             transition="transform 0.3s ease-in-out"
             style={{ transform: isHomeHovered ? 'scale(1.1)' : 'scale(1)' }}
           >
-            <Image src="img\home-icon.svg" alt="Home Icon"
-                   marginRight="10px" />
+            <Image src="img\home-icon.svg" alt="Home Icon" marginRight="10px" />
           </Link>
           <Text fontSize="2xl" fontWeight="bold" marginRight="10px">Databases
             Project</Text>
@@ -68,7 +67,7 @@ function Header() {
           </Link>
           <Link
             as={ReactRouterLink}
-            to="/about"
+            to="/groups"
             marginRight="10px"
             _hover={{
               textDecoration: 'none',
@@ -81,8 +80,28 @@ function Header() {
             transition="background-color 0.3s ease-in-out"
             borderRadius="md"
             padding="0.5rem 1rem"
+            style={{ whiteSpace: 'nowrap' }}
           >
-            About
+            All Groups
+          </Link>
+          <Link
+            as={ReactRouterLink}
+            to="/my-groups"
+            marginRight="10px"
+            _hover={{
+              textDecoration: 'none',
+              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
+              color: '#fff',
+            }}
+            fontSize="sm"
+            onMouseEnter={() => setIsAboutHovered(true)}
+            onMouseLeave={() => setIsAboutHovered(false)}
+            transition="background-color 0.3s ease-in-out"
+            borderRadius="md"
+            padding="0.5rem 1rem"
+            style={{ whiteSpace: 'nowrap' }}
+          >
+            My Groups
           </Link>
           {isLoggedIn && <>
             <Flex alignItems={'center'} gap={2}>
@@ -144,13 +163,35 @@ function Header() {
 
 export default function Layout() {
   return (<Box
+    style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+  >
+    <Header />
+    <Box
       style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
+        marginInline: 'auto',
+        paddingBottom: '96px',
+        width: '960px',
+        flex: '1',
       }}
     >
-      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </Box>
+    <footer style={{
+      marginTop: '30px',
+      paddingLeft: '45px',
+      paddingRight: '45px',
+      paddingBottom: '30px',
+      paddingTop: '30px',
+      backgroundColor: '#f5f0ff',
+      border: '1px solid #e2d9ff',
+      borderRadius: '5px',
+    }}>
       <Box
         style={{
           marginInline: 'auto',
@@ -159,20 +200,6 @@ export default function Layout() {
           flex: '1',
         }}
       >
-        <main>
-          <Outlet />
-        </main>
-      </Box>
-      <footer style={{
-        marginTop: '30px',
-        paddingLeft: '45px',
-        paddingRight: '45px',
-        paddingBottom: '30px',
-        paddingTop: '30px',
-        backgroundColor: '#f5f0ff',
-        border: '1px solid #e2d9ff',
-        borderRadius: '5px',
-      }}>
         <Divider />
         <Flex
           justify="flex-start"
@@ -191,12 +218,10 @@ export default function Layout() {
           <Text>
             <Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
           </Text>
-          <Text>
-            <Link as={ReactRouterLink} to="/about">About</Link>
-          </Text>
           <Text marginTop="30px">(c) Databases Project</Text>
         </Flex>
-      </footer>
-      <Toaster position={'top-right'} />
-    </Box>);
+      </Box>
+    </footer>
+    <Toaster position={'top-right'} />
+  </Box>);
 }
