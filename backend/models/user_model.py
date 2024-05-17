@@ -11,7 +11,7 @@ class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username = db.Column(db.String(32), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
-    tasks: Mapped[List["TaskMeta"]] = db.relationship()
+    tasks_meta: Mapped[List["TaskMeta"]] = db.relationship()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -20,6 +20,10 @@ class Task(db.Model):
     def query_user_tasks():
         return Task.query.join(TaskMeta).filter_by(id=TaskMeta.task_id)
 
+    @staticmethod
+    def query_group_tasks(group_id):
+        return Task.query.join(TaskMeta).filter_by(group_id=group_id, id=TaskMeta.task_id)
+
     @property
     def serialize(self):
         return {

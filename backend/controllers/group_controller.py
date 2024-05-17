@@ -6,6 +6,7 @@ from helpers.main import db
 from schemas.group_schemas import validate_group
 from models.user_model import User
 from models.task_model import Task
+from models.task_meta_model import TaskMeta
 from controllers import task_controller
 from decorators.authorize_user import authorize_user
 
@@ -80,15 +81,13 @@ def add_user(id):
 
 
 @authorize_user
-def remove_user(id, userid):
+def remove_user(id):
+    user_id = session.get("id")
     group = Group.query.get(id)
+
     if group is None:
         return {'message': 'Group not found'}
-    user_id = session.get("id")
-    if user_id is None:
-        return {'message': 'User not exists???'}, 404
-    if user_id != userid:
-        return {'No, you can`t'}, 405
+
     user = User.query.get(user_id)
     group.users.remove(user)
     db.session.commit()
@@ -113,23 +112,29 @@ def tasks_index(id):
     # user_id = session.get("id")
     # if user_id is None:
     #    return {'message': 'Unauthorized'}, 401
-    return jsonify(json_list=[i.serialize for i in Task.query.filter_by(group_id=id).all()])
+    return jsonify(json_list=[i.serialize for i in Task.query_group_tasks(id).all()])
 
 
 @validate_task
 def tasks_create(id):
     body = request.json
     user_id = session.get("id")
+
     if user_id is None:
         return {'message': 'Unauthorized'}, 401
 
     name = body.get('name')
     description = body.get('description')
-
     deadline = body.get('deadline', None)
-    new_task = Task(name=name, description=description, user_id=user_id, group_id=id, deadline=deadline)
+
+    new_task = Task(name=name, description=description, deadline=deadline)
 
     db.session.add(new_task)
+    db.session.commit()
+
+    new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id, group_id=id)
+
+    db.session.add(new_task_meta)
     db.session.commit()
 
     return new_task.serialize, 201
@@ -138,20 +143,18 @@ def tasks_create(id):
 @validate_task
 def tasks_update(id, task_id):
     body = request.json
-    user_id = session.get("id")
 
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+
     if task is None:
         return {'message': 'Task not found'}, 404
 
-    if 'name' in body:
-        task.name = body.get('name')
-    if 'description' in body:
-        task.description = body.get('description')
-    if 'isDone' in body:
-        task.isDone = body.get('isDone')
-    if 'deadline' in body:
-        task.deadline = body.get('deadline')
+    fields = ['name', 'description', 'isDone', 'deadline']
+
+    for field in fields:
+        if field in body:
+            setattr(task, field, body.get(field))
+
     task.updated_at = datetime.now(tz=None)
     db.session.commit()
 
@@ -160,9 +163,7 @@ def tasks_update(id, task_id):
 
 @authorize_user
 def tasks_delete(id, task_id):
-    user_id = session.get("id")
-
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -174,9 +175,7 @@ def tasks_delete(id, task_id):
 
 
 def tasks_get(id, task_id):
-    user_id = session.get("id")
-
-    task = Task.query.filter_by(id=task_id, user_id=user_id).first()
+    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404

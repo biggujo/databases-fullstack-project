@@ -1,13 +1,8 @@
 from datetime import datetime
+from typing import List
+from sqlalchemy.orm import Mapped
 
 from helpers.main import db
-
-# assistant table
-group_users = db.Table('group_users',
-                       db.Column('id', db.Integer, primary_key=True),
-                       db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                       db.Column('group_id', db.Integer, db.ForeignKey('groups.id'))
-                       )
 
 
 class Group(db.Model):
@@ -15,8 +10,7 @@ class Group(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
-    # users = db.relationship('User', secondary=group_users, backref=db.backref('groups', lazy='dynamic'))
-    # tasks = db.relationship('Task', back_populates='group', lazy='dynamic')
+    users = db.relationship('User', secondary="groups_users", backref=db.backref('groups', lazy='dynamic'))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None))
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None), onupdate=datetime.now(tz=None))
 
