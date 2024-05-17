@@ -4,6 +4,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 
 class TaskMeta(db.Model):
+    __tablename__ = 'tasks_meta'
+    
     id: Mapped[int] = mapped_column(primary_key=True)
     task_id: Mapped[int] = db.Column(db.Integer, db.ForeignKey('tasks.id'))
     task: Mapped["Task"] = db.relationship(back_populates="task_meta")
