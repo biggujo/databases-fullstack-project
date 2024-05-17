@@ -12,7 +12,7 @@ class Task(db.Model):
     description = db.Column(db.String(512), unique=False, nullable=False)
     isDone = db.Column(db.Boolean, nullable=False, default=False)
     deadline = db.Column(db.DateTime, nullable=True)
-    task_meta = db.relationship('TaskMeta', back_populates="task")
+    task_meta = db.relationship('TaskMeta', back_populates="task", cascade="all, delete-orphan")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None))
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None), onupdate=datetime.now(tz=None))
 
