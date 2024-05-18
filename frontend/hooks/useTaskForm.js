@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { subHours } from 'date-fns';
+import { addDays, subHours } from 'date-fns';
 import DateFormatters from '../src/utils/date-format.js';
 
 const useTaskAddForm = (operationOnSubmit, initialData, onSubmit) => {
@@ -10,7 +10,7 @@ const useTaskAddForm = (operationOnSubmit, initialData, onSubmit) => {
   const initialValues = initialData ?? {
     name: '',
     description: '',
-    deadline: DateFormatters.formatWithDefault(new Date()),
+    deadline: DateFormatters.formatWithDefault(addDays(new Date(), 1)),
   };
 
   const handleSubmit = (values, formikHelpers) => {
