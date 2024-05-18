@@ -33,7 +33,7 @@ function Groups() {
       </Box>
       <Heading as={'h4'} size={'lg'}>Results</Heading>
     </Flex>
-    <GroupList />
+    <GroupList items={groups} />
   </Flex>);
 }
 

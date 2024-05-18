@@ -23,10 +23,10 @@ function App() {
       <Route path={'signup'} element={<ProtectedRoute component={<SignUpForm />}
                                                       redirectTo={'/'} />} />
       <Route path={'groups'} element={<PrivateRoute component={<Groups />}
-                                                    redirectTo={'/'} />} />
+                                                    redirectTo={'/signin'} />} />
       <Route path={'my-groups'}
-             element={<ProtectedRoute component={<MyGroups />}
-                                      redirectTo={'/'} />} />
+             element={<PrivateRoute component={<MyGroups />}
+                                    redirectTo={'/signin'} />} />
     </Route>
   </Routes>);
 }

@@ -25,8 +25,19 @@ export default function GroupItem({
     let actionToDispatch;
     let successMessage;
     if (isMember) {
+      // Prompt if to delete the group
+      if (users.length === 1 && !confirm(
+        'You are the last member. This will delete the group. Proceed?')) {
+        return;
+      }
+
       actionToDispatch = GroupsOperations.leaveGroupById(id);
-      successMessage = 'You have leaved the group';
+
+      if (users.length === 1) {
+        successMessage = 'You have deleted the group';
+      } else {
+        successMessage = 'You have leaved the group';
+      }
     } else {
       actionToDispatch = GroupsOperations.joinGroupById(id);
       successMessage = 'You have joined the group';
