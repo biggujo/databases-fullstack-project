@@ -1,11 +1,14 @@
 from flask import Blueprint
-from controllers import group_controller
+from controllers import group_controller, group_query
 
 from controllers import task_controller
 
 blueprint = Blueprint('group_route', __name__)
 
 blueprint.route('/', methods=['GET'])(group_controller.index)
+blueprint.route('/<string:order', methods=['GET'])(group_query.sort_by_name)
+blueprint.route('/<int:n>', methods=['GET'])(group_query.show_with_more_than_n_members)
+blueprint.route('/joined', methods=['GET'])(group_query.show_with_more_than_n_members)
 blueprint.route('/', methods=['POST'])(group_controller.create)
 blueprint.route('/<int:id>', methods=['GET'])(group_controller.get)
 blueprint.route('/<int:id>', methods=['PUT'])(group_controller.update)
