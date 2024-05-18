@@ -69,6 +69,20 @@ const deleteById = async (id) => {
   return response.data;
 };
 
+const fetchAllGroups = async () => {
+  const response = await axios.get('/groups');
+
+  return response.data;
+};
+
+const addGroup = async (name) => {
+  const response = await axios.post('/groups/', {
+    name,
+  });
+
+  return response.data;
+};
+
 const API = {
   auth: {
     login,
@@ -81,6 +95,10 @@ const API = {
     addTask,
     updateById,
     deleteById,
+  },
+  groups: {
+    fetchAllGroups,
+    addGroup,
   },
 };
 

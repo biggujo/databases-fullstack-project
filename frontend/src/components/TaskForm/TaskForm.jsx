@@ -75,7 +75,10 @@ export default function TaskForm({ formik }) {
         {formik.errors.deadline && formik.touched.deadline ? (
           <Text color={'red'}>{formik.errors.deadline}</Text>) : null}
       </FormControl>
-      <Button type={'submit'}>
+      <Button type={'submit'}
+              bg="purple.500"
+              color="white"
+              _hover={{ bg: 'purple.800' }}>
         Submit
       </Button>
     </Flex>

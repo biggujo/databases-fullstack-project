@@ -8,7 +8,7 @@ export default function TasksPage() {
     <Heading as={'h2'} size={'2xl'}>Task List</Heading>
     <Heading as={'h3'} size={'xl'}>Add Task</Heading>
     <TaskFormAdd />
-    <Heading as={'h3'} size={'xl'}>Task items</Heading>
+    <Heading as={'h3'} size={'xl'}>Task Items</Heading>
     <TaskList />
   </Flex>);
 }
