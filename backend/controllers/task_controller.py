@@ -74,6 +74,7 @@ def delete(id):
     return {}, 204
 
 
+@authorize_user
 def get(id):
     task = Task.query_user_tasks().filter_by(id=id).first()
 
