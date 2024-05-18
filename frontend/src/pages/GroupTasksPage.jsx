@@ -1,12 +1,11 @@
 import React from 'react';
 import { Text, Flex, Heading, Box } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import useGroupFetchById from '../../hooks/useGroupFetchById.js';
 import TaskList from '../components/TaskList/index.js';
 import { selectGroupTasks } from '../redux/groupTasks/selectors.js';
 import { GroupTasksOperations } from '../redux/groupTasks/operations.js';
 import TaskFormAdd from '../components/TaskFormAdd/index.js';
-import { TasksOperations } from '../redux/tasks/operations.js';
 
 export default function GroupTasksPage() {
   const { id } = useParams();
@@ -17,8 +16,7 @@ export default function GroupTasksPage() {
   } = useGroupFetchById(id);
 
   if (error) {
-    return <Text fontSize={'xl'}>An error have just happened. Please, try to
-      reload the page...</Text>;
+    return (<Navigate to={'/'} />);
   }
 
   if (isLoading) {

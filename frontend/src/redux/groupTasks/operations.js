@@ -78,7 +78,7 @@ const deleteById = (groupId) => createAsyncThunk('groupTasks/deleteById',
       toast.success('The task has been deleted');
 
       return {
-        taskId,
+        id: taskId,
       };
     } catch (e) {
       toast.error(e.response.data.message);
