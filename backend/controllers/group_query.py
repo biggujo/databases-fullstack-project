@@ -1,5 +1,5 @@
 from flask import jsonify, session
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, func
 
 from models.user_model import User
 
@@ -15,7 +15,7 @@ def sort_by_name(order='asc'):
 
 
 def show_with_more_than_n_members(n):
-    groups = Group.query.filter(Group.users.any(len(Group.users) > n)).all()
+    groups = Group.query.join(Group.users).group_by(Group.id).having(func.count(User.id) > n).all()
     return jsonify([group.serialize for group in groups]), 200
 
 
