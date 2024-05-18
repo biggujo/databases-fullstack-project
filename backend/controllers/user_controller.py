@@ -5,7 +5,7 @@ from flask import request, session, jsonify
 
 
 def index():
-    return jsonify(json_list=User.query.all())
+    return jsonify(json_list=[user.serialize for user in User.query.all()])
 
 
 @validate_user_schema
