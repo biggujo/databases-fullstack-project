@@ -1,6 +1,7 @@
 // Here will be API requests
 
 import axios from 'axios';
+import groups from '../pages/Groups.jsx';
 
 axios.defaults.baseURL = 'http://localhost:6001/api';
 axios.defaults.withCredentials = true;
@@ -83,6 +84,10 @@ const addGroup = async (name) => {
   return response.data;
 };
 
+const joinGroupById = async (groupId) => await axios.post(`/groups/${groupId}/users`);
+
+const leaveGroupById = async (groupId) => await axios.delete(`/groups/${groupId}/users`);
+
 const API = {
   auth: {
     login,
@@ -99,6 +104,8 @@ const API = {
   groups: {
     fetchAllGroups,
     addGroup,
+    joinGroupById,
+    leaveGroupById,
   },
 };
 

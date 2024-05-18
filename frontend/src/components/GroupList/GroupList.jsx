@@ -16,32 +16,27 @@ export default function GroupList() {
   }, []);
 
   const filteredGroups = useMemo(() => {
-      if (nameFilter === '') {
-        console.log('Empty filter');
-        return groups;
-      }
+    if (nameFilter === '') {
+      return groups;
+    }
 
-      return groups.filter(({ name }) => name.toLowerCase().includes(nameFilter.toLowerCase()));
-    },
-    [
-      groups,
-      nameFilter,
-    ],
-  );
-
-  console.log('> nameFilter ~', nameFilter);
-  console.log('> filteredGroups ~', filteredGroups);
+    return groups.filter(({ name }) => name.toLowerCase().includes(nameFilter.toLowerCase()));
+  }, [
+    groups,
+    nameFilter,
+  ]);
 
   if (filteredGroups.length === 0) {
     return <Text fontSize={'2xl'}>No groups available</Text>;
   }
 
-  return (<List spacing={3}>
+  return (<List spacing={4}>
     {filteredGroups.map(({
+      id,
       name,
       users,
-    }) => (<ListItem key={name} p={3} bg="purple.100" borderRadius="md">
-      <GroupItem name={name} users={users} />
+    }) => (<ListItem key={id} bg="purple.50" borderRadius="md">
+      <GroupItem id={id} name={name} users={users} />
     </ListItem>))}
   </List>);
 }

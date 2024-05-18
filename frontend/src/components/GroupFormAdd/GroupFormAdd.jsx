@@ -33,6 +33,7 @@ export default function GroupFormAdd() {
         type={'submit'}
         bg="purple.500"
         color="white"
+        paddingInline={8}
         _hover={{ bg: 'purple.800' }}
       >
         Create Group

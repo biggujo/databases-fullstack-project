@@ -23,7 +23,35 @@ const addGroup = createAsyncThunk('groups/addGroup',
   },
 );
 
+const toggleGroupMembership = async (id, {
+  dispatch,
+  rejectWithValue,
+}, apiFunction) => {
+  try {
+    await apiFunction(id);
+    dispatch(fetchAllGroups());
+  } catch (e) {
+    return rejectWithValue(e);
+  }
+};
+
+const joinGroupById = createAsyncThunk('groups/joinById',
+  (id, thunkAPI) => toggleGroupMembership(id,
+    thunkAPI,
+    API.groups.joinGroupById,
+  ),
+);
+
+const leaveGroupById = createAsyncThunk('groups/joinById',
+  (id, thunkAPI) => toggleGroupMembership(id,
+    thunkAPI,
+    API.groups.leaveGroupById,
+  ),
+);
+
 export const GroupsOperations = {
   fetchAllGroups,
   addGroup,
+  joinGroupById,
+  leaveGroupById,
 };

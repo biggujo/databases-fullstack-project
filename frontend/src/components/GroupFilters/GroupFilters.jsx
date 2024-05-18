@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Input } from '@chakra-ui/react';
+import { Box, Button, Flex, Input } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGroupsNameFilter } from '../../redux/filters/selectors.js';
-import { setGroupsNameFilter } from '../../redux/filters/slice.js';
+import {
+  clearGroupsNameFilter, setGroupsNameFilter,
+} from '../../redux/filters/slice.js';
 
 export default function GroupFilters() {
   const dispatch = useDispatch();
@@ -13,11 +15,14 @@ export default function GroupFilters() {
     dispatch(setGroupsNameFilter(value));
   };
 
-  return (<Box>
+  const handleFilterClear = () => dispatch(clearGroupsNameFilter());
+
+  return (<Flex gap={4}>
     <Input
       placeholder="Search for groups..."
       value={nameFilter}
       onChange={handleFilterChange}
     />
-  </Box>);
+    <Button onClick={handleFilterClear}>Clear</Button>
+  </Flex>);
 }

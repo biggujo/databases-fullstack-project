@@ -44,7 +44,7 @@ export default function TaskItem({
   return (<Flex gap={4}
                 py={2}
                 px={4}
-                border={isOpen || isEdit ? '2px solid rgb(227, 232, 239)' : '2px solid transparent'}
+                border={isOpen ? '2px solid rgb(128, 90, 213)' : '2px solid transparent'}
                 borderRadius={'7px'}
                 justify={'space-between'}
                 alignItems={'center'}
@@ -97,10 +97,10 @@ export default function TaskItem({
           </Flex>
           <Text color={isExpiredInProgress && 'red'}
           >
-            Due {`${format(deadlineDate, 'dd.MM.yyyy')} at ${format(
+            Due {`${format(
             deadlineDate,
-            'HH:mm',
-          )}`}</Text>
+            'dd.MM.yyyy',
+          )} at ${format(deadlineDate, 'HH:mm')}`}</Text>
         </>}
       </Flex>
       <Flex gap={4}>

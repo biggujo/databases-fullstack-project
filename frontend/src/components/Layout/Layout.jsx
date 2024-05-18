@@ -63,7 +63,7 @@ function Header() {
             borderRadius="md"
             padding="0.5rem 1rem"
           >
-            Tasks
+            My Tasks
           </Link>
           <Link
             as={ReactRouterLink}

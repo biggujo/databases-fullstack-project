@@ -19,14 +19,20 @@ function Groups() {
       <Text mb={4}>Available amount: {groups.length}</Text>
     </Box>
 
-    <Heading as={'h3'} size={'xl'}>Add Group</Heading>
-    <GroupFormAdd />
+    <Flex direction={'column'} gap={2} alignItems={'start'}>
+      <Heading as={'h3'} size={'xl'}>Add Group</Heading>
+      <Box width={'50%'}>
+        <GroupFormAdd />
+      </Box>
 
-    <Heading as={'h3'} size={'xl'}>Group Items</Heading>
-    <Heading as={'h4'} size={'lg'}>Filter</Heading>
+      <Heading as={'h3'} size={'xl'}>Group Items</Heading>
+      <Heading as={'h4'} size={'lg'}>Filter</Heading>
 
-    <GroupFilters />
-    <Heading as={'h4'} size={'lg'}>Results</Heading>
+      <Box width={'50%'}>
+        <GroupFilters />
+      </Box>
+      <Heading as={'h4'} size={'lg'}>Results</Heading>
+    </Flex>
     <GroupList />
   </Flex>);
 }

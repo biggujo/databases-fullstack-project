@@ -17,7 +17,7 @@ class Group(db.Model):
     @property
     def serialize(self):
         return {
-            # 'id': self.id,
+            'id': self.id,
             'name': self.name,
             'users': [user.serialize for user in self.users] if self.users else [],
             # 'tasks': [task.serialize for task in self.tasks.all()] if self.tasks else [],
