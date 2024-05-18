@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box, Input, List, ListItem, Flex, Text, Button, Heading } from '@chakra-ui/react';
+import {useTranslation} from "react-i18next";
 
 // Static collection
 // We'll use API later
@@ -35,6 +36,7 @@ const groups = [
 function MyGroups() {
     const [groupState, setGroupState] = useState(groups);
     const [newGroupTitle, setNewGroupTitle] = useState('');
+    const { t, i18n } = useTranslation();
 
 
     const toggleGroupState = (index) => {
