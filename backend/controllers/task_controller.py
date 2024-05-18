@@ -14,8 +14,7 @@ def index():
     if user_id is None:
         return {'message': 'Unauthorized'}, 401
     return jsonify(json_list=[i.serialize for i in
-                              Task.query_user_tasks().filter_by(
-                                  user_id=user_id).all()])
+                              Task.query_user_tasks(user_id).all()])
 
 
 @validate_task

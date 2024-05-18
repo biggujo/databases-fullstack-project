@@ -17,8 +17,8 @@ class Task(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now(tz=None), onupdate=datetime.now(tz=None))
 
     @staticmethod
-    def query_user_tasks():
-        return Task.query.join(TaskMeta).filter_by(id=TaskMeta.task_id)
+    def query_user_tasks(user_id):
+        return Task.query.join(TaskMeta).filter_by(id=TaskMeta.task_id, user_id=user_id)
 
     @staticmethod
     def query_group_tasks(group_id):
