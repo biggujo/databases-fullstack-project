@@ -77,4 +77,4 @@ const i18n = i18next
         },
     });
 
-export default i18n; // Экспорт по умолчанию объекта i18next
+export default i18n;
