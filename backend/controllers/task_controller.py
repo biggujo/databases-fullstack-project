@@ -42,8 +42,9 @@ def create():
 @validate_task
 def update(id):
     body = request.json
+    user_id = session.get("id")
 
-    task = Task.query_user_tasks().filter_by(id=id).first()
+    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -62,7 +63,8 @@ def update(id):
 
 @authorize_user
 def delete(id):
-    task = Task.query_user_tasks().filter_by(id=id).first()
+    user_id = session.get("id")
+    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -75,7 +77,8 @@ def delete(id):
 
 @authorize_user
 def get(id):
-    task = Task.query_user_tasks().filter_by(id=id).first()
+    user_id = session.get("id")
+    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
