@@ -29,6 +29,7 @@ export default function TaskForm({ formik }) {
           name="name"
           type="text"
           size={'lg'}
+          bgColor={'white'}
           placeholder="Buy groceries"
           autoComplete={'off'}
           isRequired
@@ -49,6 +50,7 @@ export default function TaskForm({ formik }) {
           name={'description'}
           placeholder="Three apples, four sausages..."
           size="lg"
+          bgColor={'white'}
           resize={'vertical'}
           value={formik.values.description}
           onChange={formik.handleChange}
@@ -76,6 +78,7 @@ export default function TaskForm({ formik }) {
           <Text color={'red'}>{formik.errors.deadline}</Text>) : null}
       </FormControl>
       <Button type={'submit'}
+              alignSelf={'start'}
               bg="purple.500"
               color="white"
               _hover={{ bg: 'purple.800' }}>

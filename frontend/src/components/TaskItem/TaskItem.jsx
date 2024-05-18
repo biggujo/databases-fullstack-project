@@ -63,8 +63,9 @@ export default function TaskItem({
         height={'fit-content'}
         px={2}
         py={2}
-        colorScheme={'teal'}
+        colorScheme={'purple'}
         isChecked={isDone}
+        borderColor={'rgb(128, 90, 213)'}
         onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
       </Checkbox>
       <Flex
@@ -97,10 +98,10 @@ export default function TaskItem({
           </Flex>
           <Text color={isExpiredInProgress && 'red'}
           >
-            Due {`${format(
+            Due {`${format(deadlineDate, 'dd.MM.yyyy')} at ${format(
             deadlineDate,
-            'dd.MM.yyyy',
-          )} at ${format(deadlineDate, 'HH:mm')}`}</Text>
+            'HH:mm',
+          )}`}</Text>
         </>}
       </Flex>
       <Flex gap={4}>
