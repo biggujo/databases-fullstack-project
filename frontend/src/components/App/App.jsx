@@ -22,8 +22,8 @@ function App() {
                                                       redirectTo={'/'} />} />
       <Route path={'signup'} element={<ProtectedRoute component={<SignUpForm />}
                                                       redirectTo={'/'} />} />
-      <Route path={'groups'} element={<ProtectedRoute component={<Groups />}
-                                                      redirectTo={'/'} />} />
+      <Route path={'groups'} element={<PrivateRoute component={<Groups />}
+                                                    redirectTo={'/'} />} />
       <Route path={'my-groups'}
              element={<ProtectedRoute component={<MyGroups />}
                                       redirectTo={'/'} />} />
