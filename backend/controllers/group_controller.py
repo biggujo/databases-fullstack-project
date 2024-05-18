@@ -12,6 +12,10 @@ from decorators.authorize_user import authorize_user
 
 from schemas.task_schemas import validate_task
 
+from schemas.subtask_schemas import validate_subtask
+
+from models.subtasks_model import Subtask
+
 
 def index():
     groups = Group.query.all()
@@ -181,3 +185,60 @@ def tasks_get(id, task_id):
         return {'message': 'Task not found'}, 404
 
     return task.serialize, 200
+
+
+def subtasks_index(id, task_id):
+    group = Group.query.get(id)
+    if group is None:
+        return {'message': 'Group not found'}, 404
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        return {'message': 'Task not found'}, 404
+    return jsonify([subtask.serialize for subtask in task.subtasks]), 200
+
+@validate_subtask
+def subtasks_create(id, task_id):
+    body = request.json
+
+    name = body.get('name')
+    description = body.get('description')
+
+    deadline = body.get('deadline')
+    new_subtask = Subtask(name=name, description=description, deadline=deadline, parent_task_id=task_id)
+
+    db.session.add(new_subtask)
+    db.session.commit()
+
+    return new_subtask.serialize, 201
+
+
+def subtasks_update(id, task_id, subtask_id):
+    body = request.json
+
+    subtask = Subtask.query.filter_by(id=subtask_id, parent_task_id=task_id).first()
+
+    if subtask is None:
+        return {'message': 'Subtask not found'}, 404
+
+    fields = ['name', 'description', 'isDone', 'deadline']
+
+    for field in fields:
+        if field in body:
+            setattr(subtask, field, body.get(field))
+
+    subtask.updated_at = datetime.now(tz=None)
+    db.session.commit()
+
+    return subtask.serialize, 200
+
+
+def subtasks_delete(id, task_id, subtask_id):
+    subtask = Subtask.query.filter_by(id=subtask_id, parent_task_id=task_id).first()
+
+    if subtask is None:
+        return {'message': 'Subtask not found'}, 404
+
+    db.session.delete(subtask)
+    db.session.commit()
+
+    return {}, 204
