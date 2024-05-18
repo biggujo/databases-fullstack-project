@@ -4,10 +4,8 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { TasksOperations } from '../../redux/tasks/operations.js';
 import { format, isAfter } from 'date-fns';
 import useToggle from '../../../hooks/useToggle.js';
-import TaskForm from '../TaskForm/index.js';
 import TaskFormUpdate from '../TaskFormUpdate/index.js';
 import DateFormatters from '../../utils/date-format.js';
 import {
@@ -15,11 +13,14 @@ import {
 } from '../../providers/TaskUpdateTimestampProvider.jsx';
 
 export default function TaskItem({
-  id,
-  name,
-  description,
-  isDone,
-  deadline,
+  data: {
+    id,
+    name,
+    description,
+    isDone,
+    deadline,
+  },
+  operations,
 }) {
   const {
     isOpen,
@@ -44,7 +45,7 @@ export default function TaskItem({
   return (<Flex gap={4}
                 py={2}
                 px={4}
-                border={isOpen ? '2px solid rgb(128, 90, 213)' : '2px solid transparent'}
+                border={isOpen || isEdit ? '2px solid rgb(128, 90, 213)' : '2px solid transparent'}
                 borderRadius={'7px'}
                 justify={'space-between'}
                 alignItems={'center'}
@@ -66,7 +67,7 @@ export default function TaskItem({
         colorScheme={'purple'}
         isChecked={isDone}
         borderColor={'rgb(128, 90, 213)'}
-        onChange={() => dispatch(TasksOperations.toggleCompletedById(id))}>
+        onChange={() => dispatch(operations.toggleCompletedById(id))}>
       </Checkbox>
       <Flex
         onClick={!isEdit ? toggle : null}
@@ -77,12 +78,14 @@ export default function TaskItem({
         alignContent={isEdit && 'stretch'}
         flexDirection={isEdit && 'column'}
         justifyContent={'space-between'} width={'100%'}>
-        {isEdit && <TaskFormUpdate initialValues={{
-          id,
-          name,
-          description,
-          deadline: DateFormatters.formatWithDefault(deadline),
-        }} />}
+        {isEdit && <TaskFormUpdate
+          operations={operations}
+          initialValues={{
+            id,
+            name,
+            description,
+            deadline: DateFormatters.formatWithDefault(deadline),
+          }} />}
         {!isEdit && <>
           <Flex gap={2}
                 direction={isOpen && 'column'}>
@@ -98,10 +101,10 @@ export default function TaskItem({
           </Flex>
           <Text color={isExpiredInProgress && 'red'}
           >
-            Due {`${format(deadlineDate, 'dd.MM.yyyy')} at ${format(
+            Due {`${format(
             deadlineDate,
-            'HH:mm',
-          )}`}</Text>
+            'dd.MM.yyyy',
+          )} at ${format(deadlineDate, 'HH:mm')}`}</Text>
         </>}
       </Flex>
       <Flex gap={4}>
@@ -123,7 +126,7 @@ export default function TaskItem({
                     _hover={{
                       borderColor: 'lightcoral',
                     }}
-                    onClick={() => dispatch(TasksOperations.deleteById(id))}
+                    onClick={() => dispatch(operations.deleteById(id))}
         />
       </Flex>
     </Flex>;

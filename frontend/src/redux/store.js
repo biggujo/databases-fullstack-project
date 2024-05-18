@@ -8,6 +8,7 @@ import {
 } from 'redux-persist/es/constants';
 import { groupsReducer } from './groups/slice.js';
 import { filtersReducer } from './filters/slice.js';
+import { groupTasksReducer } from './groupTasks/slice.js';
 
 const persistConfig = {
   key: 'counter',
@@ -23,6 +24,7 @@ const store = configureStore({
     auth: persistReducer(persistConfig, authReducer),
     tasks: tasksReducer,
     groups: groupsReducer,
+    groupTasks: groupTasksReducer,
     filters: filtersReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({

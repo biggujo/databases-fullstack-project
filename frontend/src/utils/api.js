@@ -41,7 +41,7 @@ const fetchAllTasks = async () => {
 };
 
 const toggleCompletedById = async (id) => {
-  // Not good way to do two tasks, but the backend doesn't have a method to toggle completion
+  // Not good way to do two requests, but the backend doesn't have a method to toggle completion
   const actualTask = await axios.get(`/tasks/${id}`);
 
   const response = await axios.put(`/tasks/${id}`, {
@@ -76,6 +76,12 @@ const fetchAllGroups = async () => {
   return response.data;
 };
 
+const fetchById = async (id) => {
+  const response = await axios.get(`/groups/${id}`);
+
+  return response.data;
+};
+
 const addGroup = async (name) => {
   const response = await axios.post('/groups/', {
     name,
@@ -87,6 +93,55 @@ const addGroup = async (name) => {
 const joinGroupById = async (groupId) => await axios.post(`/groups/${groupId}/users`);
 
 const leaveGroupById = async (groupId) => await axios.delete(`/groups/${groupId}/users`);
+
+const fetchGroupTasksById = async (groupId) => {
+  const response = await axios.get(`/groups/${groupId}/tasks`);
+
+  return response.data.json_list;
+};
+
+const toggleGroupTaskCompletedById = async ({
+  groupId,
+  taskId,
+}) => {
+  // Not good way to do two tasks, but the backend doesn't have a method to toggle completion
+  const actualTask = await axios.get(`/groups/${groupId}/tasks/${taskId}`);
+
+  const response = await axios.put(`/groups/${groupId}/tasks/${taskId}`, {
+    isDone: !actualTask.data.isDone,
+  });
+
+  return response.data;
+};
+
+// data = { name, description, isDone, deadline }
+const addGroupTask = async ({
+  groupId,
+  data,
+}) => {
+  const response = await axios.post(`/groups/${groupId}/tasks/`, data);
+
+  return response.data;
+};
+
+const updateGroupTaskById = async ({
+  groupId,
+  taskId,
+  data,
+}) => {
+  const response = await axios.put(`/groups/${groupId}/tasks/${taskId}`, data);
+
+  return response.data;
+};
+
+const deleteGroupTaskById = async ({
+  groupId,
+  taskId,
+}) => {
+  const response = await axios.delete(`/groups/${groupId}/tasks/${taskId}`);
+
+  return response.data;
+};
 
 const API = {
   auth: {
@@ -103,9 +158,17 @@ const API = {
   },
   groups: {
     fetchAllGroups,
+    fetchById,
     addGroup,
     joinGroupById,
     leaveGroupById,
+    tasks: {
+      fetchGroupTasksById,
+      toggleGroupTaskCompletedById,
+      addGroupTask,
+      updateGroupTaskById,
+      deleteGroupTaskById,
+    },
   },
 };
 

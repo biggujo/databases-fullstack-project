@@ -11,6 +11,7 @@ import API from '../../utils/api.js';
 import PrivateRoute from '../PrivateRoute/index.js';
 import ProtectedRoute from '../ProtectedRoute/index.js';
 import toast from 'react-hot-toast';
+import GroupTasksPage from '../../pages/GroupTasksPage.jsx';
 
 function App() {
   return (<Routes>
@@ -24,6 +25,9 @@ function App() {
                                                       redirectTo={'/'} />} />
       <Route path={'groups'} element={<PrivateRoute component={<Groups />}
                                                     redirectTo={'/signin'} />} />
+      <Route path={'groups/:id'}
+             element={<PrivateRoute component={<GroupTasksPage />}
+                                    redirectTo={'/signin'} />} />
       <Route path={'my-groups'}
              element={<PrivateRoute component={<MyGroups />}
                                     redirectTo={'/signin'} />} />

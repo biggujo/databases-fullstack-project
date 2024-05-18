@@ -7,6 +7,7 @@ import { selectAuthUser } from '../../redux/auth/selectors.js';
 import { GroupsOperations } from '../../redux/groups/operations.js';
 import toast from 'react-hot-toast';
 import useToggle from '../../../hooks/useToggle.js';
+import { useNavigate } from 'react-router-dom';
 
 export default function GroupItem({
   id,
@@ -17,6 +18,7 @@ export default function GroupItem({
     toggle,
     isOpen,
   } = useToggle();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector(selectAuthUser);
   const isMember = users.find(({ id: userId }) => userId === currentUser.id);
@@ -49,6 +51,8 @@ export default function GroupItem({
     .catch((e) => toast.error(e.response.data.message));
   };
 
+  const handleGoToGroupClick = () => navigate(`/groups/${id}`);
+
   return (<Flex justifyContent="space-between"
                 alignItems="start"
                 py={2}
@@ -76,12 +80,20 @@ export default function GroupItem({
           </ListItem>)}
         </UnorderedList></>}
     </Flex>
-    <Button
-      width={100}
-      colorScheme={isMember ? 'red' : 'green'}
-      onClick={handleJoinGroupClick}
-    >
-      {isMember ? 'Leave' : 'Join'}
-    </Button>
+    <Flex gap={4}>
+      {isMember && <Button
+        colorScheme={'purple'}
+        py={4}
+        onClick={handleGoToGroupClick}>
+        Open group
+      </Button>}
+      <Button
+        width={100}
+        colorScheme={isMember ? 'red' : 'green'}
+        onClick={handleJoinGroupClick}
+      >
+        {isMember ? 'Leave' : 'Join'}
+      </Button>
+    </Flex>
   </Flex>);
 }

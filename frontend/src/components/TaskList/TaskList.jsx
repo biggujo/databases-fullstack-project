@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import TaskItem from '../TaskItem/TaskItem.jsx';
-import { Flex, List, ListItem, Text } from '@chakra-ui/react';
+import { List, ListItem, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTasks } from '../../redux/tasks/selectors.js';
-import { TasksOperations } from '../../redux/tasks/operations.js';
+import TaskItem from '../TaskItem/TaskItem.jsx';
 
-export default function TaskList() {
+export default function TaskList({
+  operations,
+  selector,
+}) {
   const dispatch = useDispatch();
-  const tasks = useSelector(selectTasks);
+  const tasks = useSelector(selector);
 
   useEffect(() => {
-    dispatch(TasksOperations.fetchAllTasks());
+    dispatch(operations.fetchAllTasks());
   }, []);
 
   if (!tasks || tasks.length === 0) {
@@ -21,7 +22,7 @@ export default function TaskList() {
     listStyle: 'none',
   }}>
     {tasks && tasks.map((props) => <ListItem key={props.id} bg="purple.50">
-      <TaskItem {...props} />
+      <TaskItem data={...props} operations={operations} />
     </ListItem>)}
   </List>);
 }
