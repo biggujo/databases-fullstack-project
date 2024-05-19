@@ -4,9 +4,11 @@ import {
 } from '@chakra-ui/react';
 import { FormikProvider } from 'formik';
 import useGroupFormAdd from '../../../hooks/useGroupFormAdd.js';
+import { useTranslation } from 'react-i18next';
 
 export default function GroupFormAdd() {
   const formik = useGroupFormAdd();
+  const { t } = useTranslation();
 
   return (<FormikProvider value={formik}>
     <Flex as={'form'}
@@ -19,13 +21,13 @@ export default function GroupFormAdd() {
       <FormControl>
         <FormLabel fontSize={'xl'}>
           <Flex gap={2}>
-            <span>Name</span>
+            <span>{t('name')}</span>
             <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <Input
           name={'name'}
-          placeholder="Alpha Horizon"
+          placeholder={t('groupNamePlaceholder')}
           {...formik.getFieldProps('name')}
         />
       </FormControl>
@@ -36,7 +38,7 @@ export default function GroupFormAdd() {
         paddingInline={8}
         _hover={{ bg: 'purple.800' }}
       >
-        Create Group
+        {t('createGroup')}
       </Button>
     </Flex>
     {formik.errors.name && formik.touched.name ? (

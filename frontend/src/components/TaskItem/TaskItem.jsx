@@ -103,10 +103,10 @@ export default function TaskItem({
           </Flex>
           <Text color={isExpiredInProgress && 'red'}
           >
-            {t('due')} {`${format(deadlineDate, 'dd.MM.yyyy')} ${t('at')} ${format(
+            {t('due')} {`${format(
             deadlineDate,
             'dd.MM.yyyy',
-          )} at ${format(deadlineDate, 'HH:mm')}`}</Text>
+          )} ${t('at')} ${format(deadlineDate, 'HH:mm')}`}</Text>
         </>}
       </Flex>
       <Flex gap={4}>

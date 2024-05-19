@@ -119,8 +119,6 @@ const addGroupTask = async ({
   groupId,
   data,
 }) => {
-  console.log(groupId);
-  console.log(data);
   const response = await axios.post(`/groups/${groupId}/tasks`, data);
 
   return response.data;

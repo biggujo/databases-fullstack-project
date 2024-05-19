@@ -5,10 +5,12 @@ import { selectGroupsNameFilter } from '../../redux/filters/selectors.js';
 import {
   clearGroupsNameFilter, setGroupsNameFilter,
 } from '../../redux/filters/slice.js';
+import { useTranslation } from 'react-i18next';
 
 export default function GroupFilters() {
   const dispatch = useDispatch();
   const nameFilter = useSelector(selectGroupsNameFilter);
+  const { t } = useTranslation();
 
   const handleFilterChange = (event) => {
     const { value } = event.target;
@@ -19,10 +21,10 @@ export default function GroupFilters() {
 
   return (<Flex gap={4}>
     <Input
-      placeholder="Search for groups..."
+      placeholder={t('searchGroups')}
       value={nameFilter}
       onChange={handleFilterChange}
     />
-    <Button onClick={handleFilterClear}>Clear</Button>
+    <Button onClick={handleFilterClear}>{t('clear')}</Button>
   </Flex>);
 }

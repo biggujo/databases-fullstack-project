@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import { List, ListItem, Text } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import TaskItem from '../TaskItem/TaskItem.jsx';
+import { useTranslation } from 'react-i18next';
 
 export default function TaskList({
   operations,
   selector,
 }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const tasks = useSelector(selector);
 
@@ -15,7 +17,7 @@ export default function TaskList({
   }, []);
 
   if (!tasks || tasks.length === 0) {
-    return <Text fontSize={'2xl'}>No tasks available</Text>;
+    return <Text fontSize={'2xl'}>{t('noTasksAvailable')}</Text>;
   }
 
   return (<List spacing={4} direction={'column'} style={{

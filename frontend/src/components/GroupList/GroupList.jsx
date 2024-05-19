@@ -8,6 +8,7 @@ import { GroupsOperations } from '../../redux/groups/operations.js';
 import GroupItem from '../GroupItem/index.js';
 import { selectGroupsNameFilter } from '../../redux/filters/selectors.js';
 import Fuse from 'fuse.js';
+import { useTranslation } from 'react-i18next';
 
 export default function GroupList({ items: groups }) {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function GroupList({ items: groups }) {
       'name',
     ],
   }));
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(GroupsOperations.fetchAllGroups());
@@ -42,7 +44,7 @@ export default function GroupList({ items: groups }) {
   ]);
 
   if (filteredGroups.length === 0) {
-    return <Text fontSize={'2xl'}>No groups available</Text>;
+    return <Text fontSize={'2xl'}>{t('noGroupsAvailable')}</Text>;
   }
 
   return (<List spacing={4}>

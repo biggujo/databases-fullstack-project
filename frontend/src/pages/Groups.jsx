@@ -18,7 +18,7 @@ function Groups() {
   return (<Flex direction={'column'} gap={2}>
     <Box>
       <Heading as="h2" size="2xl" mb={4}>{t('groups')}</Heading>
-      <Text mb={4}>{t('availableAmount')}: {groups.length}</Text>
+      <Text mb={4}>{t('availableAmount')} {groups.length}</Text>
     </Box>
 
     <Flex direction={'column'} gap={2} alignItems={'start'}>
@@ -27,13 +27,13 @@ function Groups() {
         <GroupFormAdd />
       </Box>
 
-      <Heading as={'h3'} size={'xl'}>Group Items</Heading>
-      <Heading as={'h4'} size={'lg'}>Filter</Heading>
+      <Heading as={'h3'} size={'xl'}>{t('groupItems')}</Heading>
+      <Heading as={'h4'} size={'lg'}>{t('filter')}</Heading>
 
       <Box width={'50%'}>
         <GroupFilters />
       </Box>
-      <Heading as={'h4'} size={'lg'}>Results</Heading>
+      <Heading as={'h4'} size={'lg'}>{t('Результати')}</Heading>
     </Flex>
     <GroupList items={groups} />
   </Flex>);
