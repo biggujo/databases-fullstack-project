@@ -4,17 +4,20 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import TaskFormAdd from '../components/TaskFormAdd/index.js';
 import { TasksOperations } from '../redux/tasks/operations.js';
 import { selectTasks } from '../redux/tasks/selectors.js';
+import { useTranslation } from 'react-i18next';
 
 export default function TasksPage() {
-  return (<Flex direction={'column'} gap={2}>
-    <Heading as={'h2'} size={'2xl'}>Task List</Heading>
+  const { t } = useTranslation();
 
-    <Heading as={'h3'} size={'xl'}>Add Task</Heading>
+  return (<Flex direction={'column'} gap={2}>
+    <Heading as={'h2'} size={'2xl'}>{t('taskList')}</Heading>
+
+    <Heading as={'h3'} size={'xl'}>{t('addTask')}</Heading>
     <Box width={'50%'}>
       <TaskFormAdd operations={TasksOperations} />
     </Box>
-    
-    <Heading as={'h3'} size={'xl'}>Task Items</Heading>
+
+    <Heading as={'h3'} size={'xl'}>{t('taskItems')}</Heading>
     <TaskList
       selector={selectTasks}
       operations={TasksOperations} />

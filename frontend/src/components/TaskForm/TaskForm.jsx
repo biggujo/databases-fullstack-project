@@ -3,13 +3,15 @@ import { FormikProvider } from 'formik';
 import {
   Button, Flex, FormControl, FormLabel, Input, Text, Textarea,
 } from '@chakra-ui/react';
-
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import DatePicker from '../DatePicker/';
 import DateFormatters from '../../utils/date-format.js';
+import { useTranslation } from 'react-i18next';
 
 export default function TaskForm({ formik }) {
+  const { t } = useTranslation();
+
   return (<FormikProvider value={formik}>
     <Flex as={'form'}
           gap={4}
@@ -30,7 +32,7 @@ export default function TaskForm({ formik }) {
           type="text"
           size={'lg'}
           bgColor={'white'}
-          placeholder="Buy groceries"
+          placeholder={t('placeholderText')}
           autoComplete={'off'}
           isRequired
           value={formik.values.name}
@@ -42,13 +44,13 @@ export default function TaskForm({ formik }) {
       <FormControl>
         <FormLabel fontSize={'xl'}>
           <Flex gap={2}>
-            <span>Description</span>
+            <span>{t('description')}</span>
             <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <Textarea
           name={'description'}
-          placeholder="Three apples, four sausages..."
+          placeholder={t('placeholderDescription')}
           size="lg"
           bgColor={'white'}
           resize={'vertical'}
@@ -61,14 +63,14 @@ export default function TaskForm({ formik }) {
       <FormControl>
         <FormLabel fontSize={'xl'}>
           <Flex gap={2}>
-            <span>Deadline</span>
+            <span>{t('deadline')}</span>
             <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <DatePicker
           name={'deadline'}
           {...formik.getFieldProps('deadline')}
-          timeInputLabel="Time:"
+          timeInputLabel={t('time')}
           dateFormat={DateFormatters.DATE_FORMAT}
           showTimeInput
           wrapperClassName="date-picker"
@@ -82,7 +84,7 @@ export default function TaskForm({ formik }) {
               bg="purple.500"
               color="white"
               _hover={{ bg: 'purple.800' }}>
-        Submit
+        {t('submit')}
       </Button>
     </Flex>
   </FormikProvider>);
