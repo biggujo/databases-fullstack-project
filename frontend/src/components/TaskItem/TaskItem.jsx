@@ -13,6 +13,7 @@ import DateFormatters from '../../utils/date-format.js';
 import {
   TaskUpdateTimestampContext,
 } from '../../providers/TaskUpdateTimestampProvider.jsx';
+import { useTranslation } from 'react-i18next';
 
 export default function TaskItem({
   id,
@@ -28,6 +29,7 @@ export default function TaskItem({
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
   const [latestUpdate] = useContext(TaskUpdateTimestampContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsEdit(false);
@@ -97,14 +99,14 @@ export default function TaskItem({
           </Flex>
           <Text color={isExpiredInProgress && 'red'}
           >
-            Due {`${format(deadlineDate, 'dd.MM.yyyy')} at ${format(
+            {t('due')} {`${format(deadlineDate, 'dd.MM.yyyy')} {t('at')} ${format(
             deadlineDate,
             'HH:mm',
           )}`}</Text>
         </>}
       </Flex>
       <Flex gap={4}>
-        <IconButton aria-label={'Edit the task'}
+        <IconButton aria-label={t('editTask')}
                     size={'sm'}
                     border="1px solid lightgray"
                     icon={<EditIcon color={'orange'} />}
@@ -115,7 +117,7 @@ export default function TaskItem({
                       setIsEdit(prevState => !prevState);
                     }}
         />
-        <IconButton aria-label={'Delete the task'}
+        <IconButton aria-label={t('deleteTask')}
                     size={'sm'}
                     border="1px solid lightgray"
                     icon={<DeleteIcon color={'lightcoral'} />}
