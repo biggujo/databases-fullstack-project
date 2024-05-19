@@ -8,6 +8,7 @@ import { GroupsOperations } from '../../redux/groups/operations.js';
 import toast from 'react-hot-toast';
 import useToggle from '../../../hooks/useToggle.js';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function GroupItem({
   id,
@@ -22,6 +23,7 @@ export default function GroupItem({
   const dispatch = useDispatch();
   const currentUser = useSelector(selectAuthUser);
   const isMember = users.find(({ id: userId }) => userId === currentUser.id);
+  const { t } = useTranslation();
 
   const handleJoinGroupClick = () => {
     let actionToDispatch;
@@ -67,10 +69,12 @@ export default function GroupItem({
             height={9}
       >
         <Text fontSize="xl" fontWeight={'bold'}>{name}</Text>
-        <Text mr={4}>Members: {users.length}</Text>
+        <Text mr={4}>{t('members', {
+          count: users.length,
+        })}</Text>
       </Flex>
       {isOpen && <>
-        <Text fontSize="xl">List of members:</Text>
+        <Text fontSize="xl">${t('listOfMembers')}:</Text>
         <UnorderedList marginLeft={8} spacing={2}>
           {users.map(({
             id,
@@ -85,14 +89,15 @@ export default function GroupItem({
         colorScheme={'purple'}
         py={4}
         onClick={handleGoToGroupClick}>
-        Open group
+        {t('openGroup')}
       </Button>}
       <Button
-        width={100}
+        minWidth={120}
+        py={4}
         colorScheme={isMember ? 'red' : 'green'}
         onClick={handleJoinGroupClick}
       >
-        {isMember ? 'Leave' : 'Join'}
+        {isMember ? t('leaveGroup') : t('joinGroup')}
       </Button>
     </Flex>
   </Flex>);

@@ -40,7 +40,7 @@ function Header() {
   }}>
     <Box style={{
       marginInline: 'auto',
-      width: '960px',
+      width: '1040px',
     }}>
       <Flex justify="space-between" align="center">
         <Flex align="center">
@@ -124,8 +124,10 @@ function Header() {
               <option value="ua">Укр</option>
             </Select>
             {isLoggedIn && <>
-              <Flex alignItems={'center'} gap={2}>
-                <p>Hello, {username}</p>
+              <Flex alignItems={'center'} gap={4}>
+                <p>{t('hello', {
+                  username,
+                })}</p>
                 <Button
                   marginRight="10px"
                   backgroundColor={'purple.500'}
