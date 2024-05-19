@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { I18nextProvider } from 'react-i18next';
 import App from './components/App';
 import store, { persistor } from './redux/store';
 import './i18n';
