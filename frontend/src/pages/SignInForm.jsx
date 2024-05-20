@@ -6,10 +6,12 @@ import {
 import { useDispatch } from 'react-redux';
 import UserOperations from '../redux/auth/operations.js';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function SignInForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -18,14 +20,14 @@ export default function SignInForm() {
     validate: (values) => {
       const errors = {};
       if (!values.username) {
-        errors.username = 'Required';
+        errors.username = t('required');
       } else if (values.username.length < 6) {
-        errors.username = 'Username must be at least 6 characters long';
+        errors.username = t('usernameTooShort');
       }
       if (!values.password) {
-        errors.password = 'Required';
+        errors.password = t('required');
       } else if (values.password.length < 6) {
-        errors.password = 'Password must contain at least 6 characters';
+        errors.password = t('passwordTooShort');
       }
       return errors;
     },
@@ -40,47 +42,47 @@ export default function SignInForm() {
       <form onSubmit={formik.handleSubmit}>
         <VStack spacing={4} align="flex-start">
           <FormControl
-            isInvalid={formik.errors.username && formik.touched.username}>
-            <FormLabel htmlFor="username">Username</FormLabel>
+              isInvalid={formik.errors.username && formik.touched.username}>
+            <FormLabel htmlFor="username">{t('username')}</FormLabel>
             <Input
-              id="username"
-              name="username"
-              type="username"
-              variant="filled"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.username}
+                id="username"
+                name="username"
+                type="username"
+                variant="filled"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
             />
             {formik.errors.username && formik.touched.username && (
-              <Box color="red">{formik.errors.username}</Box>)}
+                <Box color="red">{formik.errors.username}</Box>)}
           </FormControl>
           <FormControl
-            isInvalid={formik.errors.password && formik.touched.password}>
-            <FormLabel htmlFor="password">Password</FormLabel>
+              isInvalid={formik.errors.password && formik.touched.password}>
+            <FormLabel htmlFor="password">{t('password')}</FormLabel>
             <Input
-              id="password"
-              name="password"
-              type="password"
-              variant="filled"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
+                id="password"
+                name="password"
+                type="password"
+                variant="filled"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
             />
             {formik.errors.password && formik.touched.password && (
-              <Box color="red">{formik.errors.password}</Box>)}
+                <Box color="red">{formik.errors.password}</Box>)}
           </FormControl>
           <Checkbox
-            id="rememberMe"
-            name="rememberMe"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            isChecked={formik.values.rememberMe}
-            colorScheme="purple"
+              id="rememberMe"
+              name="rememberMe"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isChecked={formik.values.rememberMe}
+              colorScheme="purple"
           >
-            Remember me?
+            {t('rememberMe')}
           </Checkbox>
           <Button type="submit" colorScheme="purple" width="full">
-            Login
+            {t('login')}
           </Button>
         </VStack>
       </form>
