@@ -16,7 +16,6 @@ const useFormFilter = ({ operations }) => {
   };
 
   const handleSubmit = (values, formikHelpers) => {
-    console.log(values);
     let formattedStartDate;
     let formattedEndDate;
 

@@ -126,8 +126,8 @@ const subtasks = {
 };
 
 const groups = {
-  fetchAllGroups: async () => {
-    const response = await axios.get('/groups');
+  fetchAllGroups: async (urlParameters) => {
+    const response = await axios.get(`/groups?${urlParameters}`);
 
     return response.data.json_list;
   },

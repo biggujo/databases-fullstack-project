@@ -49,7 +49,7 @@ class GroupsQuery:
 
     def _paginate(self, parameters):
         page = parameters.get('page', 1)
-        per_page = parameters.get('per_page', 5)
+        per_page = parameters.get('per_page', 50)
 
         if page is None or per_page is None:
             return

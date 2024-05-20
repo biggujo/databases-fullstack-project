@@ -10,6 +10,7 @@ import { selectGroups } from '../redux/groups/selectors.js';
 import React from 'react';
 import GroupFilters from '../components/GroupFilters/index.js';
 import { useTranslation } from 'react-i18next';
+import GroupFilterForm from '../components/GroupFilterForm/index.js';
 
 function Groups() {
   const groups = useSelector(selectGroups);
@@ -30,9 +31,7 @@ function Groups() {
       <Heading as={'h3'} size={'xl'}>{t('groupItems')}</Heading>
       <Heading as={'h4'} size={'lg'}>{t('filter')}</Heading>
 
-      <Box width={'50%'}>
-        <GroupFilters />
-      </Box>
+      <GroupFilterForm />
       <Heading as={'h4'} size={'lg'}>{t('results')}</Heading>
     </Flex>
     <GroupList items={groups} />
