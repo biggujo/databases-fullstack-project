@@ -9,13 +9,22 @@ from query.tasks_query import TasksQuery
 import math
 
 
-def index():
+def index(task_id=None):
     user_id = session.get("id")
+
     if user_id is None:
         return {'message': 'Unauthorized'}, 401
 
     parameters = request.args
-    initial_scope = Task.query_user_tasks(user_id)
+
+    if task_id is None:
+        initial_scope = Task.query_user_tasks(user_id)
+    else:
+        task = Task.query.get(task_id)
+        if task is None:
+            return {'message': 'Nothing found'}, 404
+
+        initial_scope = task.subtasks
 
     query_object = TasksQuery(initial_scope)
     pagination_scope = query_object.call(parameters)
@@ -28,35 +37,52 @@ def index():
 
 
 @validate_task
-def create():
+def create(task_id=None):
     body = request.json
     user_id = session.get("id")
+    if user_id is None:
+        return {'message': 'Unauthorized'}, 401
 
     name = body.get('name')
     description = body.get('description')
+
     deadline = body.get('deadline')
 
     new_task = Task(name=name, description=description, deadline=deadline)
-    db.session.add(new_task)
-    db.session.commit()
 
-    new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id)
-    db.session.add(new_task_meta)
+    if task_id is None:
+        db.session.add(new_task)
+        db.session.commit()
+        new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id)
+        db.session.add(new_task_meta)
+    else:
+        task = Task.query.get(task_id)
+        if task is None:
+            return {'message': 'Parent task not found'}, 404
+        task.subtasks.append(new_task)
+        db.session.add(new_task)
     db.session.commit()
 
     return new_task.serialize, 201
 
 
 @validate_task
-def update(id):
+def update(task_id, subtask_id=None):
     body = request.json
     user_id = session.get("id")
+    if user_id is None:
+        return {'message': 'Unauthorized'}, 401
 
-    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
+    if subtask_id is None:
+        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
+
     if task is None:
         return {'message': 'Task not found'}, 404
 
     fields = ['name', 'description', 'isDone', 'deadline']
+
     for field in fields:
         if field in body:
             setattr(task, field, body.get(field))
@@ -68,9 +94,13 @@ def update(id):
 
 
 @authorize_user
-def delete(id):
+def delete(task_id, subtask_id=None):
     user_id = session.get("id")
-    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
+    if user_id is None:
+        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
+
     if task is None:
         return {'message': 'Task not found'}, 404
 
@@ -81,9 +111,14 @@ def delete(id):
 
 
 @authorize_user
-def get(id):
+def get(task_id, subtask_id=None):
     user_id = session.get("id")
-    task = Task.query_user_tasks(user_id).filter_by(id=id).first()
+
+    if subtask_id is None:
+        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.get(subtask_id)
+
     if task is None:
         return {'message': 'Task not found'}, 404
 
