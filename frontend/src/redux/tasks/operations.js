@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 const fetchAllTasks = createAsyncThunk('tasks/fetchAll',
   async (parameters, { rejectWithValue }) => {
     try {
+      console.log(parameters);
       const urlParameters = new URLSearchParams(parameters);
       return await API.tasks.fetchAllTasks(urlParameters);
     } catch (e) {

@@ -12,7 +12,8 @@ const useFormFilter = () => {
     name: '',
     startDate: '',
     endDate: '',
-    status: '',
+    status: 'in_progress',
+    sortDeadlines: 'asc',
   };
 
   const handleSubmit = (values, formikHelpers) => {
@@ -41,6 +42,7 @@ const useFormFilter = () => {
       start_date: formattedStartDate,
       end_date: formattedEndDate,
       status: values.status,
+      sort_deadline: values.sortDeadlines,
     }));
   };
 

@@ -33,6 +33,13 @@ const auth = {
 
 const tasks = {
   fetchAllTasks: async (urlParameters) => {
+    if (typeof urlParameters === 'undefined') {
+      urlParameters = 'sort_deadline=asc&status=in_progress';
+    } else if (urlParameters.get('sort_deadline') === null) {
+      urlParameters.append('sort_deadline', 'asc');
+      urlParameters.append('status', 'in_progress');
+    }
+
     const response = await axios.get(`/tasks?${urlParameters}`);
 
     const data = response.data.json_list;

@@ -47,8 +47,6 @@ class TasksQuery:
             self.scope = self.scope.filter(Task.isDone == True)
         elif status == 'in_progress':
             self.scope = self.scope.filter(Task.isDone == False)
-        elif status == 'overdue':
-            self.scope = self.scope.filter(Task.isDone == False, Task.deadline < datetime.now())
 
     def _filter_by_date_range(self, parameters):
         start_date = parameters.get('start_date')
