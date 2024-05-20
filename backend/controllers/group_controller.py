@@ -96,27 +96,20 @@ def remove_user(id):
     return {}, 204
 
 
-# @authorize_user
-# def tasks(id):
-#    group = Group.query.get(id)
-#    if group is None:
-#        return {'message': 'Group not found'}
-#    current_user = session.get("id")
-#    if current_user is None:
-#        return {'message': 'Not authprizes'}, 401
-#    if current_user not in [user.id for user in group.users]:
-#        return {'message': 'Access denied'}, 403
-#    group_tasks = group.tasks
-#    return jsonify([task.serialize for task in group_tasks]), 200
-
-
-def tasks_index(id):
+def tasks_index(id, task_id=None):
     # user_id = session.get("id")
     # if user_id is None:
     #    return {'message': 'Unauthorized'}, 401
 
     parameters = request.args
-    initial_scope = Task.query_group_tasks(id)
+
+    if task_id is None:
+        # All tasks
+        initial_scope = Task.query_group_tasks(id)
+    else:
+        # Subtasks of a task
+        task = Task.query.get(task_id)
+        initial_scope = task.subtasks
 
     query_object = TasksQuery(initial_scope)
     pagination_scope = query_object.call(parameters)
@@ -129,7 +122,7 @@ def tasks_index(id):
 
 
 @validate_task
-def tasks_create(id):
+def tasks_create(id, task_id=None):
     body = request.json
     user_id = session.get("id")
 
@@ -139,25 +132,30 @@ def tasks_create(id):
     name = body.get('name')
     description = body.get('description')
     deadline = body.get('deadline', None)
-
     new_task = Task(name=name, description=description, deadline=deadline)
-
-    db.session.add(new_task)
-    db.session.commit()
-
-    new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id, group_id=id)
-
-    db.session.add(new_task_meta)
+    if task_id is None:
+        db.session.add(new_task)
+        db.session.commit()
+        new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id, group_id=id)
+        db.session.add(new_task_meta)
+    else:
+        task = Task.query.get(task_id)
+        if task is None:
+            return {'message': 'Parent task not found'}, 404
+        task.subtasks.append(new_task)
+        db.session.add(new_task)
     db.session.commit()
 
     return new_task.serialize, 201
 
 
 @validate_task
-def tasks_update(id, task_id):
+def tasks_update(id, task_id, subtask_id=None):
     body = request.json
-
-    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    if subtask_id is None:
+        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -175,8 +173,11 @@ def tasks_update(id, task_id):
 
 
 @authorize_user
-def tasks_delete(id, task_id):
-    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+def tasks_delete(id, task_id, subtask_id=None):
+    if subtask_id is None:
+        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
