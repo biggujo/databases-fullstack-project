@@ -55,9 +55,9 @@ class TasksQuery:
 
     def _paginate(self, parameters):
         page = parameters.get('page', 1)
-        per_page = parameters.get('per_page', 5)
+        per_page = parameters.get('per_page', 50)
 
         if page is None or per_page is None:
-            return
+            return self.scope
 
         return self.scope.paginate(page=int(page), per_page=int(per_page), error_out=False, count=True)
