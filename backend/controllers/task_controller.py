@@ -29,7 +29,7 @@ def index(task_id=None):
     query_object = TasksQuery(initial_scope)
     pagination_scope = query_object.call(parameters)
 
-    return jsonify(json_list=[task.serialize for task in Task.query_user_tasks(user_id)],
+    return jsonify(json_list=[task.serialize for task in pagination_scope],
                    page=pagination_scope.page,
                    per_page=pagination_scope.per_page,
                    totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),

@@ -69,7 +69,7 @@ const tasks = {
 
 const subtasks = {
   fetchAllTasks: async (parentId) => {
-    const response = await axios.get(`/tasks/${parentId}/subtasks?sort_name=asc`);
+    const response = await axios.get(`/tasks/${parentId}/subtasks`);
 
     return response.data.json_list;
   },
