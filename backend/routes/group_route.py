@@ -1,9 +1,8 @@
 from flask import Blueprint
-from controllers import group_controller, group_query
-
+from controllers import group_controller
 blueprint = Blueprint('group_route', __name__)
 
-blueprint.route('/', methods=['GET'])(group_query.handle_request)
+blueprint.route('/', methods=['GET'])(group_controller.index)
 # blueprint.route('/', methods=['GET'])(group_controller.index)
 # blueprint.route('/<string:order>', methods=['GET'])(group_query.sort_by_name)
 # blueprint.route('/with_more_than/<int:n>', methods=['GET'])(group_query.show_with_more_than_n_members)
