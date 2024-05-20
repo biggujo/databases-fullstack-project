@@ -96,10 +96,14 @@ def delete(task_id, subtask_id=None):
 
 
 @authorize_user
-def get(task_id):
+def get(task_id, subtask_id=None):
     user_id = session.get("id")
-    task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
 
+    if subtask_id is None:
+        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.get(subtask_id)
+        
     if task is None:
         return {'message': 'Task not found'}, 404
 
