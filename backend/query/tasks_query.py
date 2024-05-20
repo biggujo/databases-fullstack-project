@@ -9,7 +9,7 @@ class TasksQuery:
 
     def call(self, parameters):
         self._sort_by_name(parameters)
-        # self._sort_by_deadline(parameters)
+        self._sort_by_deadline(parameters)
         # self._filter_by_status(parameters)
         # self._filter_by_date_range(parameters)
         # self._paginate(parameters)
@@ -18,18 +18,18 @@ class TasksQuery:
     def _sort_by_name(self, parameters):
         order = parameters.get('sort_name')
 
-        if order == "asc":
+        if order == 'asc':
             self.scope = self.scope.order_by(func.lower(Task.name).asc())
-        elif order == "desc":
+        elif order == 'desc':
             self.scope = self.scope.order_by(func.lower(Task.name).desc())
 
     def _sort_by_deadline(self, parameters):
         order = parameters.get('sort_deadline')
 
         if order == 'asc':
-            self.scope = sorted(self.scope, key=lambda task: task.deadline)
+            self.scope = self.scope.order_by(Task.deadline)
         elif order == 'desc':
-            self.scope = sorted(self.scope, key=lambda task: task.deadline, reverse=True)
+            self.scope = self.scope.order_by(Task.deadline.desc())
 
     def _filter_by_status(self, parameters):
         status = parameters.get('status')
