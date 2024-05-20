@@ -237,7 +237,7 @@ export default function Layout() {
             <Link as={ReactRouterLink} to="/">{t('homePage')}</Link>
           </Text>
           <Text>
-            <Link as={ReactRouterLink} to="/tasks">{t('signUp')}</Link>
+            <Link as={ReactRouterLink} to="/tasks">{t('myTasks')}</Link>
           </Text>
           <Text>
             <Link as={ReactRouterLink} to="/groups">{t('allGroups')}</Link>
