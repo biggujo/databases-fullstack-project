@@ -10,7 +10,7 @@ class TasksQuery:
     def call(self, parameters):
         self._sort_by_name(parameters)
         self._sort_by_deadline(parameters)
-        # self._filter_by_status(parameters)
+        self._filter_by_status(parameters)
         # self._filter_by_date_range(parameters)
         # self._paginate(parameters)
         return self.scope.all()
@@ -35,12 +35,11 @@ class TasksQuery:
         status = parameters.get('status')
 
         if status == 'completed':
-            self.scope = [task for task in self.scope if task.isDone == True]
+            self.scope = self.scope.filter(Task.isDone == True)
         elif status == 'in_progress':
-            self.scope = [task for task in self.scope if task.isDone == False]
+            self.scope = self.scope.filter(Task.isDone == False)
         elif status == 'overdue':
-            self.scope = [task for task in self.scope if
-                          task.status == 'in_progress' and task.deadline < datetime.now()]
+            self.scope = self.scope.filter(Task.isDone == False, Task.deadline < datetime.now())
 
     def _filter_by_date_range(self, parameters):
         start_date = parameters.get('start_date')
