@@ -13,7 +13,7 @@ class TasksQuery:
         self._filter_by_status(parameters)
         self._sort_by_name(parameters)
         self._sort_by_deadline(parameters)
-        return self._paginate(parameters)  # Pagination object
+        return self._paginate(parameters)  # Returns Pagination object
 
     def _sort_by_name(self, parameters):
         order = parameters.get('sort_name')
@@ -54,8 +54,8 @@ class TasksQuery:
         self.scope = self.scope.filter(Task.deadline <= end_date, Task.deadline >= start_date)
 
     def _paginate(self, parameters):
-        page = parameters.get('page')
-        per_page = parameters.get('per_page')
+        page = parameters.get('page', 1)
+        per_page = parameters.get('per_page', 5)
 
         if page is None or per_page is None:
             return
