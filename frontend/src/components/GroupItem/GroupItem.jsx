@@ -74,7 +74,7 @@ export default function GroupItem({
         })}</Text>
       </Flex>
       {isOpen && <>
-        <Text fontSize="xl">${t('listOfMembers')}:</Text>
+        <Text fontSize="xl">{t('listOfMembers')}:</Text>
         <UnorderedList marginLeft={8} spacing={2}>
           {users.map(({
             id,

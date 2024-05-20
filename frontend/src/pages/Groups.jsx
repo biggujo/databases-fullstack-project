@@ -33,7 +33,7 @@ function Groups() {
       <Box width={'50%'}>
         <GroupFilters />
       </Box>
-      <Heading as={'h4'} size={'lg'}>{t('Результати')}</Heading>
+      <Heading as={'h4'} size={'lg'}>{t('results')}</Heading>
     </Flex>
     <GroupList items={groups} />
   </Flex>);
