@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    email = db.Column(db.String(32), unique=True, nullable=False)
     username = db.Column(db.String(32), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     tasks_meta: Mapped[List["TaskMeta"]] = db.relationship()
