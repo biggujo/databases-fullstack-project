@@ -8,12 +8,14 @@ const useGroupFilter = ({ operations }) => {
   const initialValues = {
     name: '',
     members: 0,
+    order: 'asc',
   };
 
   const handleSubmit = (values, formikHelpers) => {
     dispatch(operations.fetchAllGroups({
       query: values.name,
       n: values.members,
+      order: values.order,
     }));
   };
 

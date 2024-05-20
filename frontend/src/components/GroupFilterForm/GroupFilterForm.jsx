@@ -1,6 +1,8 @@
 import React from 'react';
 import { FormikProvider } from 'formik';
-import { Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import {
+  Button, Flex, FormControl, FormLabel, Input, Select,
+} from '@chakra-ui/react';
 import useGroupFilter from '../../../hooks/useGroupFilter.js';
 import { GroupTasksOperations } from '../../redux/groupTasks/operations.js';
 import { GroupsOperations } from '../../redux/groups/operations.js';
@@ -40,7 +42,7 @@ export default function GroupFilterForm() {
         <FormControl>
           <FormLabel>
             <Flex gap={2}>
-              <span>Members more than</span>
+              <span>{t('membersMoreThan')}</span>
             </Flex>
           </FormLabel>
           <Input
@@ -53,6 +55,24 @@ export default function GroupFilterForm() {
             value={formik.values.members}
             onChange={formik.handleChange}
           />
+        </FormControl>
+        <FormControl>
+          <FormLabel>
+            <Flex gap={2}>
+              <span>{t('sortName')}</span>
+            </Flex>
+          </FormLabel>
+          <Select
+            name={'order'}
+            fontSize={'14'}
+            height={9}
+            onChange={(e) => {
+              formik.setFieldValue('order', e.target.value);
+            }}
+          >
+            <option value={'asc'}>{t('byAscending')}</option>
+            <option value={'desc'}>{t('byDescending')}</option>
+          </Select>
         </FormControl>
       </Flex>
       <Flex gap={4}>

@@ -35,9 +35,14 @@ const tasks = {
   fetchAllTasks: async (urlParameters) => {
     if (typeof urlParameters === 'undefined') {
       urlParameters = 'sort_deadline=asc&status=in_progress';
-    } else if (urlParameters.get('sort_deadline') === null) {
-      urlParameters.append('sort_deadline', 'asc');
+    }
+
+    if (typeof urlParameters === 'object' && urlParameters.get('status') === null) {
       urlParameters.append('status', 'in_progress');
+    }
+
+    if (typeof urlParameters === 'object' && urlParameters.get('sort_deadline') === null) {
+      urlParameters.append('sort_deadline', 'asc');
     }
 
     const response = await axios.get(`/tasks?${urlParameters}`);
@@ -127,6 +132,14 @@ const subtasks = {
 
 const groups = {
   fetchAllGroups: async (urlParameters) => {
+    if (typeof urlParameters === 'undefined') {
+      urlParameters = 'order=asc';
+    }
+
+    if (typeof urlParameters === 'object' && urlParameters.get('order') === null) {
+      urlParameters.append('order', 'asc');
+    }
+
     const response = await axios.get(`/groups?${urlParameters}`);
 
     return response.data.json_list;
@@ -152,8 +165,6 @@ const groupTasks = {
     groupId,
     urlParameters,
   }) => {
-    console.log(urlParameters.toString());
-
     if (typeof urlParameters === 'undefined') {
       urlParameters = 'sort_deadline=asc&status=in_progress';
     }
