@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from flask import jsonify, request, session
 from models.group_model import Group
 from helpers.main import db
@@ -7,14 +6,8 @@ from schemas.group_schemas import validate_group
 from models.user_model import User
 from models.task_model import Task
 from models.task_meta_model import TaskMeta
-from controllers import task_controller
 from decorators.authorize_user import authorize_user
-
 from schemas.task_schemas import validate_task
-
-from schemas.subtask_schemas import validate_subtask
-
-from models.subtasks_model import Subtask
 
 
 def index():
@@ -98,29 +91,23 @@ def remove_user(id):
     return {}, 204
 
 
-# @authorize_user
-# def tasks(id):
-#    group = Group.query.get(id)
-#    if group is None:
-#        return {'message': 'Group not found'}
-#    current_user = session.get("id")
-#    if current_user is None:
-#        return {'message': 'Not authprizes'}, 401
-#    if current_user not in [user.id for user in group.users]:
-#        return {'message': 'Access denied'}, 403
-#    group_tasks = group.tasks
-#    return jsonify([task.serialize for task in group_tasks]), 200
-
-
-def tasks_index(id):
+def tasks_index(id, task_id=None):
     # user_id = session.get("id")
     # if user_id is None:
     #    return {'message': 'Unauthorized'}, 401
-    return jsonify(json_list=[i.serialize for i in Task.query_group_tasks(id).all()])
+
+    if task_id is None:
+        return jsonify(json_list=[i.serialize for i in Task.query_group_tasks(id).all()])
+    else:
+        task = Task.query.get(task_id)
+        if task is None:
+            return {'message': 'Nothing found'}, 404
+        return jsonify(json_list=[subtask.serialize for subtask in
+                                  task.subtasks]), 200  # Task.query.filter_by(parent_task_id=task_id).all()])
 
 
 @validate_task
-def tasks_create(id):
+def tasks_create(id, task_id=None):
     body = request.json
     user_id = session.get("id")
 
@@ -130,25 +117,30 @@ def tasks_create(id):
     name = body.get('name')
     description = body.get('description')
     deadline = body.get('deadline', None)
-
     new_task = Task(name=name, description=description, deadline=deadline)
-
-    db.session.add(new_task)
-    db.session.commit()
-
-    new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id, group_id=id)
-
-    db.session.add(new_task_meta)
+    if task_id is None:
+        db.session.add(new_task)
+        db.session.commit()
+        new_task_meta = TaskMeta(task_id=new_task.id, user_id=user_id, group_id=id)
+        db.session.add(new_task_meta)
+    else:
+        task = Task.query.get(task_id)
+        if task is None:
+            return {'message': 'Parent task not found'}, 404
+        task.subtasks.append(new_task)
+        db.session.add(new_task)
     db.session.commit()
 
     return new_task.serialize, 201
 
 
 @validate_task
-def tasks_update(id, task_id):
+def tasks_update(id, task_id, subtask_id=None):
     body = request.json
-
-    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    if subtask_id is None:
+        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -166,8 +158,11 @@ def tasks_update(id, task_id):
 
 
 @authorize_user
-def tasks_delete(id, task_id):
-    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+def tasks_delete(id, task_id, subtask_id=None):
+    if subtask_id is None:
+        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    else:
+        task = Task.query.filter_by(id=subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -185,60 +180,3 @@ def tasks_get(id, task_id):
         return {'message': 'Task not found'}, 404
 
     return task.serialize, 200
-
-
-def subtasks_index(id, task_id):
-    group = Group.query.get(id)
-    if group is None:
-        return {'message': 'Group not found'}, 404
-    task = Task.query.filter_by(id=task_id).first()
-    if task is None:
-        return {'message': 'Task not found'}, 404
-    return jsonify([subtask.serialize for subtask in task.subtasks]), 200
-
-@validate_subtask
-def subtasks_create(id, task_id):
-    body = request.json
-
-    name = body.get('name')
-    description = body.get('description')
-
-    deadline = body.get('deadline')
-    new_subtask = Subtask(name=name, description=description, deadline=deadline, parent_task_id=task_id)
-
-    db.session.add(new_subtask)
-    db.session.commit()
-
-    return new_subtask.serialize, 201
-
-
-def subtasks_update(id, task_id, subtask_id):
-    body = request.json
-
-    subtask = Subtask.query.filter_by(id=subtask_id, parent_task_id=task_id).first()
-
-    if subtask is None:
-        return {'message': 'Subtask not found'}, 404
-
-    fields = ['name', 'description', 'isDone', 'deadline']
-
-    for field in fields:
-        if field in body:
-            setattr(subtask, field, body.get(field))
-
-    subtask.updated_at = datetime.now(tz=None)
-    db.session.commit()
-
-    return subtask.serialize, 200
-
-
-def subtasks_delete(id, task_id, subtask_id):
-    subtask = Subtask.query.filter_by(id=subtask_id, parent_task_id=task_id).first()
-
-    if subtask is None:
-        return {'message': 'Subtask not found'}, 404
-
-    db.session.delete(subtask)
-    db.session.commit()
-
-    return {}, 204
