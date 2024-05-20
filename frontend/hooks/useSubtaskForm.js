@@ -21,7 +21,7 @@ const useSubtaskForm = (operationOnSubmit, initialData, onSubmit) => {
       thunk = operationOnSubmit(taskToSubmit);
     } else {
       thunk = operationOnSubmit({
-        id: initialData.id,
+        subtaskId: initialData.id,
         data: taskToSubmit,
       });
     }

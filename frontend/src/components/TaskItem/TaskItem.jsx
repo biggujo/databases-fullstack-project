@@ -6,16 +6,15 @@ import { useDispatch } from 'react-redux';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { format, isAfter } from 'date-fns';
 import useToggle from '../../../hooks/useToggle.js';
-import TaskFormUpdate from '../TaskFormUpdate/index.js';
 import DateFormatters from '../../utils/date-format.js';
 import {
   TaskUpdateTimestampContext,
 } from '../../providers/TaskUpdateTimestampProvider.jsx';
 import { useTranslation } from 'react-i18next';
-import SubtaskList from '../SubtaskList/SubtaskList.jsx';
 import TaskList from '../TaskList/index.js';
 import { selectSubtasks } from '../../redux/subtasks/selectors.js';
 import SubtasksOperations from '../../redux/subtasks/operations.js';
+import SubtaskFormUpdate from '../SubtaskFormUpdate/index.js';
 
 export default function TaskItem({
   data: {
@@ -80,6 +79,7 @@ export default function TaskItem({
       {<TaskList selector={selectSubtasks}
                  operations={SubtasksOperations(id)}
                  openable={false}
+                 updateFormComponent={SubtaskFormUpdate}
       />}
     </Box>}
   </Flex>);
@@ -116,8 +116,8 @@ export default function TaskItem({
           initialValues={{
             id,
             name,
-            description,
-            deadline: DateFormatters.formatWithDefault(deadline),
+            description: description,
+            deadline: deadline && DateFormatters.formatWithDefault(deadline),
           }} />}
         {!isEdit && <>
           <Flex gap={2}

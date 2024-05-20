@@ -8,6 +8,7 @@ import TaskFormUpdate from '../TaskFormUpdate/index.js';
 export default function TaskList({
   operations,
   selector,
+  updateFormComponent: UpdateFormComponent = TaskFormUpdate,
   isParent = false,
   openable = true,
 }) {
@@ -32,7 +33,7 @@ export default function TaskList({
     {tasks && tasks.map((props) => <ListItem key={props.id} bg="purple.50">
       <TaskItem data={...props}
                 operations={operations}
-                updateForm={TaskFormUpdate}
+                updateForm={UpdateFormComponent}
                 onShow={handleShow}
                 shouldOpen={props.id === showId}
                 openable={openable}
