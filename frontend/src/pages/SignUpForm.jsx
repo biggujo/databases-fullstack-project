@@ -7,12 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import UserOperations from '../redux/auth/operations.js';
 import { useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
 
 export default function SignUpForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -50,52 +48,53 @@ export default function SignUpForm() {
         <form onSubmit={formik.handleSubmit}>
           <VStack spacing={4} align="flex-start">
             <FormControl
-                isInvalid={formik.errors.username && formik.touched.username}>
-              <FormLabel htmlFor="username">{t('enterUsername')}</FormLabel>
+              isInvalid={formik.errors.username && formik.touched.username}>
+              <FormLabel htmlFor="username">Enter a username</FormLabel>
               <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  variant="filled"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.username}
+                id="username"
+                name="username"
+                type="text"
+                variant="filled"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
               />
               {formik.errors.username && formik.touched.username && (
-                  <Box color="red">{formik.errors.username}</Box>)}
+                <Box color="red">{formik.errors.username}</Box>)}
             </FormControl>
             <FormControl
-                isInvalid={formik.errors.password && formik.touched.password}>
-              <FormLabel htmlFor="password">{t('createPassword')}</FormLabel>
+              isInvalid={formik.errors.password && formik.touched.password}>
+              <FormLabel htmlFor="password">Create a password</FormLabel>
               <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  variant="filled"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
+                id="password"
+                name="password"
+                type="password"
+                variant="filled"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
               />
               {formik.errors.password && formik.touched.password && (
-                  <Box color="red">{formik.errors.password}</Box>)}
+                <Box color="red">{formik.errors.password}</Box>)}
             </FormControl>
             <FormControl
-                isInvalid={formik.errors.confirmPassword && formik.touched.confirmPassword}>
-              <FormLabel htmlFor="confirmPassword">{t('confirmPassword')}</FormLabel>
+              isInvalid={formik.errors.confirmPassword && formik.touched.confirmPassword}>
+              <FormLabel htmlFor="confirmPassword">Confirm your
+                password</FormLabel>
               <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  variant="filled"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.confirmPassword}
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                variant="filled"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
               />
               {formik.errors.confirmPassword && formik.touched.confirmPassword && (
-                  <Box color="red">{formik.errors.confirmPassword}</Box>)}
+                <Box color="red">{formik.errors.confirmPassword}</Box>)}
             </FormControl>
             <Button type="submit" colorScheme="purple" width="full">
-              {t('SignUp')}
+              Sign Up
             </Button>
           </VStack>
         </form>

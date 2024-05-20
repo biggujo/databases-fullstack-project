@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Box, Input, List, ListItem, Flex, Text, Button, Heading } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
 
 // Static collection
 // We'll use API later
@@ -34,7 +33,6 @@ const groups = [
 ];
 
 function Groups() {
-    const { t } = useTranslation();
     const [filter, setFilter] = useState('');
     const [groupState, setGroupState] = useState(groups);
     const [newGroupTitle, setNewGroupTitle] = useState('');
@@ -62,7 +60,7 @@ function Groups() {
                 ...prevGroups,
                 { title: newGroupTitle, members: 1, isNew: true }
             ]);
-            setNewGroupTitle('');
+            setNewGroupTitle(''); // Очистка поля ввода после добавления
         }
     };
 
@@ -72,11 +70,11 @@ function Groups() {
 
     return (
         <Box p={5}>
-            <Heading as='h1' size='xl' mb={4}>{t('groups')}</Heading>
-            <Text mb={4}>{t('availableAmount')} {groupState.length}</Text>
+            <Heading as='h1' size='xl' mb={4}>Groups</Heading>
+            <Text mb={4}>Available amount: {groupState.length}</Text>
             <Box mb={5}>
                 <Input
-                    placeholder={t('createNewGroup')}
+                    placeholder='Create a new group...'
                     value={newGroupTitle}
                     onChange={(e) => setNewGroupTitle(e.target.value)}
                 />
@@ -87,12 +85,12 @@ function Groups() {
                     color='white'
                     _hover={{ bg: 'purple.800' }}
                 >
-                    {t('createGroup')}
+                    Create Group
                 </Button>
             </Box>
             <Box mb={5}>
                 <Input
-                    placeholder={t('searchGroups')}
+                    placeholder='Search for groups...'
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
                 />
@@ -103,11 +101,11 @@ function Groups() {
                         <Flex justifyContent='space-between' alignItems='center'>
                             <Text fontSize='lg'>{group.title}</Text>
                             <Flex alignItems='center'>
-                                <Text fontSize='sm' mr={4}>{t('members', { count: group.members })}</Text>
+                                <Text fontSize='sm' mr={4}>Members: {group.members}</Text>
                                 <Button
                                     onClick={() => toggleGroupState(index)}
                                     colorScheme={group.isNew ? 'red' : 'green'}>
-                                    {group.isNew ? t('leave') : t('join')}
+                                    {group.isNew ? 'Leave' : 'Join'}
                                 </Button>
                             </Flex>
                         </Flex>
