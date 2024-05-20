@@ -129,7 +129,7 @@ const groups = {
   fetchAllGroups: async () => {
     const response = await axios.get('/groups');
 
-    return response.data;
+    return response.data.json_list;
   },
   fetchById: async (id) => {
     const response = await axios.get(`/groups/${id}`);

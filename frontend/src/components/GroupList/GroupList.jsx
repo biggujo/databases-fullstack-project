@@ -44,8 +44,7 @@ export default function GroupList({ items: groups }) {
     nameFilter,
   ]);
 
-  const groupsSlice = filteredGroups.slice(
-    page * PAGE_SIZE,
+  const groupsSlice = filteredGroups.slice(page * PAGE_SIZE,
     (page + 1) * PAGE_SIZE,
   );
 
