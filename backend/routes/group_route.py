@@ -1,5 +1,8 @@
 from flask import Blueprint
 from controllers import group_controller
+
+from controllers import task_controller
+
 blueprint = Blueprint('group_route', __name__)
 
 blueprint.route('/', methods=['GET'])(group_controller.index)
@@ -20,3 +23,7 @@ blueprint.route('/<int:id>/tasks/<int:task_id>', methods=['PUT'], endpoint='grou
     group_controller.tasks_update)
 blueprint.route('/<int:id>/tasks/<int:task_id>', methods=['DELETE'], endpoint='group_tasks_delete')(
     group_controller.tasks_delete)
+blueprint.route('/<int:id>/tasks/<int:task_id>/subtasks', methods=['GET'])(group_controller.tasks_index)
+blueprint.route('/<int:id>/tasks/<int:task_id>/subtasks', methods=['POST'])(group_controller.tasks_create)
+blueprint.route('/<int:id>/tasks/<int:task_id>/subtasks/<int:subtask_id>', methods=['PUT'])(group_controller.tasks_update)
+blueprint.route('/<int:id>/tasks/<int:task_id>/subtasks/<int:subtask_id>', methods=['DELETE'])(group_controller.tasks_delete)
