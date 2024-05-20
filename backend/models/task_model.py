@@ -24,7 +24,7 @@ class Task(db.Model):
                                secondary=tasks_subtasks,
                                primaryjoin=id == tasks_subtasks.c.parent_id,
                                secondaryjoin=id == tasks_subtasks.c.child_id,
-                               backref='parent_task')
+                               backref=db.backref('parent_task', lazy='joined'), lazy='dynamic')
 
     @staticmethod
     def query_user_tasks(user_id):
