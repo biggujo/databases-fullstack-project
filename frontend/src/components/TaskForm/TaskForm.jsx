@@ -23,7 +23,7 @@ export default function TaskForm({ formik }) {
       <FormControl>
         <FormLabel fontSize={'xl'}>
           <Flex gap={2}>
-            <span>{t('text')}</span>
+            <span>{t('name')}</span>
             <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>

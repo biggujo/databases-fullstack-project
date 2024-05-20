@@ -3,9 +3,10 @@ import API from '../../utils/api.js';
 import toast from 'react-hot-toast';
 
 const fetchAllTasks = createAsyncThunk('tasks/fetchAll',
-  async (_, { rejectWithValue }) => {
+  async (parameters, { rejectWithValue }) => {
     try {
-      return await API.tasks.fetchAllTasks();
+      const urlParameters = new URLSearchParams(parameters);
+      return await API.tasks.fetchAllTasks(urlParameters);
     } catch (e) {
       toast.error(e.response.data.message);
       return rejectWithValue(e);

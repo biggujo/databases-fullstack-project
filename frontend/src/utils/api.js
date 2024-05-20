@@ -32,8 +32,8 @@ const auth = {
 };
 
 const tasks = {
-  fetchAllTasks: async () => {
-    const response = await axios.get('/tasks');
+  fetchAllTasks: async (urlParameters) => {
+    const response = await axios.get(`/tasks?${urlParameters}`);
 
     const data = response.data.json_list;
 
