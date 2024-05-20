@@ -8,17 +8,20 @@ import App from './components/App';
 import store, { persistor } from './redux/store';
 import './i18n';
 import './styles/main.css';
+import {
+  TaskUpdateTimestampProvider,
+} from './providers/TaskUpdateTimestampProvider.jsx';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-            <Provider store={store}>
-                <PersistGate persistor={persistor} loading={null}>
-                    <BrowserRouter>
-                        <ChakraProvider>
-                            <App />
-                        </ChakraProvider>
-                    </BrowserRouter>
-                </PersistGate>
-            </Provider>
-    </React.StrictMode>
-);
+ReactDOM.createRoot(document.getElementById('root')).render(<React.StrictMode>
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={null}>
+      <TaskUpdateTimestampProvider>
+        <BrowserRouter>
+          <ChakraProvider>
+            <App />
+          </ChakraProvider>
+        </BrowserRouter>
+      </TaskUpdateTimestampProvider>
+    </PersistGate>
+  </Provider>
+</React.StrictMode>);
