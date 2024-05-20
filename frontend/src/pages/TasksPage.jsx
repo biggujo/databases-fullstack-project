@@ -6,6 +6,8 @@ import { TasksOperations } from '../redux/tasks/operations.js';
 import { selectTasks } from '../redux/tasks/selectors.js';
 import { useTranslation } from 'react-i18next';
 import TaskFilterForm from '../components/TaskFilterForm/TaskFilterForm.jsx';
+import TaskFilterFormOwn
+  from '../components/TaskFilterFormOwn/TaskFilterFormOwn.jsx';
 
 export default function TasksPage() {
   const { t } = useTranslation();
@@ -20,7 +22,7 @@ export default function TasksPage() {
 
     <Heading as={'h3'} size={'xl'}>{t('taskItems')}</Heading>
     <Heading as={'h4'} size={'lg'}>{t('filter')}</Heading>
-    <TaskFilterForm />
+    <TaskFilterFormOwn />
     <Heading as={'h4'} size={'lg'}>{t('results')}</Heading>
     <TaskList
       selector={selectTasks}

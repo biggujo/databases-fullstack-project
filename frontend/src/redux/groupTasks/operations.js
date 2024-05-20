@@ -3,9 +3,13 @@ import API from '../../utils/api.js';
 import toast from 'react-hot-toast';
 
 const fetchAllTasks = (groupId) => createAsyncThunk('groupTasks/fetchAll',
-  async (_, { rejectWithValue }) => {
+  async (parameters, { rejectWithValue }) => {
     try {
-      return await API.groups.tasks.fetchGroupTasksById(groupId);
+      const urlParameters = new URLSearchParams(parameters);
+      return await API.groups.tasks.fetchGroupTasksById({
+        groupId,
+        urlParameters,
+      });
     } catch (e) {
       toast.error(e.response.data.message);
       return rejectWithValue(e);

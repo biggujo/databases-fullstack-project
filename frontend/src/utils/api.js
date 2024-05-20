@@ -148,8 +148,25 @@ const groups = {
 };
 
 const groupTasks = {
-  fetchGroupTasksById: async (groupId) => {
-    const response = await axios.get(`/groups/${groupId}/tasks`);
+  fetchGroupTasksById: async ({
+    groupId,
+    urlParameters,
+  }) => {
+    console.log(urlParameters.toString());
+
+    if (typeof urlParameters === 'undefined') {
+      urlParameters = 'sort_deadline=asc&status=in_progress';
+    }
+
+    if (typeof urlParameters === 'object' && urlParameters.get('status') === null) {
+      urlParameters.append('status', 'in_progress');
+    }
+
+    if (typeof urlParameters === 'object' && urlParameters.get('sort_deadline') === null) {
+      urlParameters.append('sort_deadline', 'asc');
+    }
+
+    const response = await axios.get(`/groups/${groupId}/tasks?${urlParameters}`);
 
     return response.data.json_list;
   },

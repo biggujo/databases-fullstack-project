@@ -1,15 +1,13 @@
 import React from 'react';
 import { FormikProvider } from 'formik';
 import {
-  Box, Button, Flex, FormControl, FormLabel, Input, Select, Text,
+  Button, Flex, FormControl, FormLabel, Input, Select, Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
-import useFormFilter from '../../../hooks/useFormFilter.js';
 import DatePicker from '../DatePicker/DatePicker.jsx';
 import DateFormatters from '../../utils/date-format.js';
 
-export default function TaskFilterForm() {
-  const formik = useFormFilter();
+export default function TaskFilterForm({ formik }) {
   const { t } = useTranslation();
 
   return (<FormikProvider value={formik}>
@@ -93,6 +91,7 @@ export default function TaskFilterForm() {
           >
             <option value={'in_progress'}>{t('inProgress')}</option>
             <option value={'completed'}>{t('completed')}</option>
+            <option value={'all'}>{t('all')}</option>
           </Select>
         </FormControl>
         <FormControl>
