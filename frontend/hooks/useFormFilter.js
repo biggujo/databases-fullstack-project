@@ -10,18 +10,37 @@ const useFormFilter = () => {
 
   const initialValues = {
     name: '',
-    startDate: DateFormatters.formatWithDefault(addDays(new Date(), 1)),
-    endDate: DateFormatters.formatWithDefault(addDays(new Date(), 2)),
+    startDate: '',
+    endDate: '',
+    status: '',
   };
 
   const handleSubmit = (values, formikHelpers) => {
-    const formattedStartDate = DateFormatters.formatWithDefault(subHours(values.endDate,
-      3,
-    ));
+    console.log(values);
+    let formattedStartDate;
+    let formattedEndDate;
+
+    if (values.startDate.length > 0) {
+      formattedStartDate = DateFormatters.formatWithDefault(subHours(values.startDate,
+        3,
+      ));
+    } else {
+      formattedStartDate = '1970-01-01';
+    }
+
+    if (values.endDate.length > 0) {
+      formattedEndDate = DateFormatters.formatWithDefault(subHours(values.endDate,
+        3,
+      ));
+    } else {
+      formattedEndDate = '2037-12-31';
+    }
 
     dispatch(TasksOperations.fetchAllTasks({
       query: values.name,
       start_date: formattedStartDate,
+      end_date: formattedEndDate,
+      status: values.status,
     }));
   };
 

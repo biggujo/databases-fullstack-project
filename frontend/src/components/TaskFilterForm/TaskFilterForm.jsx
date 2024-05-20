@@ -24,16 +24,16 @@ export default function TaskFilterForm() {
         <FormLabel>
           <Flex gap={2}>
             <span>{t('name')}</span>
-            <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <Input
           name="name"
           type="text"
           bgColor={'white'}
+          fontSize={'14'}
+          height={9}
           placeholder={t('placeholderText')}
           autoComplete={'off'}
-          isRequired
           value={formik.values.name}
           onChange={formik.handleChange}
         />
@@ -42,7 +42,6 @@ export default function TaskFilterForm() {
         <FormLabel>
           <Flex gap={2}>
             <span>{t('startDate')}</span>
-            <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <div>
@@ -63,7 +62,6 @@ export default function TaskFilterForm() {
         <FormLabel>
           <Flex gap={2}>
             <span>{t('endDate')}</span>
-            <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <DatePicker
@@ -82,19 +80,22 @@ export default function TaskFilterForm() {
         <FormLabel>
           <Flex gap={2}>
             <span>{t('status')}</span>
-            <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
-        <div>
-          <Select
-            name={'status'}
-            width={'fit-content'}
-          >
-            <option value={'completed'}>{t('completed')}</option>
-            <option value={'in_progress'}>{t('inProgress')}</option>
-            <option value={'overdue'}>{t('overdue')}</option>
-          </Select>
-        </div>
+        <Select
+          name={'status'}
+          width={'fit-content'}
+          fontSize={'14'}
+          height={9}
+          onChange={(e) => {
+            formik.setFieldValue('status', e.target.value);
+          }}
+        >
+          <option value={''}></option>
+          <option value={'completed'}>{t('completed')}</option>
+          <option value={'in_progress'}>{t('inProgress')}</option>
+          <option value={'overdue'}>{t('overdue')}</option>
+        </Select>
         {formik.errors.startDate && formik.touched.startDate ? (
           <Text color={'red'}>{formik.errors.startDate}</Text>) : null}
       </FormControl>
@@ -103,7 +104,7 @@ export default function TaskFilterForm() {
               bg="purple.500"
               color="white"
               _hover={{ bg: 'purple.800' }}>
-        {t('submit')}
+        {t('search')}
       </Button>
       <Button onClick={() => {
         formik.resetForm();
