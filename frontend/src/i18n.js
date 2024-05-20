@@ -9,7 +9,7 @@ const i18n = i18next
   resources: {
     en: {
       translation: {
-        homePage: 'HomePage',
+        homePage: 'Home Page',
         aboutPage: 'AboutPage',
         taskList: 'Task List',
         addTask: 'Add Task',
