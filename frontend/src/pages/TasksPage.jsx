@@ -19,8 +19,9 @@ export default function TasksPage() {
     </Box>
 
     <Heading as={'h3'} size={'xl'}>{t('taskItems')}</Heading>
-    <Heading as={'h3'} size={'lg'}>{t('filter')}</Heading>
+    <Heading as={'h4'} size={'lg'}>{t('filter')}</Heading>
     <TaskFilterForm />
+    <Heading as={'h4'} size={'lg'}>{t('results')}</Heading>
     <TaskList
       selector={selectTasks}
       operations={TasksOperations}

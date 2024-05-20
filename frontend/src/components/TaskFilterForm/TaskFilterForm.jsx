@@ -5,12 +5,14 @@ import {
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import useFormFilter from '../../../hooks/useFormFilter.js';
+import DatePicker from '../DatePicker/DatePicker.jsx';
+import DateFormatters from '../../utils/date-format.js';
 
 export default function TaskFilterForm() {
   const formik = useFormFilter();
   const { t } = useTranslation();
 
-  return (<FormikProvider value={null}>
+  return (<FormikProvider value={formik}>
     <Flex as={'form'}
           gap={4}
           alignItems={'bottom'}
@@ -19,7 +21,7 @@ export default function TaskFilterForm() {
             formik.handleSubmit();
           }}>
       <FormControl>
-        <FormLabel fontSize={'xl'}>
+        <FormLabel>
           <Flex gap={2}>
             <span>{t('name')}</span>
             <Text color={'red'}> *</Text>
@@ -28,7 +30,6 @@ export default function TaskFilterForm() {
         <Input
           name="name"
           type="text"
-          size={'lg'}
           bgColor={'white'}
           placeholder={t('placeholderText')}
           autoComplete={'off'}
@@ -36,6 +37,46 @@ export default function TaskFilterForm() {
           value={formik.values.name}
           onChange={formik.handleChange}
         />
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          <Flex gap={2}>
+            <span>{t('startDate')}</span>
+            <Text color={'red'}> *</Text>
+          </Flex>
+        </FormLabel>
+        <div>
+          <DatePicker
+            name={'startDate'}
+            {...formik.getFieldProps('startDate')}
+            timeInputLabel={t('startDate')}
+            dateFormat={DateFormatters.DATE_FORMAT}
+            showTimeInput
+            wrapperClassName="date-picker"
+            autoComplete="off"
+          />
+        </div>
+        {formik.errors.startDate && formik.touched.startDate ? (
+          <Text color={'red'}>{formik.errors.startDate}</Text>) : null}
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          <Flex gap={2}>
+            <span>{t('endDate')}</span>
+            <Text color={'red'}> *</Text>
+          </Flex>
+        </FormLabel>
+        <DatePicker
+          name={'endDate'}
+          {...formik.getFieldProps('endDate')}
+          timeInputLabel={t('endDate')}
+          dateFormat={DateFormatters.DATE_FORMAT}
+          showTimeInput
+          wrapperClassName="date-picker"
+          autoComplete="off"
+        />
+        {formik.errors.endDate && formik.touched.endDate ? (
+          <Text color={'red'}>{formik.errors.endDate}</Text>) : null}
       </FormControl>
       <Button type={'submit'}
               alignSelf={'start'}

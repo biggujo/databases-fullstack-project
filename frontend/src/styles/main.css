@@ -8,6 +8,10 @@
   font-size: 18px;
 }
 
+div > .react-datepicker__input-container input {
+  font-size: 16px;
+}
+
 .completed::after {
   content: "";
   position: absolute;
