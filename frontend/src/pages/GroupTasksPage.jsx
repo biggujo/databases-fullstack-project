@@ -11,6 +11,7 @@ import TaskFormAdd from '../components/TaskFormAdd/index.js';
 import { useSelector } from 'react-redux';
 import { selectAuthUser } from '../redux/auth/selectors.js';
 import { useTranslation } from 'react-i18next';
+import TaskItem from '../components/TaskItem/TaskItem.jsx';
 
 export default function GroupTasksPage() {
   const { id: currentUserId } = useSelector(selectAuthUser);
@@ -41,7 +42,9 @@ export default function GroupTasksPage() {
     <Heading as={'h3'} size={'xl'}>{t('taskItems')}</Heading>
     <TaskList
       selector={selectGroupTasks}
-      operations={GroupTasksOperations(id)} />
+      operations={GroupTasksOperations(id)}
+      isParent={true}
+    />
     <Box position={'absolute'} top={0} right={0} width={200}>
       <Text fontSize="xl">{t('listOfMembers')}:</Text>
       <UnorderedList marginLeft={8} spacing={2}>

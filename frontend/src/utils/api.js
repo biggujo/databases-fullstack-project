@@ -67,6 +67,57 @@ const tasks = {
   },
 };
 
+const subtasks = {
+  fetchAllTasks: async (parentId) => {
+    const response = await axios.get(`/tasks/${parentId}/subtasks`);
+
+    return response.data.json_list;
+  },
+  toggleCompletedById: async ({
+    parentId,
+    subtaskId,
+  }) => {
+    // Not good way to do two requests, but the backend doesn't have a method to toggle completion
+    const actualTask = await axios.get(`/tasks/${parentId}/subtasks/${subtaskId}`);
+
+    const response = await axios.put(`/tasks/${parentId}/subtasks/${subtaskId}`,
+      {
+        isDone: !actualTask.data.isDone,
+      },
+    );
+
+    return response.data;
+  },
+  addTask: async ({
+    parentId,
+    data,
+  }) => {
+    // data = { name, description, isDone, deadline }
+    const response = await axios.post(`/tasks/${parentId}/subtasks`, data);
+
+    return response.data;
+  },
+  updateById: async ({
+    parentId,
+    subtaskId,
+    data,
+  }) => {
+    const response = await axios.put(`/tasks/${parentId}/subtasks/${subtaskId}`,
+      data,
+    );
+
+    return response.data;
+  },
+  deleteById: async ({
+    parentId,
+    subtaskId,
+  }) => {
+    const response = await axios.delete(`/tasks/${parentId}/subtasks/${subtaskId}`);
+
+    return response.data;
+  },
+};
+
 const groups = {
   fetchAllGroups: async () => {
     const response = await axios.get('/groups');
@@ -122,8 +173,7 @@ const groupTasks = {
     taskId,
     data,
   }) => {
-    const response = await axios.put(
-      `/groups/${groupId}/tasks/${taskId}`,
+    const response = await axios.put(`/groups/${groupId}/tasks/${taskId}`,
       data,
     );
 
@@ -141,7 +191,10 @@ const groupTasks = {
 
 const API = {
   auth,
-  tasks,
+  tasks: {
+    ...tasks,
+    subtasks,
+  },
   groups: {
     ...groups,
     tasks: groupTasks,

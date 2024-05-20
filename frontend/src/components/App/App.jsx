@@ -6,11 +6,8 @@ import SignUpForm from '../../pages/SignUpForm.jsx';
 import TasksPage from '../../pages/TasksPage.jsx';
 import Groups from '../../pages/Groups.jsx';
 import MyGroups from '../../pages/MyGroups.jsx';
-import { useEffect } from 'react';
-import API from '../../utils/api.js';
 import PrivateRoute from '../PrivateRoute/index.js';
 import ProtectedRoute from '../ProtectedRoute/index.js';
-import toast from 'react-hot-toast';
 import GroupTasksPage from '../../pages/GroupTasksPage.jsx';
 
 function App() {

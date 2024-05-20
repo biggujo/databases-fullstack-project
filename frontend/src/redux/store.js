@@ -9,6 +9,7 @@ import {
 import { groupsReducer } from './groups/slice.js';
 import { filtersReducer } from './filters/slice.js';
 import { groupTasksReducer } from './groupTasks/slice.js';
+import { subtasksReducer } from './subtasks/slice.js';
 
 const persistConfig = {
   key: 'counter',
@@ -23,6 +24,7 @@ const store = configureStore({
   reducer: {
     auth: persistReducer(persistConfig, authReducer),
     tasks: tasksReducer,
+    subtasks: subtasksReducer,
     groups: groupsReducer,
     groupTasks: groupTasksReducer,
     filters: filtersReducer,
