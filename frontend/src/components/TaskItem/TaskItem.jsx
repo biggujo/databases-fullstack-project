@@ -15,6 +15,7 @@ import TaskList from '../TaskList/index.js';
 import { selectSubtasks } from '../../redux/subtasks/selectors.js';
 import SubtasksOperations from '../../redux/subtasks/operations.js';
 import SubtaskFormUpdate from '../SubtaskFormUpdate/index.js';
+import SubtaskFormAdd from '../SubtaskFormAdd/index.js';
 
 export default function TaskItem({
   data: {
@@ -74,14 +75,19 @@ export default function TaskItem({
                 maxWidth={'100%'}
   >
     <MainData />
-    {isParent && isOpen && <Box pl={6} width={'95%'}>
-      <Text fontWeight={'bold'}>Subtasks:</Text>
-      {<TaskList selector={selectSubtasks}
-                 operations={SubtasksOperations(id)}
-                 openable={false}
-                 updateFormComponent={SubtaskFormUpdate}
-      />}
-    </Box>}
+    {isParent && isOpen &&
+      <Flex direction={'column'} gap={2} pl={6} width={'95%'}>
+        <Text fontWeight={'bold'} fontSize={'xl'}>{t('subtasks')}:</Text>
+        <Box width={'40%'}>
+          <SubtaskFormAdd operations={SubtasksOperations(id)} />
+        </Box>
+        <Text fontWeight={'bold'} fontSize={'xl'}>{t('list')}</Text>
+        {<TaskList selector={selectSubtasks}
+                   operations={SubtasksOperations(id)}
+                   openable={false}
+                   updateFormComponent={SubtaskFormUpdate}
+        />}
+      </Flex>}
   </Flex>);
 
   function MainData() {
@@ -137,10 +143,7 @@ export default function TaskItem({
           >
             {t('due')} {`${format(deadlineDate,
             'dd.MM.yyyy',
-          )} ${t('at')} ${format(
-            deadlineDate,
-            'HH:mm',
-          )}`}</Text>}
+          )} ${t('at')} ${format(deadlineDate, 'HH:mm')}`}</Text>}
         </>}
       </Flex>
       <Flex gap={4}>

@@ -29,7 +29,7 @@ def index(task_id=None):
     query_object = TasksQuery(initial_scope)
     pagination_scope = query_object.call(parameters)
 
-    return jsonify(json_list=[task.serialize for task in pagination_scope.items],
+    return jsonify(json_list=[task.serialize for task in Task.query_user_tasks(user_id)],
                    page=pagination_scope.page,
                    per_page=pagination_scope.per_page,
                    totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),
@@ -96,7 +96,7 @@ def update(task_id, subtask_id=None):
 @authorize_user
 def delete(task_id, subtask_id=None):
     user_id = session.get("id")
-    if user_id is None:
+    if subtask_id is None:
         task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
     else:
         task = Task.query.filter_by(id=subtask_id).first()

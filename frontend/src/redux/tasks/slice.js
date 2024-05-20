@@ -36,7 +36,10 @@ export const TasksBuilder = (Operations) => (builder) => {
     return updatedState;
   })
   .addCase(Operations.deleteById.fulfilled, (state, action) => {
+    console.log(action);
     const indexToDelete = state.findIndex(({ id }) => id === action.payload.id);
+
+    console.log(indexToDelete);
 
     if (indexToDelete === -1) {
       return state;
