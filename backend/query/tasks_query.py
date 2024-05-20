@@ -8,10 +8,10 @@ class TasksQuery:
         self.scope = initial_scope
 
     def call(self, parameters):
+        self._filter_by_date_range(parameters)
+        self._filter_by_status(parameters)
         self._sort_by_name(parameters)
         self._sort_by_deadline(parameters)
-        self._filter_by_status(parameters)
-        # self._filter_by_date_range(parameters)
         # self._paginate(parameters)
         return self.scope.all()
 
@@ -45,10 +45,13 @@ class TasksQuery:
         start_date = parameters.get('start_date')
         end_date = parameters.get('end_date')
 
-        if start_date and end_date:
-            start_date = datetime.fromisoformat(start_date)
-            end_date = datetime.fromisoformat(end_date)
-            self.scope = [task for task in self.scope if start_date <= task.deadline <= end_date]
+        if not start_date or not end_date:
+            return
+
+        start_date = datetime.fromisoformat(start_date)
+        end_date = datetime.fromisoformat(end_date)
+
+        self.scope = self.scope.filter(Task.deadline <= end_date, Task.deadline >= start_date)
 
     def _paginate(self, parameters):
         page = parameters.get('page')
