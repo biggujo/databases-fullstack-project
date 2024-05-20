@@ -14,7 +14,7 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
-    description = db.Column(db.String(512), unique=False, nullable=False)
+    description = db.Column(db.String(512), unique=False)
     isDone = db.Column(db.Boolean, nullable=False, default=False)
     deadline = db.Column(db.DateTime, nullable=True)
     task_meta = db.relationship('TaskMeta', back_populates="task", cascade="all, delete-orphan")
