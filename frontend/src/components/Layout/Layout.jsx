@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Divider, Text, Link, Flex, Image, Button, Box, Select,
+  Divider, Text, Link, Flex, Image, Button, Box,
 } from '@chakra-ui/react';
 import { Link as ReactRouterLink, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,6 @@ import {
 } from '../../redux/auth/selectors.js';
 import { Toaster } from 'react-hot-toast';
 import UserOperations from '../../redux/auth/operations.js';
-import {useTranslation} from "react-i18next";
 
 function Header() {
   const dispatch = useDispatch();
@@ -20,15 +19,6 @@ function Header() {
   const [isHomeHovered, setIsHomeHovered] = useState(false);
   const [isTasksHovered, setIsTasksHovered] = useState(false);
   const [isAboutHovered, setIsAboutHovered] = useState(false);
-  const { t, i18n } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-
-
-  const handleLanguageChange = (e) => {
-    const newLanguage = e.target.value;
-    setSelectedLanguage(newLanguage);
-    i18n.changeLanguage(newLanguage);
-  };
 
   return (<header style={{
     width: '100%',
@@ -43,13 +33,13 @@ function Header() {
       <Flex justify="space-between" align="center">
         <Flex align="center">
           <Link
-              as={ReactRouterLink}
-              to="/"
-              _hover={{ textDecoration: 'none' }}
-              onMouseEnter={() => setIsHomeHovered(true)}
-              onMouseLeave={() => setIsHomeHovered(false)}
-              transition="transform 0.3s ease-in-out"
-              style={{ transform: isHomeHovered ? 'scale(1.1)' : 'scale(1)' }}
+            as={ReactRouterLink}
+            to="/"
+            _hover={{ textDecoration: 'none' }}
+            onMouseEnter={() => setIsHomeHovered(true)}
+            onMouseLeave={() => setIsHomeHovered(false)}
+            transition="transform 0.3s ease-in-out"
+            style={{ transform: isHomeHovered ? 'scale(1.1)' : 'scale(1)' }}
           >
             <Image src="img\home-icon.svg" alt="Home Icon" marginRight="10px" />
           </Link>
@@ -58,90 +48,65 @@ function Header() {
         </Flex>
         <Flex as={'nav'} align="center" gap={2}>
           <Link
-              as={ReactRouterLink}
-              to="/tasks"
-              marginRight="10px"
-              _hover={{
-                textDecoration: 'none',
-                backgroundColor: isTasksHovered ? 'purple.200' : 'blue.500',
-                color: '#fff',
-              }}
-              fontSize="sm"
-              onMouseEnter={() => setIsTasksHovered(true)}
-              onMouseLeave={() => setIsTasksHovered(false)}
-              transition="background-color 0.3s ease-in-out"
-              borderRadius="md"
-              padding="0.5rem 1rem"
+            as={ReactRouterLink}
+            to="/tasks"
+            marginRight="10px"
+            _hover={{
+              textDecoration: 'none',
+              backgroundColor: isTasksHovered ? 'purple.200' : 'blue.500',
+              color: '#fff',
+            }}
+            fontSize="sm"
+            onMouseEnter={() => setIsTasksHovered(true)}
+            onMouseLeave={() => setIsTasksHovered(false)}
+            transition="background-color 0.3s ease-in-out"
+            borderRadius="md"
+            padding="0.5rem 1rem"
           >
-              {t('tasks')}
+            Tasks
           </Link>
           <Link
-              as={ReactRouterLink}
-              to="/groups"
-              marginRight="10px"
-              _hover={{
-                textDecoration: 'none',
-                backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
-                color: '#fff',
-              }}
-              fontSize="sm"
-              onMouseEnter={() => setIsAboutHovered(true)}
-              onMouseLeave={() => setIsAboutHovered(false)}
-              transition="background-color 0.3s ease-in-out"
-              borderRadius="md"
-              padding="0.5rem 1rem"
-              style={{ whiteSpace: 'nowrap' }}
+            as={ReactRouterLink}
+            to="/groups"
+            marginRight="10px"
+            _hover={{
+              textDecoration: 'none',
+              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
+              color: '#fff',
+            }}
+            fontSize="sm"
+            onMouseEnter={() => setIsAboutHovered(true)}
+            onMouseLeave={() => setIsAboutHovered(false)}
+            transition="background-color 0.3s ease-in-out"
+            borderRadius="md"
+            padding="0.5rem 1rem"
+            style={{ whiteSpace: 'nowrap' }}
           >
-              {t('allGroups')}
+            All Groups
           </Link>
           <Link
-              as={ReactRouterLink}
-              to="/my-groups"
-              marginRight="10px"
-              _hover={{
-                textDecoration: 'none',
-                backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
-                color: '#fff',
-              }}
-              fontSize="sm"
-              onMouseEnter={() => setIsAboutHovered(true)}
-              onMouseLeave={() => setIsAboutHovered(false)}
-              transition="background-color 0.3s ease-in-out"
-              borderRadius="md"
-              padding="0.5rem 1rem"
-              style={{ whiteSpace: 'nowrap' }}
+            as={ReactRouterLink}
+            to="/my-groups"
+            marginRight="10px"
+            _hover={{
+              textDecoration: 'none',
+              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
+              color: '#fff',
+            }}
+            fontSize="sm"
+            onMouseEnter={() => setIsAboutHovered(true)}
+            onMouseLeave={() => setIsAboutHovered(false)}
+            transition="background-color 0.3s ease-in-out"
+            borderRadius="md"
+            padding="0.5rem 1rem"
+            style={{ whiteSpace: 'nowrap' }}
           >
-              {t('myGroups')}
+            My Groups
           </Link>
-          <Select id="languageSelect" value={selectedLanguage} onChange={handleLanguageChange}>
-            <option value="en">Eng</option>
-            <option value="ua">Укр</option>
-          </Select>
           {isLoggedIn && <>
             <Flex alignItems={'center'} gap={2}>
               <p>Hello, {username}</p>
               <Button
-                  marginRight="10px"
-                  backgroundColor={'purple.500'}
-                  color={'white'}
-                  _hover={{
-                    textDecoration: 'none',
-                    transform: 'scale(1.05)',
-                  }}
-                  transition="transform 0.3s ease-in-out"
-                  onClick={async () => {
-                    await dispatch(UserOperations.logout()).unwrap();
-                    navigate('/');
-                  }}
-              >
-                  {t('logOut')}
-              </Button>
-            </Flex>
-          </>}
-          {!isLoggedIn && <>
-            <Button
-                as={ReactRouterLink}
-                to="/signup"
                 marginRight="10px"
                 backgroundColor={'purple.500'}
                 color={'white'}
@@ -150,21 +115,42 @@ function Header() {
                   transform: 'scale(1.05)',
                 }}
                 transition="transform 0.3s ease-in-out"
+                onClick={async () => {
+                  await dispatch(UserOperations.logout()).unwrap();
+                  navigate('/');
+                }}
+              >
+                Log out
+              </Button>
+            </Flex>
+          </>}
+          {!isLoggedIn && <>
+            <Button
+              as={ReactRouterLink}
+              to="/signup"
+              marginRight="10px"
+              backgroundColor={'purple.500'}
+              color={'white'}
+              _hover={{
+                textDecoration: 'none',
+                transform: 'scale(1.05)',
+              }}
+              transition="transform 0.3s ease-in-out"
             >
-                {t('signUp')}
+              Sign Up
             </Button>
             <Button
-                as={ReactRouterLink}
-                to="/signin"
-                backgroundColor={'purple.500'}
-                color={'white'}
-                _hover={{
-                  textDecoration: 'none',
-                  transform: 'scale(1.05)',
-                }}
-                transition="transform 0.3s ease-in-out"
+              as={ReactRouterLink}
+              to="/signin"
+              backgroundColor={'purple.500'}
+              color={'white'}
+              _hover={{
+                textDecoration: 'none',
+                transform: 'scale(1.05)',
+              }}
+              transition="transform 0.3s ease-in-out"
             >
-                {t('signIn')}
+              Sign In
             </Button>
           </>}
         </Flex>
@@ -176,22 +162,21 @@ function Header() {
 }
 
 export default function Layout() {
-    const { t, i18n } = useTranslation();
   return (<Box
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+    style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+    }}
   >
     <Header />
     <Box
-        style={{
-          marginInline: 'auto',
-          paddingBottom: '96px',
-          width: '960px',
-          flex: '1',
-        }}
+      style={{
+        marginInline: 'auto',
+        paddingBottom: '96px',
+        width: '960px',
+        flex: '1',
+      }}
     >
       <main>
         <Outlet />
@@ -208,32 +193,32 @@ export default function Layout() {
       borderRadius: '5px',
     }}>
       <Box
-          style={{
-            marginInline: 'auto',
-            paddingBottom: '96px',
-            width: '960px',
-            flex: '1',
-          }}
+        style={{
+          marginInline: 'auto',
+          paddingBottom: '96px',
+          width: '960px',
+          flex: '1',
+        }}
       >
         <Divider />
         <Flex
-            justify="flex-start"
-            align="flex-start"
-            flexDirection="column"
+          justify="flex-start"
+          align="flex-start"
+          flexDirection="column"
         >
           <Text>
-            <Link as={ReactRouterLink} to="/">{t('homePage')}</Link>
+            <Link as={ReactRouterLink} to="/">Home Page</Link>
           </Text>
           <Text>
-            <Link as={ReactRouterLink} to="/tasks">{t('signUp')}</Link>
+            <Link as={ReactRouterLink} to="/tasks">My Tasks</Link>
           </Text>
           <Text>
-            <Link as={ReactRouterLink} to="/groups">{t('allGroups')}</Link>
+            <Link as={ReactRouterLink} to="/groups">All Groups</Link>
           </Text>
           <Text>
-            <Link as={ReactRouterLink} to="/my-groups">{t('myGroups')}</Link>
+            <Link as={ReactRouterLink} to="/my-groups">My Groups</Link>
           </Text>
-          <Text marginTop="30px">(c) {t('databaseProject')}</Text>
+          <Text marginTop="30px">(c) Databases Project</Text>
         </Flex>
       </Box>
     </footer>
