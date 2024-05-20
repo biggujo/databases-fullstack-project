@@ -6,6 +6,7 @@ from schemas.task_schemas import validate_task
 from flask import request, jsonify, session
 from decorators.authorize_user import authorize_user
 from query.tasks_query import TasksQuery
+import math
 
 
 def index():
@@ -17,9 +18,13 @@ def index():
     initial_scope = Task.query_user_tasks(user_id)
 
     query_object = TasksQuery(initial_scope)
-    scoped_data = query_object.call(parameters)
+    pagination_scope = query_object.call(parameters)
 
-    return jsonify(json_list=[task.serialize for task in scoped_data])
+    return jsonify(json_list=[task.serialize for task in pagination_scope.items],
+                   page=pagination_scope.page,
+                   per_page=pagination_scope.per_page,
+                   totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),
+                   )
 
 
 @validate_task

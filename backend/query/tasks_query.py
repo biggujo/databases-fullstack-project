@@ -5,6 +5,7 @@ from sqlalchemy.sql import func
 
 class TasksQuery:
     def __init__(self, initial_scope):
+        self.total = None
         self.scope = initial_scope
 
     def call(self, parameters):
@@ -12,8 +13,7 @@ class TasksQuery:
         self._filter_by_status(parameters)
         self._sort_by_name(parameters)
         self._sort_by_deadline(parameters)
-        # self._paginate(parameters)
-        return self.scope.all()
+        return self._paginate(parameters)  # Pagination object
 
     def _sort_by_name(self, parameters):
         order = parameters.get('sort_name')
@@ -45,7 +45,7 @@ class TasksQuery:
         start_date = parameters.get('start_date')
         end_date = parameters.get('end_date')
 
-        if not start_date or not end_date:
+        if start_date is None or end_date is None:
             return
 
         start_date = datetime.fromisoformat(start_date)
@@ -58,9 +58,6 @@ class TasksQuery:
         per_page = parameters.get('per_page')
 
         if page is None or per_page is None:
-            return self.scope
-        page = int(page)
-        per_page = int(per_page)
-        start = (page - 1) * per_page
-        end = start + per_page
-        self.scope = self.scope[start:end]
+            return
+
+        return self.scope.paginate(page=int(page), per_page=int(per_page), error_out=False, count=True)
