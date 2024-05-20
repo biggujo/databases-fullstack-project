@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikProvider } from 'formik';
 import {
-  Button, Flex, FormControl, FormLabel, Input, Text,
+  Box, Button, Flex, FormControl, FormLabel, Input, Select, Text,
 } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import useFormFilter from '../../../hooks/useFormFilter.js';
@@ -77,6 +77,26 @@ export default function TaskFilterForm() {
         />
         {formik.errors.endDate && formik.touched.endDate ? (
           <Text color={'red'}>{formik.errors.endDate}</Text>) : null}
+      </FormControl>
+      <FormControl>
+        <FormLabel>
+          <Flex gap={2}>
+            <span>{t('status')}</span>
+            <Text color={'red'}> *</Text>
+          </Flex>
+        </FormLabel>
+        <div>
+          <Select
+            name={'status'}
+            width={'fit-content'}
+          >
+            <option value={'completed'}>{t('completed')}</option>
+            <option value={'in_progress'}>{t('inProgress')}</option>
+            <option value={'overdue'}>{t('overdue')}</option>
+          </Select>
+        </div>
+        {formik.errors.startDate && formik.touched.startDate ? (
+          <Text color={'red'}>{formik.errors.startDate}</Text>) : null}
       </FormControl>
       <Button type={'submit'}
               alignSelf={'start'}

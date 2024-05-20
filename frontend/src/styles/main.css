@@ -8,7 +8,8 @@
   font-size: 18px;
 }
 
-div > .react-datepicker__input-container input {
+div.datepicker-wrapper > .react-datepicker__input-container input {
+  width: 170px;
   font-size: 16px;
 }
 
