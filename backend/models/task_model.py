@@ -24,15 +24,17 @@ class Task(db.Model):
                                secondary=tasks_subtasks,
                                primaryjoin=id == tasks_subtasks.c.parent_id,
                                secondaryjoin=id == tasks_subtasks.c.child_id,
-                               backref=db.backref('parent_task', lazy='joined'), lazy='dynamic')
+                               backref=db.backref('parent_task', lazy='joined'), lazy='dynamic',
+                               cascade="all")
 
     @staticmethod
     def query_user_tasks(user_id):
-        return Task.query.join(TaskMeta).filter_by(id=TaskMeta.task_id, user_id=user_id)
+        return Task.query.join(TaskMeta, Task.id == TaskMeta.task_id).filter(TaskMeta.user_id == user_id).filter(
+            TaskMeta.group_id == None)
 
     @staticmethod
     def query_group_tasks(group_id):
-        return Task.query.join(TaskMeta).filter_by(group_id=group_id, id=TaskMeta.task_id)
+        return Task.query.join(TaskMeta, Task.id == TaskMeta.task_id).filter(TaskMeta.group_id == group_id)
 
     @property
     def serialize(self):

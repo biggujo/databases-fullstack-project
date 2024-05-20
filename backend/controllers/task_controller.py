@@ -26,6 +26,8 @@ def index(task_id=None):
 
         initial_scope = task.subtasks
 
+    print(str(initial_scope), flush=True)
+
     query_object = TasksQuery(initial_scope)
     pagination_scope = query_object.call(parameters)
 
@@ -74,9 +76,9 @@ def update(task_id, subtask_id=None):
         return {'message': 'Unauthorized'}, 401
 
     if subtask_id is None:
-        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+        task = Task.query_user_tasks(user_id).filter(Task.id == task_id).first()
     else:
-        task = Task.query.filter_by(id=subtask_id).first()
+        task = Task.query.filter(Task.id == subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -97,9 +99,9 @@ def update(task_id, subtask_id=None):
 def delete(task_id, subtask_id=None):
     user_id = session.get("id")
     if subtask_id is None:
-        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+        task = Task.query_user_tasks(user_id).filter(Task.id == task_id).first()
     else:
-        task = Task.query.filter_by(id=subtask_id).first()
+        task = Task.query.filter(Task.id == subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -115,7 +117,7 @@ def get(task_id, subtask_id=None):
     user_id = session.get("id")
 
     if subtask_id is None:
-        task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
+        task = Task.query_user_tasks(user_id).filter(Task.id == task_id).first()
     else:
         task = Task.query.get(subtask_id)
 
