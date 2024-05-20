@@ -63,10 +63,10 @@ function Header() {
             as={ReactRouterLink}
             to="/tasks"
             marginRight="10px"
+            border={'1px solid transparent'}
             _hover={{
               textDecoration: 'none',
-              backgroundColor: isTasksHovered ? 'purple.200' : 'blue.500',
-              color: '#fff',
+              border: '1px solid purple',
             }}
             fontSize="sm"
             onMouseEnter={() => setIsTasksHovered(true)}
@@ -81,10 +81,10 @@ function Header() {
             as={ReactRouterLink}
             to="/groups"
             marginRight="10px"
+            border={'1px solid transparent'}
             _hover={{
               textDecoration: 'none',
-              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
-              color: '#fff',
+              border: '1px solid purple',
             }}
             fontSize="sm"
             onMouseEnter={() => setIsAboutHovered(true)}
@@ -100,10 +100,10 @@ function Header() {
             as={ReactRouterLink}
             to="/my-groups"
             marginRight="10px"
+            border={'1px solid transparent'}
             _hover={{
               textDecoration: 'none',
-              backgroundColor: isAboutHovered ? 'purple.200' : 'blue.500',
-              color: '#fff',
+              border: '1px solid purple',
             }}
             fontSize="sm"
             onMouseEnter={() => setIsAboutHovered(true)}
@@ -178,7 +178,6 @@ function Header() {
           </Flex>
         </Flex>
       </Flex>
-      <Divider />
       <Toaster position={'top-right'} />
     </Box>
   </header>);
@@ -217,7 +216,6 @@ export default function Layout() {
       paddingTop: '30px',
       backgroundColor: '#f5f0ff',
       border: '1px solid #e2d9ff',
-      borderRadius: '5px',
     }}>
       <Box
         style={{
@@ -227,11 +225,12 @@ export default function Layout() {
           flex: '1',
         }}
       >
-        <Divider />
         <Flex
           justify="flex-start"
           align="flex-start"
           flexDirection="column"
+          fontSize={'18px'}
+          gap={4}
         >
           <Text>
             <Link as={ReactRouterLink} to="/">{t('homePage')}</Link>
@@ -245,7 +244,8 @@ export default function Layout() {
           <Text>
             <Link as={ReactRouterLink} to="/my-groups">{t('myGroups')}</Link>
           </Text>
-          <Text marginTop="30px">(c) {t('databaseProject')}</Text>
+          <Text marginTop="30px"
+                fontWeight={'bold'}>(c) {t('databaseProject')}</Text>
         </Flex>
       </Box>
     </footer>
