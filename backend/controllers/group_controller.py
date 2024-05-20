@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from flask import jsonify, request, session
 from models.group_model import Group
 from helpers.main import db
@@ -6,7 +7,11 @@ from schemas.group_schemas import validate_group
 from models.user_model import User
 from models.task_model import Task
 from models.task_meta_model import TaskMeta
+from controllers import task_controller
 from decorators.authorize_user import authorize_user
+from query.tasks_query import TasksQuery
+import math
+
 from schemas.task_schemas import validate_task
 
 
@@ -96,14 +101,24 @@ def tasks_index(id, task_id=None):
     # if user_id is None:
     #    return {'message': 'Unauthorized'}, 401
 
+    parameters = request.args
+
     if task_id is None:
-        return jsonify(json_list=[i.serialize for i in Task.query_group_tasks(id).all()])
+        # All tasks
+        initial_scope = Task.query_group_tasks(id)
     else:
+        # Subtasks of a task
         task = Task.query.get(task_id)
-        if task is None:
-            return {'message': 'Nothing found'}, 404
-        return jsonify(json_list=[subtask.serialize for subtask in
-                                  task.subtasks]), 200  # Task.query.filter_by(parent_task_id=task_id).all()])
+        initial_scope = task.subtasks
+
+    query_object = TasksQuery(initial_scope)
+    pagination_scope = query_object.call(parameters)
+
+    return jsonify(json_list=[task.serialize for task in pagination_scope.items],
+                   page=pagination_scope.page,
+                   per_page=pagination_scope.per_page,
+                   totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),
+                   )
 
 
 @validate_task

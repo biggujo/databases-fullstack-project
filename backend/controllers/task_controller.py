@@ -1,27 +1,39 @@
 from datetime import datetime
-
 from models.task_model import Task
 from models.task_meta_model import TaskMeta
 from helpers.main import db
 from schemas.task_schemas import validate_task
 from flask import request, jsonify, session
-
 from decorators.authorize_user import authorize_user
+from query.tasks_query import TasksQuery
+import math
 
 
 def index(task_id=None):
+    user_id = session.get("id")
+
+    if user_id is None:
+        return {'message': 'Unauthorized'}, 401
+
+    parameters = request.args
+
     if task_id is None:
-        user_id = session.get("id")
-        if user_id is None:
-            return {'message': 'Unauthorized'}, 401
-        return jsonify(json_list=[i.serialize for i in
-                                  Task.query_user_tasks(user_id).all()])
+        initial_scope = Task.query_user_tasks(user_id)
     else:
         task = Task.query.get(task_id)
         if task is None:
             return {'message': 'Nothing found'}, 404
-        return jsonify(jsonlist=[subtask.serialize for subtask in
-                                 task.subtasks]), 200  # Task.query.filter_by(parent_task_id=task_id).all()]), 200
+
+        initial_scope = task.subtasks
+
+    query_object = TasksQuery(initial_scope)
+    pagination_scope = query_object.call(parameters)
+
+    return jsonify(json_list=[task.serialize for task in pagination_scope.items],
+                   page=pagination_scope.page,
+                   per_page=pagination_scope.per_page,
+                   totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),
+                   )
 
 
 @validate_task
@@ -33,7 +45,9 @@ def create(task_id=None):
 
     name = body.get('name')
     description = body.get('description')
+
     deadline = body.get('deadline')
+
     new_task = Task(name=name, description=description, deadline=deadline)
 
     if task_id is None:
@@ -48,6 +62,7 @@ def create(task_id=None):
         task.subtasks.append(new_task)
         db.session.add(new_task)
     db.session.commit()
+
     return new_task.serialize, 201
 
 
@@ -103,7 +118,7 @@ def get(task_id, subtask_id=None):
         task = Task.query_user_tasks(user_id).filter_by(id=task_id).first()
     else:
         task = Task.query.get(subtask_id)
-        
+
     if task is None:
         return {'message': 'Task not found'}, 404
 
