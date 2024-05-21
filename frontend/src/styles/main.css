@@ -1,11 +1,15 @@
 .react-datepicker__input-container input {
-  background-color: rgb(247, 250, 252);
+  background-color: #ffffff;
   padding: 7px;
   padding-left: 16px;
   border: 1px solid rgb(227, 232, 239);
   border-radius: 7px;
   color: #000000;
   font-size: 18px;
+}
+
+div > .react-datepicker__input-container input {
+  font-size: 14px;
 }
 
 .completed::after {

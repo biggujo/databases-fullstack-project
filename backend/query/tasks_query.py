@@ -9,11 +9,20 @@ class TasksQuery:
         self.scope = initial_scope
 
     def call(self, parameters):
+        self._filter_by_name(parameters)
         self._filter_by_date_range(parameters)
         self._filter_by_status(parameters)
         self._sort_by_name(parameters)
         self._sort_by_deadline(parameters)
         return self._paginate(parameters)  # Returns Pagination object
+
+    def _filter_by_name(self, parameters):
+        query = parameters.get('query')
+
+        if query is None:
+            return
+
+        self.scope = self.scope.filter(Task.name.contains(query))
 
     def _sort_by_name(self, parameters):
         order = parameters.get('sort_name')
@@ -38,8 +47,6 @@ class TasksQuery:
             self.scope = self.scope.filter(Task.isDone == True)
         elif status == 'in_progress':
             self.scope = self.scope.filter(Task.isDone == False)
-        elif status == 'overdue':
-            self.scope = self.scope.filter(Task.isDone == False, Task.deadline < datetime.now())
 
     def _filter_by_date_range(self, parameters):
         start_date = parameters.get('start_date')
@@ -55,9 +62,9 @@ class TasksQuery:
 
     def _paginate(self, parameters):
         page = parameters.get('page', 1)
-        per_page = parameters.get('per_page', 5)
+        per_page = parameters.get('per_page', 50)
 
         if page is None or per_page is None:
-            return
+            return self.scope
 
         return self.scope.paginate(page=int(page), per_page=int(per_page), error_out=False, count=True)

@@ -67,7 +67,7 @@ def delete(id):
     group = Group.query.get(id)
     if group is None:
         return {'message': 'Group not found'}, 404
-    for task in group.tasks.all():
+    for task in Task.query_group_tasks(id).all():
         db.session.delete(task)
     db.session.delete(group)
     db.session.commit()
@@ -96,9 +96,19 @@ def remove_user(id):
     if group is None:
         return {'message': 'Group not found'}
 
-    user = User.query.get(user_id)
+    user = User.query.get(int(user_id))
+
+    if user not in group.users:
+        return {'message': 'User not in group'}, 400
+
     group.users.remove(user)
     db.session.commit()
+
+    # If no users
+    if len(group.users) == 0:
+        # Delete the group
+        delete(id)
+
     return {}, 204
 
 
@@ -159,9 +169,9 @@ def tasks_create(id, task_id=None):
 def tasks_update(id, task_id, subtask_id=None):
     body = request.json
     if subtask_id is None:
-        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+        task = Task.query_group_tasks(id).filter(Task.id == task_id).first()
     else:
-        task = Task.query.filter_by(id=subtask_id).first()
+        task = Task.query.filter(Task.id == subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -181,9 +191,9 @@ def tasks_update(id, task_id, subtask_id=None):
 @authorize_user
 def tasks_delete(id, task_id, subtask_id=None):
     if subtask_id is None:
-        task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+        task = Task.query_group_tasks(id).filter(Task.id == task_id).first()
     else:
-        task = Task.query.filter_by(id=subtask_id).first()
+        task = Task.query.filter(Task.id == subtask_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404
@@ -195,7 +205,7 @@ def tasks_delete(id, task_id, subtask_id=None):
 
 
 def tasks_get(id, task_id):
-    task = Task.query_group_tasks(id).filter_by(id=task_id).first()
+    task = Task.query_group_tasks(id).filter(Task.id == task_id).first()
 
     if task is None:
         return {'message': 'Task not found'}, 404

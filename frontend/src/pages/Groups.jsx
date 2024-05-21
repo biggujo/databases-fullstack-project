@@ -1,121 +1,41 @@
-import { useState } from 'react';
-import { Box, Input, List, ListItem, Flex, Text, Button, Heading } from '@chakra-ui/react';
+import {
+  Box, Input, Text, Heading, Flex,
+} from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGroupsNameFilter } from '../redux/filters/slice.js';
+import GroupFormAdd from '../components/GroupFormAdd/index.js';
+import GroupList from '../components/GroupList/index.js';
+import { selectGroupsNameFilter } from '../redux/filters/selectors.js';
+import { selectGroups } from '../redux/groups/selectors.js';
+import React from 'react';
+import GroupFilters from '../components/GroupFilters/index.js';
 import { useTranslation } from 'react-i18next';
-
-// Static collection
-// We'll use API later
-const groups = [
-    {
-        title: 'Buy apples',
-        members: 3,
-        isNew: false, // The user is not initially joined to the group
-    },
-    {
-        title: 'Clean the house',
-        members: 5,
-        isNew: false,
-    },
-    {
-        title: 'Go for a run',
-        members: 15,
-        isNew: false,
-    },
-    {
-        title: 'Read a book',
-        members: 40,
-        isNew: false,
-    },
-    {
-        title: 'Watch films',
-        members: 10,
-        isNew: false,
-    },
-    // ... other groups
-];
+import GroupFilterForm from '../components/GroupFilterForm/index.js';
 
 function Groups() {
-    const { t } = useTranslation();
-    const [filter, setFilter] = useState('');
-    const [groupState, setGroupState] = useState(groups);
-    const [newGroupTitle, setNewGroupTitle] = useState('');
+  const groups = useSelector(selectGroups);
+  const { t } = useTranslation();
 
-    // Function for changing the state and number of group members
-    const toggleGroupState = (index) => {
-        setGroupState((prevGroups) => {
-            const newGroups = [...prevGroups];
-            // If the user joins the group, increase the number of members
-            if (!newGroups[index].isNew) {
-                newGroups[index].members += 1;
-            } else {
-                // If the user leaves the group, reduce the number of members
-                newGroups[index].members -= 1;
-            }
-            newGroups[index].isNew = !newGroups[index].isNew;
-            return newGroups;
-        });
-    };
+  return (<Flex direction={'column'} gap={2}>
+    <Box>
+      <Heading as="h2" size="2xl" mb={4}>{t('groups')}</Heading>
+      <Text mb={4}>{t('availableAmount')} {groups.length}</Text>
+    </Box>
 
-    // Function for adding a new group
-    const addNewGroup = () => {
-        if (newGroupTitle) {
-            setGroupState(prevGroups => [
-                ...prevGroups,
-                { title: newGroupTitle, members: 1, isNew: true }
-            ]);
-            setNewGroupTitle('');
-        }
-    };
+    <Flex direction={'column'} gap={2} alignItems={'start'}>
+      <Heading as={'h3'} size={'xl'}>{t('createGroup')}</Heading>
+      <Box width={'50%'}>
+        <GroupFormAdd />
+      </Box>
 
-    const filteredGroups = groupState.filter(({ title }) =>
-        title.toLowerCase().includes(filter.toLowerCase())
-    );
+      <Heading as={'h3'} size={'xl'}>{t('groupItems')}</Heading>
+      <Heading as={'h4'} size={'lg'}>{t('filter')}</Heading>
 
-    return (
-        <Box p={5}>
-            <Heading as='h1' size='xl' mb={4}>{t('groups')}</Heading>
-            <Text mb={4}>{t('availableAmount')} {groupState.length}</Text>
-            <Box mb={5}>
-                <Input
-                    placeholder={t('createNewGroup')}
-                    value={newGroupTitle}
-                    onChange={(e) => setNewGroupTitle(e.target.value)}
-                />
-                <Button
-                    onClick={addNewGroup}
-                    mt={2}
-                    bg='purple.500'
-                    color='white'
-                    _hover={{ bg: 'purple.800' }}
-                >
-                    {t('createGroup')}
-                </Button>
-            </Box>
-            <Box mb={5}>
-                <Input
-                    placeholder={t('searchGroups')}
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                />
-            </Box>
-            <List spacing={3}>
-                {filteredGroups.map((group, index) => (
-                    <ListItem key={group.title} p={3} bg='purple.100' borderRadius='md'>
-                        <Flex justifyContent='space-between' alignItems='center'>
-                            <Text fontSize='lg'>{group.title}</Text>
-                            <Flex alignItems='center'>
-                                <Text fontSize='sm' mr={4}>{t('members', { count: group.members })}</Text>
-                                <Button
-                                    onClick={() => toggleGroupState(index)}
-                                    colorScheme={group.isNew ? 'red' : 'green'}>
-                                    {group.isNew ? t('leave') : t('join')}
-                                </Button>
-                            </Flex>
-                        </Flex>
-                    </ListItem>
-                ))}
-            </List>
-        </Box>
-    );
+      <GroupFilterForm />
+      <Heading as={'h4'} size={'lg'}>{t('results')}</Heading>
+    </Flex>
+    <GroupList items={groups} />
+  </Flex>);
 }
 
 export default Groups;

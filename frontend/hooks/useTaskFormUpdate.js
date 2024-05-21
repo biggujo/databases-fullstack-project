@@ -1,7 +1,7 @@
 import useTaskForm from './useTaskForm.js';
 import { TasksOperations } from '../src/redux/tasks/operations.js';
 
-const useTaskFormUpdate = (initialValues, onSubmit) => useTaskForm(TasksOperations.updateById,
+const useTaskFormUpdate = (operation, initialValues, onSubmit) => useTaskForm(operation,
   initialValues,
   onSubmit,
 );

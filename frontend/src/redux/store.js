@@ -6,6 +6,10 @@ import { authReducer } from './auth/slice.js';
 import {
   FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE,
 } from 'redux-persist/es/constants';
+import { groupsReducer } from './groups/slice.js';
+import { filtersReducer } from './filters/slice.js';
+import { groupTasksReducer } from './groupTasks/slice.js';
+import { subtasksReducer } from './subtasks/slice.js';
 
 const persistConfig = {
   key: 'counter',
@@ -20,6 +24,10 @@ const store = configureStore({
   reducer: {
     auth: persistReducer(persistConfig, authReducer),
     tasks: tasksReducer,
+    subtasks: subtasksReducer,
+    groups: groupsReducer,
+    groupTasks: groupTasksReducer,
+    filters: filtersReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {

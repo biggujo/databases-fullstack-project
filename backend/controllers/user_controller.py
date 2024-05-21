@@ -1,4 +1,4 @@
-from    models.user_model import User
+from models.user_model import User
 from helpers.main import db
 from schemas.user_schemas import validate_user_schema
 from flask import request, session, jsonify
@@ -12,6 +12,7 @@ def index():
 def create():
     body = request.json
 
+    email = body.get('email')
     username = body.get('username')
     password = body.get('password')
 
@@ -20,7 +21,7 @@ def create():
     if user is not None:
         return {'message': 'User already exists'}, 400
 
-    new_user = User(username=username)
+    new_user = User(username=username, email=email)
     new_user.set_password(password)
 
     db.session.add(new_user)

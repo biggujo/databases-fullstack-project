@@ -23,22 +23,23 @@ export default function TaskForm({ formik }) {
       <FormControl>
         <FormLabel fontSize={'xl'}>
           <Flex gap={2}>
-            <span>{t('text')}</span>
+            <span>{t('name')}</span>
             <Text color={'red'}> *</Text>
           </Flex>
         </FormLabel>
         <Input
-            name="name"
-            type="text"
-            size={'lg'}
-            placeholder={t('placeholderText')}
-            autoComplete={'off'}
-            isRequired
-            value={formik.values.name}
-            onChange={formik.handleChange}
+          name="name"
+          type="text"
+          size={'lg'}
+          bgColor={'white'}
+          placeholder={t('placeholderText')}
+          autoComplete={'off'}
+          isRequired
+          value={formik.values.name}
+          onChange={formik.handleChange}
         />
         {formik.errors.name && formik.touched.name ? (
-            <Text color={'red'}>{formik.errors.name}</Text>) : null}
+          <Text color={'red'}>{formik.errors.name}</Text>) : null}
       </FormControl>
       <FormControl>
         <FormLabel fontSize={'xl'}>
@@ -48,15 +49,16 @@ export default function TaskForm({ formik }) {
           </Flex>
         </FormLabel>
         <Textarea
-            name={'description'}
-            placeholder={t('placeholderDescription')}
-            size="lg"
-            resize={'vertical'}
-            value={formik.values.description}
-            onChange={formik.handleChange}
+          name={'description'}
+          placeholder={t('placeholderDescription')}
+          size="lg"
+          bgColor={'white'}
+          resize={'vertical'}
+          value={formik.values.description}
+          onChange={formik.handleChange}
         />
         {formik.errors.description && formik.touched.description ? (
-            <Text color={'red'}>{formik.errors.description}</Text>) : null}
+          <Text color={'red'}>{formik.errors.description}</Text>) : null}
       </FormControl>
       <FormControl>
         <FormLabel fontSize={'xl'}>
@@ -66,18 +68,22 @@ export default function TaskForm({ formik }) {
           </Flex>
         </FormLabel>
         <DatePicker
-            name={'deadline'}
-            {...formik.getFieldProps('deadline')}
-            timeInputLabel={t('time')}
-            dateFormat={DateFormatters.DATE_FORMAT}
-            showTimeInput
-            wrapperClassName="date-picker"
-            autoComplete="off"
+          name={'deadline'}
+          {...formik.getFieldProps('deadline')}
+          timeInputLabel={t('time')}
+          dateFormat={DateFormatters.DATE_FORMAT}
+          showTimeInput
+          wrapperClassName="date-picker"
+          autoComplete="off"
         />
         {formik.errors.deadline && formik.touched.deadline ? (
-            <Text color={'red'}>{formik.errors.deadline}</Text>) : null}
+          <Text color={'red'}>{formik.errors.deadline}</Text>) : null}
       </FormControl>
-      <Button type={'submit'}>
+      <Button type={'submit'}
+              alignSelf={'start'}
+              bg="purple.500"
+              color="white"
+              _hover={{ bg: 'purple.800' }}>
         {t('submit')}
       </Button>
     </Flex>
