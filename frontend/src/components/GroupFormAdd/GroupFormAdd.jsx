@@ -3,7 +3,7 @@ import {
   Button, Flex, FormControl, FormLabel, Input, Text,
 } from '@chakra-ui/react';
 import { FormikProvider } from 'formik';
-import useGroupFormAdd from '../../../hooks/useGroupFormAdd.js';
+import useGroupFormAdd from '../../hooks/useGroupFormAdd.js';
 import { useTranslation } from 'react-i18next';
 
 export default function GroupFormAdd() {

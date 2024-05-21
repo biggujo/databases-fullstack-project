@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthUser } from '../../redux/auth/selectors.js';
 import { GroupsOperations } from '../../redux/groups/operations.js';
 import toast from 'react-hot-toast';
-import useToggle from '../../../hooks/useToggle.js';
+import useToggle from '../../hooks/useToggle.js';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 

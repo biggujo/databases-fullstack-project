@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { GroupsOperations } from '../src/redux/groups/operations.js';
+import { GroupsOperations } from '../redux/groups/operations.js';
 import toast from 'react-hot-toast';
 
 const useGroupFormAdd = () => {

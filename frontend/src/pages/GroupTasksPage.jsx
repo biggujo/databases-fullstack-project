@@ -3,7 +3,7 @@ import {
   Text, Flex, Heading, Box, UnorderedList, ListItem,
 } from '@chakra-ui/react';
 import { Navigate, useParams } from 'react-router-dom';
-import useGroupFetchById from '../../hooks/useGroupFetchById.js';
+import useGroupFetchById from '../hooks/useGroupFetchById.js';
 import TaskList from '../components/TaskList/index.js';
 import { selectGroupTasks } from '../redux/groupTasks/selectors.js';
 import { GroupTasksOperations } from '../redux/groupTasks/operations.js';

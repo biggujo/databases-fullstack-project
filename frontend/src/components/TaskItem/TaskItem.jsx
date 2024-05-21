@@ -5,7 +5,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { format, isAfter } from 'date-fns';
-import useToggle from '../../../hooks/useToggle.js';
+import useToggle from '../../hooks/useToggle.js';
 import DateFormatters from '../../utils/date-format.js';
 import {
   TaskUpdateTimestampContext,
@@ -143,7 +143,10 @@ export default function TaskItem({
           >
             {t('due')} {`${format(deadlineDate,
             'dd.MM.yyyy',
-          )} ${t('at')} ${format(deadlineDate, 'HH:mm')}`}</Text>}
+          )} ${t('at')} ${format(
+            deadlineDate,
+            'HH:mm',
+          )}`}</Text>}
         </>}
       </Flex>
       <Flex gap={4}>

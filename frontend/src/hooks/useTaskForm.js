@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { addDays, subHours } from 'date-fns';
-import DateFormatters from '../src/utils/date-format.js';
+import DateFormatters from '../utils/date-format.js';
 
 const useTaskAddForm = (operationOnSubmit, initialData, onSubmit) => {
   const dispatch = useDispatch();

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import {
   TaskUpdateTimestampContext,
 } from '../../providers/TaskUpdateTimestampProvider.jsx';
-import useSubtaskFormUpdate from '../../../hooks/useSubtaskFormUpdate.js';
+import useSubtaskFormUpdate from '../../hooks/useSubtaskFormUpdate.js';
 import SubtaskForm from '../SubtaskForm/index.js';
 
 export default function SubtaskFormUpdate({

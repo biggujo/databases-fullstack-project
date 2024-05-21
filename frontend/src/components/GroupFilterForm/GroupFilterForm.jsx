@@ -3,7 +3,7 @@ import { FormikProvider } from 'formik';
 import {
   Button, Flex, FormControl, FormLabel, Input, Select,
 } from '@chakra-ui/react';
-import useGroupFilter from '../../../hooks/useGroupFilter.js';
+import useGroupFilter from '../../hooks/useGroupFilter.js';
 import { GroupTasksOperations } from '../../redux/groupTasks/operations.js';
 import { GroupsOperations } from '../../redux/groups/operations.js';
 import { useTranslation } from 'react-i18next';

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import useTaskFormUpdate from '../../../hooks/useTaskFormUpdate.js';
+import useTaskFormUpdate from '../../hooks/useTaskFormUpdate.js';
 import TaskForm from '../TaskForm/index.js';
 import {
   TaskUpdateTimestampContext,

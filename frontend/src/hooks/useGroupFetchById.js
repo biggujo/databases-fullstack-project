@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import API from '../src/utils/api.js';
+import API from '../utils/api.js';
 
 const useGroupFetchById = (id) => {
   const [data, setData] = useState(null);

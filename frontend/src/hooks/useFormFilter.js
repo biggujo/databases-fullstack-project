@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import DateFormatters from '../src/utils/date-format.js';
+import DateFormatters from '../utils/date-format.js';
 import { subHours } from 'date-fns';
 
 const useFormFilter = ({ operations }) => {
