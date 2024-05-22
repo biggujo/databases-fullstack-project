@@ -25,5 +25,4 @@ class User(UserMixin, db.Model):
         return {
             'id': self.id,
             'username': self.username
-            # 'tasks': [task.serialize for task in self.tasks]
         }

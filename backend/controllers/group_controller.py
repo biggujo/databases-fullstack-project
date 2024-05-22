@@ -26,6 +26,7 @@ def index():
                    totalPages=math.ceil(pagination_scope.total / pagination_scope.per_page),
                    )
 
+
 @authorize_user
 @validate_group
 def create():
@@ -113,10 +114,6 @@ def remove_user(id):
 
 
 def tasks_index(id, task_id=None):
-    # user_id = session.get("id")
-    # if user_id is None:
-    #    return {'message': 'Unauthorized'}, 401
-
     parameters = request.args
 
     if task_id is None:

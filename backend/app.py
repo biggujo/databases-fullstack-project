@@ -7,7 +7,7 @@ from database.config import init_db_connection
 from decorators.error_handlers import create_error_handlers
 from decorators.authorize_user import authorize_user
 
-# Decorators
+# Decorator
 CORS(app, supports_credentials=True)
 
 init_db_connection()

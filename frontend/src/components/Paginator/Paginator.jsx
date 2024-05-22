@@ -10,12 +10,12 @@ export default function Paginator({
 }) {
   return (<Center>
     <Paginate
-      // required props 👇
+      // Required props
       page={page}
       count={count}
       pageSize={pageSize}
       onPageChange={handlePageClick}
-      // optional props 👇
+      // Optional props
       margin={2}
       border={'1px solid'}
       colorScheme={'purple'}

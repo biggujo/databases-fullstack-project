@@ -2,7 +2,6 @@ from datetime import datetime
 from helpers.main import db
 from models.task_meta_model import TaskMeta
 
-# not sure about it is okay but ain't working other way
 tasks_subtasks = db.Table('tasks_subtasks',
                           db.Column('parent_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True),
                           db.Column('child_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True)
@@ -46,5 +45,4 @@ class Task(db.Model):
             'deadline': self.deadline,
             'created_at': self.created_at,
             'updated_at': self.updated_at,
-            # 'subtasks': self.subtasks,
         }

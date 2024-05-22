@@ -3,11 +3,13 @@ import API from '../../utils/api.js';
 import toast from 'react-hot-toast';
 
 const register = createAsyncThunk('auth/register', async ({
+  email,
   username,
   password,
 }, { rejectWithValue }) => {
   try {
     const data = await API.auth.register({
+      email,
       username,
       password,
     });

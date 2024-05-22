@@ -12,5 +12,3 @@ class TaskMeta(db.Model):
     user_id: Mapped[int] = mapped_column(db.ForeignKey("users.id"))
     group_id: Mapped[Optional[int]] = mapped_column(db.ForeignKey("groups.id"))
     group: Mapped["Group"] = db.relationship(back_populates="task_meta")
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False),
-    # group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))

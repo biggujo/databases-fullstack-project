@@ -5,7 +5,6 @@ from pydantic import BaseModel, Field
 class TaskSchema(BaseModel):
     name: str = Field(..., min_length=3, max_length=128)
     description: str = Field(..., min_length=3, max_length=512)
-    #isDone: bool = Field(...)
 
 
 def validate_task(func):
@@ -13,8 +12,7 @@ def validate_task(func):
         try:
             TaskSchema(**{
                 "name": request.json.get("name"),
-                "description": request.json.get("description"),
-                #"isDone": request.json.get("isDone")
+                "description": request.json.get("description")
             })
             func(*args, **kwargs)
         except Exception as e:

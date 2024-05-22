@@ -18,10 +18,12 @@ const auth = {
     return response.data;
   },
   register: async ({
+    email,
     username,
     password,
   }) => {
     const response = await axios.post('/users/create', {
+      email,
       username,
       password,
     });
